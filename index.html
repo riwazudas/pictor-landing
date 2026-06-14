@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   
   <!-- Global Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body class="region-au">
 
@@ -811,102 +811,139 @@
         </p>
       </div>
 
-      <div class="matrix-table-wrapper reveal scale-in">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th class="col-feature">Service / Safeguard</th>
-              <th class="col-diy">DIY Application</th>
-              <th class="col-pictor">Pictor Services Advantage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="cell-feature">
-                <strong>Visa Strategy</strong>
-                <span class="cell-sub">Mapping the optimal subclass & pathway</span>
-              </td>
-              <td class="cell-diy">
-                <span class="status-diy">Generic Online Information</span>
-                <span class="detail-diy">Prone to choosing sub-optimal or outdated pathways.</span>
-              </td>
-              <td class="cell-pictor">
-                <span class="status-pictor">Tailored Migration Plan</span>
-                <span class="detail-pictor">Detailed point calculations, risk analysis, and alternative backups.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="cell-feature">
-                <strong>Document Review</strong>
-                <span class="cell-sub">Verification of financial, employment & academic proof</span>
-              </td>
-              <td class="cell-diy">
-                <span class="status-diy">Basic Self-Check</span>
-                <span class="detail-diy">Commonly misses missing elements that lead to immediate rejection.</span>
-              </td>
-              <td class="cell-pictor">
-                <span class="status-pictor">Multi-Stage Audits</span>
-                <span class="detail-pictor">Double-checked by OMARA agents to ensure absolute regulatory alignment.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="cell-feature">
-                <strong>Application Checks</strong>
-                <span class="cell-sub">Form completion and portal entries</span>
-              </td>
-              <td class="cell-diy">
-                <span class="status-diy">User Assumption</span>
-                <span class="detail-diy">Minor clerical or translation inconsistencies trigger requests for info.</span>
-              </td>
-              <td class="cell-pictor">
-                <span class="status-pictor">Agent Submission Portal</span>
-                <span class="detail-pictor">Flawless compliance checking before formal lodgement.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="cell-feature">
-                <strong>Compliance Support</strong>
-                <span class="cell-sub">Aligning with Department Policy Changes</span>
-              </td>
-              <td class="cell-diy">
-                <span class="status-diy">Manual Tracking</span>
-                <span class="detail-diy">Requires checking regulatory updates daily.</span>
-              </td>
-              <td class="cell-pictor">
-                <span class="status-pictor">Active Monitoring</span>
-                <span class="detail-pictor">Instant adjustments if skills lists or subclass rules shift.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="cell-feature">
-                <strong>Case Monitoring</strong>
-                <span class="cell-sub">RFI management & agency interactions</span>
-              </td>
-              <td class="cell-diy">
-                <span class="status-diy">Direct Email Checks</span>
-                <span class="detail-diy">Delayed responses to official queries can risk visa refusal.</span>
-              </td>
-              <td class="cell-pictor">
-                <span class="status-pictor">Direct Portal Management</span>
-                <span class="detail-pictor">Priority legal communications handled directly by representative.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="cell-feature">
-                <strong>Appeal Guidance</strong>
-                <span class="cell-sub">Administrative Appeals Tribunal (AAT) support</span>
-              </td>
-              <td class="cell-diy">
-                <span class="status-diy">No Legal Standing</span>
-                <span class="detail-diy">Ineligible to directly represent clients during visa appeals.</span>
-              </td>
-              <td class="cell-pictor">
-                <span class="status-pictor">Full Representation</span>
-                <span class="detail-pictor">In-house legal support to draft submissions and represent you at hearings.</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="comparison-matrix-container reveal scale-in">
+        <!-- Header Row (Hidden on Mobile/Tablet) -->
+        <div class="comparison-matrix-header">
+          <div class="hdr-feature">Service / Safeguard</div>
+          <div class="hdr-diy">DIY Application</div>
+          <div class="hdr-pictor">Pictor Services Advantage</div>
+        </div>
+
+        <!-- Row 1: Visa Strategy -->
+        <div class="comparison-card">
+          <div class="comp-feature">
+            <div class="comp-feature-icon">🧭</div>
+            <div class="comp-feature-info">
+              <h3>Visa Strategy</h3>
+              <p>Mapping the optimal subclass & pathway</p>
+            </div>
+          </div>
+          <div class="comp-diy">
+            <span class="comp-label mobile-only">DIY Application</span>
+            <span class="comp-status status-warn">Generic Online Information</span>
+            <p class="comp-desc">Prone to choosing sub-optimal or outdated pathways.</p>
+          </div>
+          <div class="comp-pictor">
+            <span class="comp-label mobile-only">Pictor Services Advantage</span>
+            <span class="comp-status status-success">Tailored Migration Plan</span>
+            <p class="comp-desc">Detailed point calculations, risk analysis, and alternative backups.</p>
+          </div>
+        </div>
+
+        <!-- Row 2: Document Review -->
+        <div class="comparison-card">
+          <div class="comp-feature">
+            <div class="comp-feature-icon">📄</div>
+            <div class="comp-feature-info">
+              <h3>Document Review</h3>
+              <p>Verification of financial, employment & academic proof</p>
+            </div>
+          </div>
+          <div class="comp-diy">
+            <span class="comp-label mobile-only">DIY Application</span>
+            <span class="comp-status status-warn">Basic Self-Check</span>
+            <p class="comp-desc">Commonly misses missing elements that lead to immediate rejection.</p>
+          </div>
+          <div class="comp-pictor">
+            <span class="comp-label mobile-only">Pictor Services Advantage</span>
+            <span class="comp-status status-success">Multi-Stage Audits</span>
+            <p class="comp-desc">Double-checked by OMARA agents to ensure absolute regulatory alignment.</p>
+          </div>
+        </div>
+
+        <!-- Row 3: Application Checks -->
+        <div class="comparison-card">
+          <div class="comp-feature">
+            <div class="comp-feature-icon">🔍</div>
+            <div class="comp-feature-info">
+              <h3>Application Checks</h3>
+              <p>Form completion and portal entries</p>
+            </div>
+          </div>
+          <div class="comp-diy">
+            <span class="comp-label mobile-only">DIY Application</span>
+            <span class="comp-status status-warn">User Assumption</span>
+            <p class="comp-desc">Minor clerical or translation inconsistencies trigger requests for info.</p>
+          </div>
+          <div class="comp-pictor">
+            <span class="comp-label mobile-only">Pictor Services Advantage</span>
+            <span class="comp-status status-success">Agent Submission Portal</span>
+            <p class="comp-desc">Flawless compliance checking before formal lodgement.</p>
+          </div>
+        </div>
+
+        <!-- Row 4: Compliance Support -->
+        <div class="comparison-card">
+          <div class="comp-feature">
+            <div class="comp-feature-icon">⚖️</div>
+            <div class="comp-feature-info">
+              <h3>Compliance Support</h3>
+              <p>Aligning with Department Policy Changes</p>
+            </div>
+          </div>
+          <div class="comp-diy">
+            <span class="comp-label mobile-only">DIY Application</span>
+            <span class="comp-status status-warn">Manual Tracking</span>
+            <p class="comp-desc">Requires checking regulatory updates daily.</p>
+          </div>
+          <div class="comp-pictor">
+            <span class="comp-label mobile-only">Pictor Services Advantage</span>
+            <span class="comp-status status-success">Active Monitoring</span>
+            <p class="comp-desc">Instant adjustments if skills lists or subclass rules shift.</p>
+          </div>
+        </div>
+
+        <!-- Row 5: Case Monitoring -->
+        <div class="comparison-card">
+          <div class="comp-feature">
+            <div class="comp-feature-icon">📊</div>
+            <div class="comp-feature-info">
+              <h3>Case Monitoring</h3>
+              <p>RFI management & agency interactions</p>
+            </div>
+          </div>
+          <div class="comp-diy">
+            <span class="comp-label mobile-only">DIY Application</span>
+            <span class="comp-status status-warn">Direct Email Checks</span>
+            <p class="comp-desc">Delayed responses to official queries can risk visa refusal.</p>
+          </div>
+          <div class="comp-pictor">
+            <span class="comp-label mobile-only">Pictor Services Advantage</span>
+            <span class="comp-status status-success">Direct Portal Management</span>
+            <p class="comp-desc">Priority legal communications handled directly by representative.</p>
+          </div>
+        </div>
+
+        <!-- Row 6: Appeal Guidance -->
+        <div class="comparison-card">
+          <div class="comp-feature">
+            <div class="comp-feature-icon">🏛️</div>
+            <div class="comp-feature-info">
+              <h3>Appeal Guidance</h3>
+              <p>Administrative Appeals Tribunal (AAT) support</p>
+            </div>
+          </div>
+          <div class="comp-diy">
+            <span class="comp-label mobile-only">DIY Application</span>
+            <span class="comp-status status-warn">No Legal Standing</span>
+            <p class="comp-desc">Ineligible to directly represent clients during visa appeals.</p>
+          </div>
+          <div class="comp-pictor">
+            <span class="comp-label mobile-only">Pictor Services Advantage</span>
+            <span class="comp-status status-success">Full Representation</span>
+            <p class="comp-desc">In-house legal support to draft submissions and represent you at hearings.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
