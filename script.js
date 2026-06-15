@@ -208,43 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // ==========================================================================
-  // 3. MIGRATION VISUALIZER (MOTION WORLD MAP ANIMATION)
-  // ==========================================================================
-  const mapContainer = document.getElementById('motion-map-container');
-  const worldMap = document.querySelector('.world-map-img');
-  const flightRoute = document.getElementById('flight-route');
-
-  if (mapContainer && worldMap && flightRoute) {
-    // 1. Animate world map image in with a spring scaling & fade-in (Framer Motion style)
-    animate(worldMap, {
-      opacity: [0, 0.85],
-      scale: [0.93, 1]
-    }, {
-      duration: 1.4,
-      easing: [0.16, 1, 0.3, 1] // Custom spring-like cubic bezier
-    });
-
-    // 2. Animate city markers (fade in after map loads)
-    animate(".map-city-marker", {
-      opacity: [0, 1],
-      scale: [0.7, 1]
-    }, {
-      delay: 0.4,
-      duration: 0.8,
-      easing: [0.34, 1.56, 0.64, 1] // Springy back-out curve
-    });
-
-    // 3. Animate flight path line (fade-in transition)
-    animate(flightRoute, {
-      opacity: [0, 1]
-    }, {
-      delay: 0.8,
-      duration: 1.8,
-      easing: "ease-out"
-    });
-  }
-
 
   // ==========================================================================
   // 4. ANIMATED STATISTICS COUNTER ENGINE
