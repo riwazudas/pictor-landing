@@ -43,14 +43,19 @@
         <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
       </a>
 
-      <!-- Desktop Nav Menu -->
+            <!-- Desktop Nav Menu -->
       <nav class="nav-menu" id="nav-menu">
         <ul class="nav-list">
           <li><a href="index.html" class="nav-link">Home</a></li>
           <li><a href="services.html" class="nav-link">Services</a></li>
           <li><a href="about.html" class="nav-link active">About</a></li>
-          <li><a href="calculator.html" class="nav-link">Visa Cost Estimator</a></li>
-          <li><a href="resources.html" class="nav-link">Resources</a></li>
+          <li class="nav-item-dropdown">
+            <a href="resources.html" class="nav-link">Resources <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+            <ul class="dropdown-menu">
+              <li><a href="calculator.html" class="">Visa Cost Estimator</a></li>
+              <li><a href="resources.html" class="">Guides & Checklists</a></li>
+            </ul>
+          </li>
           <li><a href="index.html#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
@@ -70,12 +75,12 @@
   <!-- MOBILE NAV OVERLAY -->
   <div class="mobile-nav-overlay" id="mobile-nav-overlay">
     <nav class="mobile-nav-menu">
-      <ul class="mobile-nav-list">
+            <ul class="mobile-nav-list">
         <li><a href="index.html" class="mobile-nav-link">Home</a></li>
         <li><a href="services.html" class="mobile-nav-link">Services</a></li>
         <li><a href="about.html" class="mobile-nav-link active">About</a></li>
-        <li><a href="calculator.html" class="mobile-nav-link">Visa Cost Estimator</a></li>
         <li><a href="resources.html" class="mobile-nav-link">Resources</a></li>
+        <li><a href="calculator.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
         <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
         <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book Consultation</a></li>
       </ul>
