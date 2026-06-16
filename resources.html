@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources | Pictor Services</title>
+  <meta name="description" content="Access free Australian migration guides, student visa document checklists, IELTS vs PTE score conversion tables, and registered agent code resources.">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=10">
+</head>
+<body class="region-au">
+
+  <!-- TOP NOTIFICATION BAR -->
+  <div class="top-bar">
+    <div class="container top-bar-container">
+      <div class="top-bar-left">
+        <span class="pulse-indicator"></span>
+        <span class="top-bar-text regional-text" data-au="Australia & Nepal Migration Experts — Registered OMARA Agents" data-np="Australia & Nepal Migration Experts — Authorized University Placements">Australia & Nepal Migration Experts — Registered OMARA Agents</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="portal-toggle-container">
+          <button class="portal-toggle-btn active" id="btn-au" aria-label="Switch to Australia Portal">
+            <span class="flag">🇦🇺</span> <span class="label-text">Australia Portal</span>
+          </button>
+          <button class="portal-toggle-btn" id="btn-np" aria-label="Switch to Nepal Portal">
+            <span class="flag">🇳🇵</span> <span class="label-text">Nepal Portal</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY NAVIGATION -->
+  <header class="main-header" id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-container" aria-label="Pictor Services Home">
+        <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="nav-menu" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="calculator.html" class="nav-link">Visa Cost Estimator</a></li>
+          <li><a href="resources.html" class="nav-link active">Resources</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav CTA & Mobile Toggle -->
+      <div class="nav-actions">
+        <a href="index.html#booking" class="btn btn-primary btn-nav-cta">Book Consultation</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <nav class="mobile-nav-menu">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+        <li><a href="services.html" class="mobile-nav-link">Services</a></li>
+        <li><a href="about.html" class="mobile-nav-link">About</a></li>
+        <li><a href="calculator.html" class="mobile-nav-link">Visa Cost Estimator</a></li>
+        <li><a href="resources.html" class="mobile-nav-link active">Resources</a></li>
+        <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
+        <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book Consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- PAGE HERO HEADER -->
+  <section class="page-header-section" style="padding: 56px 0; background: linear-gradient(135deg, rgba(237, 230, 242, 0.4) 0%, rgba(250, 248, 253, 0) 100%); border-bottom: 1px solid var(--border-color);">
+    <div class="container" style="text-align: center;">
+      <span class="section-tag">Useful Assets</span>
+      <h1 class="section-heading" style="margin-bottom: 8px;">Resource Hub</h1>
+      <p class="section-subtext" style="max-width: 600px; margin: 0 auto;">
+        Free toolkits, regulatory documents, score grids, and official links to facilitate your application planning.
+      </p>
+    </div>
+  </section>
+
+  <!-- DOWNLOADS & LISTS SECTION -->
+  <section class="resources-section" style="padding: 72px 0;">
+    <div class="container" style="display: flex; flex-direction: column; gap: 72px;">
+      
+      <!-- Filter controls -->
+      <div style="text-align: center;">
+        <div class="filter-group" style="display: inline-flex; gap: 12px; background-color: var(--bg-secondary); padding: 6px; border-radius: 40px; border: 1px solid var(--border-color);">
+          <button class="filter-btn active" data-filter="all" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">All Resources</button>
+          <button class="filter-btn" data-filter="migration" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Migration Guides</button>
+          <button class="filter-btn" data-filter="student" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Student Checklists</button>
+          <button class="filter-btn" data-filter="english" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">English & Testing</button>
+        </div>
+      </div>
+      
+      <!-- Resource Cards Grid -->
+      <div class="resources-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;">
+        
+        <!-- Resource 1: OMARA Guide -->
+        <div class="resource-card glass-panel" data-category="migration" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Regulatory Document</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">OMARA Consumer Guide</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              The official consumer protection guide issued by the Office of the Migration Agents Registration Authority outlining your rights.
+            </p>
+          </div>
+          <a href="https://www.mara.gov.au/get-paying-for-advice/consumer-guide" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+            Open Official Guide ➔
+          </a>
+        </div>
+        
+        <!-- Resource 2: GSM Checklist -->
+        <div class="resource-card glass-panel" data-category="migration" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Checklist</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">Skilled Visa Document Checklist</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              A comprehensive document collection matrix for Subclass 189, 190, and 491 Expression of Interest (EOI) submissions.
+            </p>
+          </div>
+          <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px; pointer-events: none; opacity: 0.6;">
+            Download PDF Checklist (Soon)
+          </a>
+        </div>
+        
+        <!-- Resource 3: Student Checklist -->
+        <div class="resource-card glass-panel" data-category="student" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Checklist</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">Student Visa 500 Document List</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              A guidelines document covering COE, OSHC, Genuine Student statements, and financial capacity evidence formatting.
+            </p>
+          </div>
+          <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px; pointer-events: none; opacity: 0.6;">
+            Download PDF Checklist (Soon)
+          </a>
+        </div>
+        
+      </div>
+      
+      <!-- SCORE COMPARISON MATRIX TABLE -->
+      <div style="border-top: 1px solid var(--border-color); padding-top: 64px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <span class="section-tag">Testing Benchmarks</span>
+          <h2 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--bg-dark);">PTE Academic vs IELTS Band Score Mapping</h2>
+          <p style="color: var(--color-text-light); font-size: 0.95rem; margin-top: 6px;">Official Department of Home Affairs alignment matrix for skilled immigration bands.</p>
+        </div>
+        
+        <div style="overflow-x: auto; max-width: 800px; margin: 0 auto; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: var(--shadow-sm);">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem; background-color: var(--bg-primary);">
+            <thead>
+              <tr style="background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
+                <th style="padding: 16px 24px; font-weight: 700; color: var(--bg-dark);">Immigration Band</th>
+                <th style="padding: 16px 24px; font-weight: 700; color: var(--bg-dark);">IELTS (Academic/Gen)</th>
+                <th style="padding: 16px 24px; font-weight: 700; color: var(--bg-dark);">PTE Academic</th>
+                <th style="padding: 16px 24px; font-weight: 700; color: var(--bg-dark);">PR Points Awarded</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 16px 24px; font-weight: 600; color: var(--bg-dark);">Competent English</td>
+                <td style="padding: 16px 24px; color: var(--color-text-light);">6.0 in each band</td>
+                <td style="padding: 16px 24px; color: var(--color-text-light);">50 in each section</td>
+                <td style="padding: 16px 24px; font-weight: 600; color: var(--color-primary);">0 Points (Threshold)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 16px 24px; font-weight: 600; color: var(--bg-dark);">Proficient English</td>
+                <td style="padding: 16px 24px; color: var(--color-text-light);">7.0 in each band</td>
+                <td style="padding: 16px 24px; color: var(--color-text-light);">65 in each section</td>
+                <td style="padding: 16px 24px; font-weight: 600; color: var(--color-primary);">10 Points</td>
+              </tr>
+              <tr>
+                <td style="padding: 16px 24px; font-weight: 600; color: var(--bg-dark);">Superior English</td>
+                <td style="padding: 16px 24px; color: var(--color-text-light);">8.0 in each band</td>
+                <td style="padding: 16px 24px; color: var(--color-text-light);">79 in each section</td>
+                <td style="padding: 16px 24px; font-weight: 600; color: var(--color-primary);">20 Points</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- HELPFUL EXTERNAL WEBSITES -->
+      <div style="border-top: 1px solid var(--border-color); padding-top: 64px;">
+        <div style="text-align: center; margin-bottom: 32px;">
+          <h3 style="font-family: var(--font-headings); font-size: 1.6rem; color: var(--bg-dark);">Official Portals & Authorities</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+          <a href="https://immi.homeaffairs.gov.au" target="_blank" rel="noopener" class="glass-panel" style="padding: 24px; border-radius: 12px; text-align: center; font-weight: 600; color: var(--bg-dark); display: block; text-decoration: none;">
+            Department of Home Affairs
+          </a>
+          <a href="https://www.mara.gov.au" target="_blank" rel="noopener" class="glass-panel" style="padding: 24px; border-radius: 12px; text-align: center; font-weight: 600; color: var(--bg-dark); display: block; text-decoration: none;">
+            OMARA Portal
+          </a>
+          <a href="https://www.engineersaustralia.org.au" target="_blank" rel="noopener" class="glass-panel" style="padding: 24px; border-radius: 12px; text-align: center; font-weight: 600; color: var(--bg-dark); display: block; text-decoration: none;">
+            Engineers Australia
+          </a>
+          <a href="https://www.acs.org.au" target="_blank" rel="noopener" class="glass-panel" style="padding: 24px; border-radius: 12px; text-align: center; font-weight: 600; color: var(--bg-dark); display: block; text-decoration: none;">
+            ACS Portal
+          </a>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <!-- Footer Brand Info -->
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+        </div>
+        <p class="footer-desc">
+          Professional and trustworthy migration and education consulting services. We facilitate global mobility with absolute legal compliance.
+        </p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/pictorservices/" target="_blank" rel="noopener" aria-label="Facebook" class="social-link-btn">FB</a>
+          <a href="https://www.instagram.com/pictorservices/" target="_blank" rel="noopener" aria-label="Instagram" class="social-link-btn">IG</a>
+          <a href="https://www.linkedin.com/company/pictor-services" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-link-btn">LN</a>
+          <a href="https://www.tiktok.com/@pictorservices" target="_blank" rel="noopener" aria-label="TikTok" class="social-link-btn">TK</a>
+        </div>
+        
+        <div class="footer-accreditation-badges regional-block" data-region="au" style="margin-top: 20px;">
+          <div class="mara-badge-statement" style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
+            <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">Registered Migration Agent</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN: 0000000 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
+          </div>
+        </div>
+        
+        <div class="footer-accreditation-badges regional-block" data-region="np" style="margin-top: 20px;">
+          <div class="ecan-badge-statement" style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
+            <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">ECAN Member & QEAC Certified</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">Qualified Education Agent Counsellors (QEAC Q000, T000, A000, B000) for direct placement in Elite Institutions.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About Founder</a></li>
+          <li><a href="calculator.html">Visa Cost Estimator</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+
+      <!-- Services List Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Expertise</h4>
+        <ul class="footer-links-list">
+          <li class="regional-text-li show-au"><a href="services.html#migration">Skilled Visas (189/190)</a></li>
+          <li class="regional-text-li show-au"><a href="services.html#migration">Employer Sponsorship</a></li>
+          <li class="regional-text-li show-au"><a href="services.html#professional-year">Professional Year</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#education">University Placement</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#migration">Student Visa 500</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#pte-naati">IELTS & PTE Training</a></li>
+          <li><a href="index.html#booking">Roadmap Consultation</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter and Offices -->
+      <div class="footer-col footer-contact-col">
+        <h4 class="footer-col-title">Newsletter</h4>
+        <p class="footer-newsletter-p">Get current regulatory visa policy alerts in your inbox.</p>
+        <form class="footer-newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Your email address" class="newsletter-input" required>
+          <button type="submit" class="btn btn-primary newsletter-submit" aria-label="Subscribe">➔</button>
+        </form>
+        <div class="newsletter-success-msg" id="newsletter-success">Subscribed successfully!</div>
+      </div>
+    </div>
+
+    <!-- Offices list footer row -->
+    <div class="container footer-offices-row">
+      <div class="footer-office-item">
+        <strong>🇦🇺 Melbourne Office:</strong> Suite 314, Level 4, 365 Little Collins Street, Melbourne VIC 3000 | 03 9973 2117 | info@pictorservices.com
+      </div>
+      <div class="footer-office-item">
+        <strong>🇳🇵 Kathmandu Office:</strong> D&D Tower, Level 5, Mid Baneshwor, Kathmandu, Nepal | +977 01 4464969 | hello@pictorservices.com
+      </div>
+    </div>
+
+    <!-- Copyright and compliance legal statement -->
+    <div class="container footer-bottom">
+      <p class="copyright-text">
+        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration #0000000. The material on this website is for informational purposes and does not constitute formal legal immigration advice.
+      </p>
+      <a href="index.html" class="back-to-top-btn" id="back-to-top" aria-label="Back to Top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Script tags -->
+  <script type="module" src="script.js"></script>
+  
+  <!-- Light Category Filter JS -->
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.resource-card');
+      
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Set active button
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const filter = btn.getAttribute('data-filter');
+          
+          cards.forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-category') === filter) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

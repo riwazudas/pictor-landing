@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Bind Toggle button clicks
-  btnAu.addEventListener('click', () => switchPortal('au'));
-  btnNp.addEventListener('click', () => switchPortal('np'));
+  if (btnAu) btnAu.addEventListener('click', () => switchPortal('au'));
+  if (btnNp) btnNp.addEventListener('click', () => switchPortal('np'));
 
   // Init regional content
   autoDetectRegion();
@@ -172,40 +172,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sticky Scroll Header active
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+    if (header) {
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     }
   });
 
   // Mobile menu trigger
-  menuToggle.addEventListener('click', () => {
-    const isActive = mobileNavOverlay.classList.toggle('active');
-    
-    // Hamburger animation
-    const bars = menuToggle.querySelectorAll('.hamburger-bar');
-    if (isActive) {
-      bars[0].style.transform = 'translateY(7px) rotate(45deg)';
-      bars[1].style.opacity = '0';
-      bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
-    } else {
-      bars[0].style.transform = 'none';
-      bars[1].style.opacity = '1';
-      bars[2].style.transform = 'none';
-    }
-  });
+  if (menuToggle && mobileNavOverlay) {
+    menuToggle.addEventListener('click', () => {
+      const isActive = mobileNavOverlay.classList.toggle('active');
+      
+      // Hamburger animation
+      const bars = menuToggle.querySelectorAll('.hamburger-bar');
+      if (bars.length >= 3) {
+        if (isActive) {
+          bars[0].style.transform = 'translateY(7px) rotate(45deg)';
+          bars[1].style.opacity = '0';
+          bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+        } else {
+          bars[0].style.transform = 'none';
+          bars[1].style.opacity = '1';
+          bars[2].style.transform = 'none';
+        }
+      }
+    });
+  }
 
   // Close mobile navigation on link click
-  mobileNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileNavOverlay.classList.remove('active');
-      const bars = menuToggle.querySelectorAll('.hamburger-bar');
-      bars[0].style.transform = 'none';
-      bars[1].style.opacity = '1';
-      bars[2].style.transform = 'none';
+  if (mobileNavLinks && mobileNavOverlay && menuToggle) {
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNavOverlay.classList.remove('active');
+        const bars = menuToggle.querySelectorAll('.hamburger-bar');
+        if (bars.length >= 3) {
+          bars[0].style.transform = 'none';
+          bars[1].style.opacity = '1';
+          bars[2].style.transform = 'none';
+        }
+      });
     });
-  });
+  }
 
 
 
