@@ -460,13 +460,73 @@
       let costConfig = null;
       const exchangeRate = 90.5; // 1 AUD = 90.5 NPR approx.
 
-      // Google Sheet Published CSV URL (Replace with your own published CSV link to manage pricing externally)
-      // Format: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv
-      const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1tp_P98nVm0oGX1CuqFrcnHKSB3eG33KumygeoHTihek/edit?usp=sharing';
+            // Google Sheet Published CSV URL (Pasted URL is automatically parsed)
+      const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1tp_P98nVm0oGX1CuqFrcnHKSB3eG33KumygeoHTihek/edit?usp=sharing'; 
+      
+      const DEFAULT_COST_CONFIG = {
+        subclasses: {
+          "189": {
+            name: "Skilled Independent (Subclass 189)",
+            baseFee: 4765,
+            secondaryApplicant18Plus: 2385,
+            secondaryApplicantUnder18: 1190,
+            skillsAssessmentEst: 1050,
+            agentFee: 3500
+          },
+          "190": {
+            name: "Skilled Nominated (Subclass 190)",
+            baseFee: 4765,
+            secondaryApplicant18Plus: 2385,
+            secondaryApplicantUnder18: 1190,
+            skillsAssessmentEst: 1050,
+            agentFee: 3800
+          },
+          "491": {
+            name: "Skilled Work Regional (Subclass 491)",
+            baseFee: 4765,
+            secondaryApplicant18Plus: 2385,
+            secondaryApplicantUnder18: 1190,
+            skillsAssessmentEst: 1050,
+            agentFee: 4000
+          },
+          "500": {
+            name: "Student Visa (Subclass 500)",
+            baseFee: 1600,
+            secondaryApplicant18Plus: 1190,
+            secondaryApplicantUnder18: 390,
+            skillsAssessmentEst: 0,
+            agentFee: 1200
+          },
+          "482": {
+            name: "Temporary Skill Shortage (Subclass 482 - Medium Term)",
+            baseFee: 3115,
+            secondaryApplicant18Plus: 3115,
+            secondaryApplicantUnder18: 780,
+            skillsAssessmentEst: 1200,
+            agentFee: 3000
+          },
+          "820": {
+            name: "Partner Visa (Subclass 820/801)",
+            baseFee: 8850,
+            secondaryApplicant18Plus: 4430,
+            secondaryApplicantUnder18: 2215,
+            skillsAssessmentEst: 0,
+            agentFee: 4500
+          }
+        },
+        standardFees: {
+          englishTestEst: 410,
+          healthCheckPerPerson: 350,
+          policeCheckPerPerson: 75,
+          creditCardSurchargePercent: 1.4
+        }
+      };
 
-      let dataSource = GOOGLE_SHEET_CSV_URL || 'visa-costs.json';
+      costConfig = DEFAULT_COST_CONFIG;
+
 
       // Auto-convert standard Google Sheet sharing/edit links to CSV export URLs
+      let dataSource = GOOGLE_SHEET_CSV_URL.trim();
       if (dataSource.includes('docs.google.com/spreadsheets')) {
         const match = dataSource.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
         if (match && match[1]) {
@@ -474,34 +534,24 @@
         }
       }
 
-      fetch(dataSource)
-        .then(response => response.text())
-        .then(data => {
-          if (dataSource === 'visa-costs.json') {
-            costConfig = JSON.parse(data);
-          } else {
+      if (dataSource) {
+        fetch(dataSource)
+          .then(response => {
+            if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+            return response.text();
+          })
+          .then(data => {
             costConfig = parseCsvToConfig(data);
-          }
-          initCalculator();
-        })
-        .catch(err => {
-          console.error('Failed to load primary data source:', err);
-          if (dataSource !== 'visa-costs.json') {
-            console.log('Falling back to local visa-costs.json...');
-            fetch('visa-costs.json')
-              .then(r => r.json())
-              .then(localData => {
-                costConfig = localData;
-                initCalculator();
-              })
-              .catch(localErr => {
-                console.error('Failed to load local fallback:', localErr);
-                showErrorState();
-              });
-          } else {
-            showErrorState();
-          }
-        });
+            initCalculator();
+          })
+          .catch(err => {
+            console.error('Failed to load Google Sheet config. Using default built-in configuration:', err);
+            initCalculator();
+          });
+      } else {
+        initCalculator();
+      }
+
 
       function initCalculator() {
         populateSubclasses();
