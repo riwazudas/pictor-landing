@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visa Cost Estimator | Pictor Services</title>
   <meta name="description"
-    content="Calculate your estimated Australian visa fees, health checks, skills assessment costs, and agent fees using our real-time interactive visa cost estimator.">
+    content="Calculate your estimated Australian visa fees, health checks, and skills assessment costs using our real-time interactive visa cost estimator.">
 
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,6 +63,8 @@
               </svg></a>
             <ul class="dropdown-menu">
               <li><a href="calculator.html" class="active">Visa Cost Estimator</a></li>
+              <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
+              <li><a href="processing-times.html" class="">Visa Processing Times</a></li>
               <li><a href="resources.html" class="">Guides & Checklists</a></li>
             </ul>
           </li>
@@ -90,8 +92,12 @@
         <li><a href="services.html" class="mobile-nav-link">Services</a></li>
         <li><a href="about.html" class="mobile-nav-link">About</a></li>
         <li><a href="resources.html" class="mobile-nav-link active">Resources</a></li>
-        <li><a href="calculator.html" class="mobile-nav-linkactive"
+        <li><a href="calculator.html" class="mobile-nav-link active"
             style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
+        <li><a href="points-calculator.html" class="mobile-nav-link"
+            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— PR Points Calculator</a></li>
+        <li><a href="processing-times.html" class="mobile-nav-link"
+            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Processing Times</a></li>
         <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
         <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book
             Consultation</a></li>
@@ -106,191 +112,138 @@
       <span class="section-tag">Pricing transparency</span>
       <h1 class="section-heading" style="margin-bottom: 8px;">Visa Cost Estimator</h1>
       <p class="section-subtext" style="max-width: 600px; margin: 0 auto;">
-        Get a breakdown of all government charges, skills assessment fees, and legal representation costs for your
-        specific pathway.
+        Get a breakdown of all government charges and skills assessment fees for your specific pathway.
       </p>
     </div>
   </section>
 
   <!-- CALCULATOR INTERACTIVE SECTION -->
   <section class="calculator-section" style="padding: 72px 0;">
-    <div class="container grid-2" style="align-items: start; gap: 48px;">
+    <div class="container">
 
-      <!-- Left Column: Inputs Form -->
-      <div class="calculator-inputs-card glass-panel" style="padding: 40px; border-radius: 24px;">
-        <h2 style="font-family: var(--font-headings); font-size: 1.8rem; margin-bottom: 8px; color: var(--bg-dark);">
-          Calculate Your Estimate</h2>
-        <p style="color: var(--color-text-light); margin-bottom: 32px; font-size: 0.95rem;">Select your visa details and
-          options below. The calculator updates automatically.</p>
+      <!-- Standalone Layout: Cost Estimator Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; align-items: stretch;">
+        
+        <!-- Left Column: Inputs Form -->
+        <div class="calculator-inputs-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
+          <h2 style="font-family: var(--font-headings); font-size: 1.8rem; margin-bottom: 8px; color: var(--bg-dark);">
+            Calculate Your Estimate</h2>
+          <p style="color: var(--color-text-light); margin-bottom: 32px; font-size: 0.95rem;">Select your visa details and options below. The calculator updates automatically.</p>
 
-        <form id="visa-calc-form" style="display: flex; flex-direction: column; gap: 24px;">
+          <form id="visa-calc-form" style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Visa Subclass -->
+            <div class="form-group">
+              <label for="calc-subclass" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Select Visa Subclass:</label>
+              <select id="calc-subclass" class="form-control" style="width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); font-weight: 500; cursor: pointer;">
+                <option value="">Loading subclasses...</option>
+              </select>
+            </div>
 
-          <!-- Visa Subclass -->
-          <div class="form-group">
-            <label for="calc-subclass"
-              style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Select
-              Visa Subclass:</label>
-            <select id="calc-subclass" class="form-control"
-              style="width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); font-weight: 500; cursor: pointer;">
-              <!-- Populated via JS -->
-              <option value="">Loading subclasses...</option>
-            </select>
+            <!-- Dependents & Partner Group -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 24px;">
+              <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--bg-dark);">Family Members (Include in Visa)</h3>
+
+              <!-- Partner Checkbox -->
+              <label style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
+                <input type="checkbox" id="calc-partner" style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Include Spouse / De Facto Partner</span>
+              </label>
+
+              <!-- Children Under 18 -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label for="calc-child-under18" style="display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 6px; color: var(--color-text-light);">Children (Under 18):</label>
+                  <input type="number" id="calc-child-under18" min="0" max="10" value="0" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary);">
+                </div>
+
+                <!-- Children 18+ -->
+                <div class="form-group">
+                  <label for="calc-child-over18" style="display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 6px; color: var(--color-text-light);">Children (18 & Older):</label>
+                  <input type="number" id="calc-child-over18" min="0" max="10" value="0" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary);">
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Costs Checkboxes -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; flex-direction: column; gap: 16px;">
+              <h3 style="font-size: 1rem; font-weight: 700; color: var(--bg-dark);">Optional Estimations</h3>
+
+              <!-- Skills Assessment -->
+              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);" id="label-skills">
+                <input type="checkbox" id="calc-skills" checked style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Include Skills Assessment Fees</span>
+              </label>
+
+              <!-- English Test -->
+              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
+                <input type="checkbox" id="calc-english" checked style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Include English Language Test Fee (IELTS/PTE)</span>
+              </label>
+
+              <!-- Health Exams & Police Checks -->
+              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
+                <input type="checkbox" id="calc-health" checked style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Include Health Check & Police clearance</span>
+              </label>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Cost Receipt & Visual Summary -->
+        <div class="calculator-results-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
+            <h2 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--bg-dark);">Cost Summary</h2>
+            <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-primary); letter-spacing: 0.5px;">Estimated Total</span>
           </div>
 
-          <!-- Dependents & Partner Group -->
-          <div style="border-top: 1px solid var(--border-color); padding-top: 24px;">
-            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--bg-dark);">Family Members
-              (Include in Visa)</h3>
+          <!-- Live Grand Total -->
+          <div style="background-color: var(--bg-secondary); padding: 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; border: 1px solid rgba(94, 51, 135, 0.08);">
+            <div id="grand-total-aud" style="font-family: var(--font-headings); font-size: 2.8rem; font-weight: 700; color: var(--color-primary); line-height: 1.1;">$0 AUD</div>
+          </div>
 
-            <!-- Partner Checkbox -->
-            <label
-              style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-              <input type="checkbox" id="calc-partner"
-                style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-              <span>Include Spouse / De Facto Partner</span>
-            </label>
-
-            <!-- Children Under 18 -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              <div class="form-group">
-                <label for="calc-child-under18"
-                  style="display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 6px; color: var(--color-text-light);">Children
-                  (Under 18):</label>
-                <input type="number" id="calc-child-under18" min="0" max="10" value="0" class="form-control"
-                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary);">
-              </div>
-
-              <!-- Children 18+ -->
-              <div class="form-group">
-                <label for="calc-child-over18"
-                  style="display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 6px; color: var(--color-text-light);">Children
-                  (18 & Older):</label>
-                <input type="number" id="calc-child-over18" min="0" max="10" value="0" class="form-control"
-                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary);">
-              </div>
+          <!-- Itemized Receipt -->
+          <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;">
+            <!-- Base VAC -->
+            <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+              <span style="color: var(--color-text-light);">Primary Applicant Charge:</span>
+              <strong id="item-base-fee" style="color: var(--bg-dark);">$0 AUD</strong>
+            </div>
+            <!-- Dependents VAC -->
+            <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+              <span style="color: var(--color-text-light);">Additional Applicants:</span>
+              <strong id="item-family-fee" style="color: var(--bg-dark);">$0 AUD</strong>
+            </div>
+            <!-- Skills Assessment & English -->
+            <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+              <span style="color: var(--color-text-light);">Assessments & Tests:</span>
+              <strong id="item-assessments-fee" style="color: var(--bg-dark);">$0 AUD</strong>
+            </div>
+            <!-- Health & Police Checks -->
+            <div style="display: flex; justify-content: space-between; font-size: 0.95rem; padding-bottom: 10px;">
+              <span style="color: var(--color-text-light);">Health & Character Checks:</span>
+              <strong id="item-health-fee" style="color: var(--bg-dark);">$0 AUD</strong>
             </div>
           </div>
 
-          <!-- Additional Costs Checkboxes -->
-          <div
-            style="border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; flex-direction: column; gap: 16px;">
-            <h3 style="font-size: 1rem; font-weight: 700; color: var(--bg-dark);">Optional Estimations</h3>
-
-            <!-- Skills Assessment -->
-            <label
-              style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);"
-              id="label-skills">
-              <input type="checkbox" id="calc-skills" checked
-                style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-              <span>Include Skills Assessment Fees</span>
-            </label>
-
-            <!-- English Test -->
-            <label
-              style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-              <input type="checkbox" id="calc-english" checked
-                style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-              <span>Include English Language Test Fee (IELTS/PTE)</span>
-            </label>
-
-            <!-- Health Exams & Police Checks -->
-            <label
-              style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-              <input type="checkbox" id="calc-health" checked
-                style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-              <span>Include Health Check & Police clearance</span>
-            </label>
-
-            <!-- Pictor Services Agent Representation -->
-            <label
-              style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-              <input type="checkbox" id="calc-agent"
-                style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-              <span style="font-weight: 600; color: var(--color-primary);">Include Pictor Services Professional
-                Fees</span>
-            </label>
+          <!-- Official Link and Disclaimer -->
+          <div style="margin-bottom: 32px; padding: 16px; border-radius: 12px; background-color: rgba(94, 51, 135, 0.03); border: 1px solid var(--border-color); font-size: 0.8rem; color: var(--color-text-light); line-height: 1.4;">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 4px;">Official Pricing Source:</strong>
+            Verify detailed visa costs on the official <a href="https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline; font-weight: 600;">DHA Visa Pricing Estimator</a>.
+            <span style="display: block; margin-top: 6px; font-size: 0.75rem; opacity: 0.85;">⚠️ <em>Legal Notice: Department of Home Affairs visa fees are subject to direct changes on July 1st annually. Costs calculated here are estimates for planning purposes only.</em></span>
           </div>
 
-        </form>
-      </div>
-
-      <!-- Right Column: Cost Receipt & Visual Summary -->
-      <div class="calculator-results-card glass-panel"
-        style="padding: 40px; border-radius: 24px; position: sticky; top: 110px;">
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
-          <h2 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--bg-dark);">Cost Summary</h2>
-          <span
-            style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-primary); letter-spacing: 0.5px;">Estimated
-            Total</span>
-        </div>
-
-        <!-- Live Grand Total -->
-        <div
-          style="background-color: var(--bg-secondary); padding: 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; border: 1px solid rgba(94, 51, 135, 0.08);">
-          <div id="grand-total-aud"
-            style="font-family: var(--font-headings); font-size: 2.8rem; font-weight: 700; color: var(--color-primary); line-height: 1.1;">
-            $0 AUD</div>
-          <div id="grand-total-npr"
-            style="font-size: 1.05rem; font-weight: 600; color: var(--color-text-light); margin-top: 4px;">Approx. NPR 0
-          </div>
-          <div style="font-size: 0.7rem; color: var(--color-text-light); opacity: 0.8; margin-top: 10px;">* Includes
-            estimated credit card surcharge (1.4%)</div>
-        </div>
-
-        <!-- Itemized Receipt -->
-        <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;">
-          <!-- Base VAC -->
-          <div
-            style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
-            <span style="color: var(--color-text-light);">Primary Applicant Charge:</span>
-            <strong id="item-base-fee" style="color: var(--bg-dark);">$0 AUD</strong>
-          </div>
-          <!-- Dependents VAC -->
-          <div
-            style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
-            <span style="color: var(--color-text-light);">Additional Applicants:</span>
-            <strong id="item-family-fee" style="color: var(--bg-dark);">$0 AUD</strong>
-          </div>
-          <!-- Skills Assessment & English -->
-          <div
-            style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
-            <span style="color: var(--color-text-light);">Assessments & Tests:</span>
-            <strong id="item-assessments-fee" style="color: var(--bg-dark);">$0 AUD</strong>
-          </div>
-          <!-- Health & Police Checks -->
-          <div
-            style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
-            <span style="color: var(--color-text-light);">Health & Character Checks:</span>
-            <strong id="item-health-fee" style="color: var(--bg-dark);">$0 AUD</strong>
-          </div>
-          <!-- Pictor Agent Fee -->
-          <div
-            style="display: flex; justify-content: space-between; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
-            <span style="color: var(--color-primary); font-weight: 500;">Pictor Professional Fees:</span>
-            <strong id="item-agent-fee" style="color: var(--color-primary);">$0 AUD</strong>
-          </div>
-          <!-- Card Surcharge -->
-          <div style="display: flex; justify-content: space-between; font-size: 0.95rem; padding-bottom: 10px;">
-            <span style="color: var(--color-text-light);">Payment Surcharges (1.4%):</span>
-            <strong id="item-surcharge-fee" style="color: var(--bg-dark);">$0 AUD</strong>
+          <!-- Call to Action Buttons -->
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: auto;">
+            <a href="index.html#booking" id="btn-calc-booking" class="btn btn-primary btn-full-width" style="padding: 16px 28px;">Discuss Cost & Apply Now</a>
+            <button type="button" onclick="window.print()" class="btn btn-secondary btn-full-width" style="padding: 14px 28px; gap: 8px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                <path d="M6 14h12v8H6z" />
+              </svg>
+              Print Cost Breakdown
+            </button>
           </div>
         </div>
-
-        <!-- Call to Action Buttons -->
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <a href="index.html#booking" id="btn-calc-booking" class="btn btn-primary btn-full-width"
-            style="padding: 16px 28px;">Discuss Cost & Apply Now</a>
-          <button type="button" onclick="window.print()" class="btn btn-secondary btn-full-width"
-            style="padding: 14px 28px; gap: 8px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              style="width: 16px; height: 16px;">
-              <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-              <path d="M6 14h12v8H6z" />
-            </svg>
-            Print Cost Breakdown
-          </button>
-        </div>
-
       </div>
 
     </div>
@@ -394,6 +347,8 @@
           <li><a href="services.html">Services</a></li>
           <li><a href="about.html">About Founder</a></li>
           <li><a href="calculator.html">Visa Cost Estimator</a></li>
+          <li><a href="points-calculator.html">PR Points Calculator</a></li>
+          <li><a href="processing-times.html">Visa Processing Times</a></li>
           <li><a href="resources.html">Resources</a></li>
         </ul>
       </div>
@@ -456,7 +411,7 @@
   <!-- Link script file as ES Module -->
   <script type="module" src="script.js"></script>
 
-  <!-- Script for Visa Cost Calculation -->
+  <!-- Script for Visa calculations -->
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
       const DEFAULT_COST_CONFIG = {
@@ -466,60 +421,64 @@
             baseFee: 4765,
             secondaryApplicant18Plus: 2385,
             secondaryApplicantUnder18: 1190,
-            skillsAssessmentEst: 1050,
-            agentFee: 3500
+            skillsAssessmentEst: 1050
           },
           "190": {
             name: "Skilled Nominated (Subclass 190)",
             baseFee: 4765,
             secondaryApplicant18Plus: 2385,
             secondaryApplicantUnder18: 1190,
-            skillsAssessmentEst: 1050,
-            agentFee: 3800
+            skillsAssessmentEst: 1050
           },
           "491": {
             name: "Skilled Work Regional (Subclass 491)",
             baseFee: 4765,
             secondaryApplicant18Plus: 2385,
             secondaryApplicantUnder18: 1190,
-            skillsAssessmentEst: 1050,
-            agentFee: 4000
+            skillsAssessmentEst: 1050
           },
           "500": {
             name: "Student Visa (Subclass 500)",
             baseFee: 1600,
             secondaryApplicant18Plus: 1190,
             secondaryApplicantUnder18: 390,
-            skillsAssessmentEst: 0,
-            agentFee: 1200
+            skillsAssessmentEst: 0
           },
           "482": {
             name: "Temporary Skill Shortage (Subclass 482 - Medium Term)",
             baseFee: 3115,
             secondaryApplicant18Plus: 3115,
             secondaryApplicantUnder18: 780,
-            skillsAssessmentEst: 1200,
-            agentFee: 3000
+            skillsAssessmentEst: 1200
           },
           "820": {
             name: "Partner Visa (Subclass 820/801)",
             baseFee: 8850,
             secondaryApplicant18Plus: 4430,
             secondaryApplicantUnder18: 2215,
-            skillsAssessmentEst: 0,
-            agentFee: 4500
+            skillsAssessmentEst: 0
           }
         },
         standardFees: {
           englishTestEst: 410,
           healthCheckPerPerson: 350,
-          policeCheckPerPerson: 75,
-          creditCardSurchargePercent: 1.4
+          policeCheckPerPerson: 75
         }
       };
 
-      const costConfig = window.VISA_COSTS_CONFIG || DEFAULT_COST_CONFIG;
-      const exchangeRate = 90.5; // 1 AUD = 90.5 NPR approx.
+      let costConfig = window.VISA_COSTS_CONFIG || DEFAULT_COST_CONFIG;
+
+      async function loadConfig() {
+        try {
+          const res = await fetch('visa-costs.json');
+          if (res.ok) {
+            costConfig = await res.json();
+          }
+        } catch (err) {
+          console.warn('Could not load visa-costs.json dynamically (perhaps running locally on file://). Falling back to script-based config.', err);
+        }
+        initCalculator();
+      }
 
       function initCalculator() {
         populateSubclasses();
@@ -527,10 +486,9 @@
         calculateCosts();
       }
 
-      initCalculator();
-
       function populateSubclasses() {
         const select = document.getElementById('calc-subclass');
+        if (!select) return;
         select.innerHTML = '';
 
         for (const [code, details] of Object.entries(costConfig.subclasses)) {
@@ -543,20 +501,24 @@
 
       function setupCalculationListeners() {
         const form = document.getElementById('visa-calc-form');
-        form.addEventListener('input', calculateCosts);
-        document.getElementById('calc-subclass').addEventListener('change', (e) => {
-          // Hide/show skills assessment checkbox depending on subclass support
-          const subclass = e.target.value;
-          const details = costConfig.subclasses[subclass];
-          const skillsLabel = document.getElementById('label-skills');
-          if (details && details.skillsAssessmentEst === 0) {
-            skillsLabel.style.display = 'none';
-            document.getElementById('calc-skills').checked = false;
-          } else {
-            skillsLabel.style.display = 'flex';
-          }
-          calculateCosts();
-        });
+        if (form) form.addEventListener('input', calculateCosts);
+
+        const select = document.getElementById('calc-subclass');
+        if (select) {
+          select.addEventListener('change', (e) => {
+            const subclass = e.target.value;
+            const details = costConfig.subclasses[subclass];
+            const skillsLabel = document.getElementById('label-skills');
+            if (details && details.skillsAssessmentEst === 0) {
+              if (skillsLabel) skillsLabel.style.display = 'none';
+              const chk = document.getElementById('calc-skills');
+              if (chk) chk.checked = false;
+            } else {
+              if (skillsLabel) skillsLabel.style.display = 'flex';
+            }
+            calculateCosts();
+          });
+        }
       }
 
       function calculateCosts() {
@@ -570,15 +532,12 @@
         const includeSkills = document.getElementById('calc-skills').checked;
         const includeEnglish = document.getElementById('calc-english').checked;
         const includeHealth = document.getElementById('calc-health').checked;
-        const includeAgent = document.getElementById('calc-agent').checked;
 
         const details = costConfig.subclasses[subclassVal];
         if (!details) return;
 
-        // 1. Primary Applicant Base Fee
         const baseFee = details.baseFee;
 
-        // 2. Family Members (Secondary Applicants)
         let familyFee = 0;
         if (includePartner) {
           familyFee += details.secondaryApplicant18Plus;
@@ -586,7 +545,6 @@
         familyFee += childOver18Count * details.secondaryApplicant18Plus;
         familyFee += childUnder18Count * details.secondaryApplicantUnder18;
 
-        // 3. Skills Assessment & English
         let assessmentsFee = 0;
         if (includeSkills && details.skillsAssessmentEst > 0) {
           assessmentsFee += details.skillsAssessmentEst;
@@ -595,48 +553,30 @@
           assessmentsFee += costConfig.standardFees.englishTestEst;
         }
 
-        // 4. Health & Police Checks (Estimate per applicant)
         let healthFee = 0;
         if (includeHealth) {
-          let headCount = 1; // Primary
+          let headCount = 1;
           if (includePartner) headCount += 1;
           headCount += childUnder18Count + childOver18Count;
 
           healthFee += headCount * (costConfig.standardFees.healthCheckPerPerson + costConfig.standardFees.policeCheckPerPerson);
         }
 
-        // 5. Pictor Agent Representation
-        let agentFee = 0;
-        if (includeAgent) {
-          agentFee = details.agentFee;
-        }
+        const subtotal = baseFee + familyFee + assessmentsFee + healthFee;
+        const grandTotal = subtotal;
 
-        // Subtotal before surcharge
-        const subtotal = baseFee + familyFee + assessmentsFee + healthFee + agentFee;
-
-        // Surcharge
-        const surchargePercent = costConfig.standardFees.creditCardSurchargePercent;
-        const governmentCharge = baseFee + familyFee;
-        const surcharge = governmentCharge * (surchargePercent / 100);
-
-        const grandTotal = subtotal + surcharge;
-        const grandTotalNPR = grandTotal * exchangeRate;
-
-        // Update DOM
         document.getElementById('item-base-fee').textContent = `$${baseFee.toLocaleString()} AUD`;
         document.getElementById('item-family-fee').textContent = `$${familyFee.toLocaleString()} AUD`;
         document.getElementById('item-assessments-fee').textContent = `$${assessmentsFee.toLocaleString()} AUD`;
         document.getElementById('item-health-fee').textContent = `$${healthFee.toLocaleString()} AUD`;
-        document.getElementById('item-agent-fee').textContent = `$${agentFee.toLocaleString()} AUD`;
-        document.getElementById('item-surcharge-fee').textContent = `$${Math.round(surcharge).toLocaleString()} AUD`;
 
         document.getElementById('grand-total-aud').textContent = `$${Math.round(grandTotal).toLocaleString()} AUD`;
-        document.getElementById('grand-total-npr').textContent = `Approx. NPR ${Math.round(grandTotalNPR).toLocaleString()}`;
 
-        // Update booking details link
         const bookingLink = document.getElementById('btn-calc-booking');
-        bookingLink.href = `index.html#booking?subclass=${subclassVal}&partner=${includePartner}&kids18=${childOver18Count}&kidsUnder18=${childUnder18Count}`;
-      }
+        if (bookingLink) {
+          bookingLink.href = `index.html#booking?subclass=${subclassVal}&partner=${includePartner}&kids18=${childOver18Count}&kidsUnder18=${childUnder18Count}`;
+        }
+      loadConfig();
     });
   </script>
 </body>
