@@ -450,19 +450,15 @@
     </div>
   </footer>
 
+  <!-- Load Editable Visa Config -->
+  <script src="visa-config.js"></script>
+
   <!-- Link script file as ES Module -->
   <script type="module" src="script.js"></script>
 
   <!-- Script for Visa Cost Calculation -->
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      // Load cost configuration dynamically
-      let costConfig = null;
-      const exchangeRate = 90.5; // 1 AUD = 90.5 NPR approx.
-
-            // Google Sheet Published CSV URL (Pasted URL is automatically parsed)
-      const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1tp_P98nVm0oGX1CuqFrcnHKSB3eG33KumygeoHTihek/edit?usp=sharing'; 
-      
       const DEFAULT_COST_CONFIG = {
         subclasses: {
           "189": {
@@ -522,36 +518,8 @@
         }
       };
 
-      costConfig = DEFAULT_COST_CONFIG;
-
-
-      // Auto-convert standard Google Sheet sharing/edit links to CSV export URLs
-      let dataSource = GOOGLE_SHEET_CSV_URL.trim();
-      if (dataSource.includes('docs.google.com/spreadsheets')) {
-        const match = dataSource.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-        if (match && match[1]) {
-          dataSource = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv`;
-        }
-      }
-
-      if (dataSource) {
-        fetch(dataSource)
-          .then(response => {
-            if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-            return response.text();
-          })
-          .then(data => {
-            costConfig = parseCsvToConfig(data);
-            initCalculator();
-          })
-          .catch(err => {
-            console.error('Failed to load Google Sheet config. Using default built-in configuration:', err);
-            initCalculator();
-          });
-      } else {
-        initCalculator();
-      }
-
+      const costConfig = window.VISA_COSTS_CONFIG || DEFAULT_COST_CONFIG;
+      const exchangeRate = 90.5; // 1 AUD = 90.5 NPR approx.
 
       function initCalculator() {
         populateSubclasses();
@@ -559,95 +527,7 @@
         calculateCosts();
       }
 
-      function showErrorState() {
-        document.getElementById('calc-subclass').innerHTML = '<option value="">Error loading config</option>';
-      }
-
-      function parseCsvToConfig(csvText) {
-        // Simple CSV parser supporting quotes (in case Names contain commas)
-        const lines = [];
-        let row = [];
-        let col = '';
-        let inQuotes = false;
-
-        for (let i = 0; i < csvText.length; i++) {
-          const char = csvText[i];
-          const nextChar = csvText[i + 1];
-
-          if (inQuotes) {
-            if (char === '"') {
-              if (nextChar === '"') {
-                col += '"';
-                i++;
-              } else {
-                inQuotes = false;
-              }
-            } else {
-              col += char;
-            }
-          } else {
-            if (char === '"') {
-              inQuotes = true;
-            } else if (char === ',') {
-              row.push(col);
-              col = '';
-            } else if (char === '\n' || char === '\r') {
-              row.push(col);
-              col = '';
-              if (row.some(c => c.trim() !== '')) {
-                lines.push(row);
-              }
-              row = [];
-              if (char === '\r' && nextChar === '\n') {
-                i++;
-              }
-            } else {
-              col += char;
-            }
-          }
-        }
-        if (col || row.length > 0) {
-          row.push(col);
-          if (row.some(c => c.trim() !== '')) {
-            lines.push(row);
-          }
-        }
-
-        const config = { subclasses: {}, standardFees: {} };
-
-        // Default standards
-        config.standardFees = {
-          englishTestEst: 410,
-          healthCheckPerPerson: 350,
-          policeCheckPerPerson: 75,
-          creditCardSurchargePercent: 1.4
-        };
-
-        // Loop lines (skip header)
-        for (let i = 1; i < lines.length; i++) {
-          const cols = lines[i];
-          if (cols.length < 3) continue;
-
-          const code = cols[0].trim();
-          const name = cols[1].trim();
-
-          if (code.startsWith('standard_')) {
-            const key = code.replace('standard_', '');
-            config.standardFees[key] = parseFloat(cols[2]) || 0;
-          } else {
-            config.subclasses[code] = {
-              name: name,
-              baseFee: parseFloat(cols[2]) || 0,
-              secondaryApplicant18Plus: parseFloat(cols[3]) || 0,
-              secondaryApplicantUnder18: parseFloat(cols[4]) || 0,
-              skillsAssessmentEst: parseFloat(cols[5]) || 0,
-              agentFee: parseFloat(cols[6]) || 0
-            };
-          }
-        }
-
-        return config;
-      }
+      initCalculator();
 
       function populateSubclasses() {
         const select = document.getElementById('calc-subclass');
