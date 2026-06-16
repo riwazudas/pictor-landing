@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visa Processing Times | Pictor Services</title>
+  <meta name="description"
+    content="Track and optimize your Australian visa processing times with our statistical timeline and optimization checklist.">
+
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=10">
+</head>
+
+<body class="region-au">
+
+  <!-- TOP NOTIFICATION BAR -->
+  <div class="top-bar">
+    <div class="container top-bar-container">
+      <div class="top-bar-left">
+        <span class="pulse-indicator"></span>
+        <span class="top-bar-text regional-text" data-au="Australia & Nepal Migration Experts — Registered OMARA Agents"
+          data-np="Australia & Nepal Migration Experts — Authorized University Placements">Australia & Nepal Migration
+          Experts — Registered OMARA Agents</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="portal-toggle-container">
+          <button class="portal-toggle-btn active" id="btn-au" aria-label="Switch to Australia Portal">
+            <span class="flag">🇦🇺</span> <span class="label-text">Australia Portal</span>
+          </button>
+          <button class="portal-toggle-btn" id="btn-np" aria-label="Switch to Nepal Portal">
+            <span class="flag">🇳🇵</span> <span class="label-text">Nepal Portal</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY NAVIGATION -->
+  <header class="main-header" id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-container" aria-label="Pictor Services Home">
+        <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="nav-menu" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item-dropdown">
+            <a href="resources.html" class="nav-link active">Resources <svg class="dropdown-chevron" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg></a>
+            <ul class="dropdown-menu">
+              <li><a href="calculator.html" class="">Visa Cost Estimator</a></li>
+              <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
+              <li><a href="processing-times.html" class="active">Visa Processing Times</a></li>
+              <li><a href="resources.html" class="">Guides & Checklists</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav CTA & Mobile Toggle -->
+      <div class="nav-actions">
+        <a href="index.html#booking" class="btn btn-primary btn-nav-cta">Book Consultation</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <nav class="mobile-nav-menu">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+        <li><a href="services.html" class="mobile-nav-link">Services</a></li>
+        <li><a href="about.html" class="mobile-nav-link">About</a></li>
+        <li><a href="resources.html" class="mobile-nav-link active">Resources</a></li>
+        <li><a href="calculator.html" class="mobile-nav-link"
+            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
+        <li><a href="points-calculator.html" class="mobile-nav-link"
+            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— PR Points Calculator</a></li>
+        <li><a href="processing-times.html" class="mobile-nav-link active"
+            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Processing Times</a></li>
+        <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
+        <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book
+            Consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- BREADCRUMBS / HERO HEADER -->
+  <section class="page-header-section"
+    style="padding: 56px 0; background: linear-gradient(135deg, rgba(237, 230, 242, 0.4) 0%, rgba(250, 248, 253, 0) 100%); border-bottom: 1px solid var(--border-color);">
+    <div class="container" style="text-align: center;">
+      <span class="section-tag">Lodgement Tracking</span>
+      <h1 class="section-heading" style="margin-bottom: 8px;">Visa Processing Times</h1>
+      <p class="section-subtext" style="max-width: 600px; margin: 0 auto;">
+        Track statistical processing times published by the Department of Home Affairs and optimize your pathway documents.
+      </p>
+    </div>
+  </section>
+
+  <!-- CALCULATOR INTERACTIVE SECTION -->
+  <section class="calculator-section" style="padding: 72px 0;">
+    <div class="container">
+
+      <!-- Standalone Layout: Processing Times Tracker Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; align-items: stretch;">
+        
+        <!-- Left Column: Inputs Form -->
+        <div class="calculator-inputs-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
+          <h2 style="font-family: var(--font-headings); font-size: 1.8rem; margin-bottom: 8px; color: var(--bg-dark);">Select Your Pathway</h2>
+          <p style="color: var(--color-text-light); margin-bottom: 32px; font-size: 0.95rem;">Select your visa subclass to view the latest processing timeframe statistics published by the Department of Home Affairs.</p>
+          
+          <form id="processing-calc-form" style="display: flex; flex-direction: column; gap: 24px;">
+            <div class="form-group">
+              <label for="proc-subclass" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Visa Subclass:</label>
+              <select id="proc-subclass" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
+                <option value="189">Skilled Independent (Subclass 189)</option>
+                <option value="190">Skilled Nominated (Subclass 190)</option>
+                <option value="491">Skilled Work Regional (Subclass 491)</option>
+                <option value="500">Student Visa (Subclass 500 - Higher Education)</option>
+                <option value="482">Temporary Skill Shortage (Subclass 482)</option>
+                <option value="820">Partner Visa (Subclass 820)</option>
+              </select>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-color); padding-top: 24px;">
+              <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--bg-dark);">Optimization Checklist</h3>
+              <p style="font-size: 0.85rem; color: var(--color-text-light); margin-bottom: 16px;">Check the items below that apply to you. Missing items can delay your application beyond standard processing times.</p>
+              
+              <label style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px; cursor: pointer; font-size: 0.9rem; color: var(--color-text);">
+                <input type="checkbox" id="proc-complete" checked style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Decision-Ready Application (all docs attached)</span>
+              </label>
+
+              <label style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px; cursor: pointer; font-size: 0.9rem; color: var(--color-text);">
+                <input type="checkbox" id="proc-biometrics" checked style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Biometrics & health checks pre-completed</span>
+              </label>
+
+              <label style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px; cursor: pointer; font-size: 0.9rem; color: var(--color-text);">
+                <input type="checkbox" id="proc-response" checked style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
+                <span>Immediate responses to RFI (Requests for Info)</span>
+              </label>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Timeframe Panel -->
+        <div class="calculator-results-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
+            <h2 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--bg-dark);">Processing Statistics</h2>
+            <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-primary); letter-spacing: 0.5px;">DHA Performance</span>
+          </div>
+
+          <!-- Timeframe Display -->
+          <div style="background-color: var(--bg-secondary); padding: 32px 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; border: 1px solid rgba(94, 51, 135, 0.08);">
+            <div style="font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: var(--color-text-light); margin-bottom: 8px; letter-spacing: 0.5px;">90% of applications processed in</div>
+            <div id="live-processing-time" style="font-family: var(--font-headings); font-size: 3.5rem; font-weight: 700; color: var(--color-primary); line-height: 1.1;">6 Months</div>
+            <div id="proc-status-modifier" style="font-size: 0.9rem; font-weight: 600; color: #4cae4c; margin-top: 10px;">✓ Optimal (Decision-Ready Pathway)</div>
+          </div>
+
+          <!-- Processing Milestones Timeline -->
+          <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; font-size: 0.9rem;">
+            <h4 style="font-weight: 700; color: var(--bg-dark); margin-bottom: 4px;">Milestone Breakdown</h4>
+            <div style="display: flex; align-items: start; gap: 12px;">
+              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px;">1</div>
+              <div>
+                <strong style="color: var(--bg-dark); display: block;">Lodge EOI & State Nomination</strong>
+                <span style="color: var(--color-text-light); font-size: 0.85rem;">Timeline varies by occupation and points pool.</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: start; gap: 12px;">
+              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px;">2</div>
+              <div>
+                <strong style="color: var(--bg-dark); display: block;">Visa Application Lodgement</strong>
+                <span style="color: var(--color-text-light); font-size: 0.85rem;">Submit application fees and all basic checklists.</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: start; gap: 12px;">
+              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px;">3</div>
+              <div>
+                <strong style="color: var(--bg-dark); display: block;">DHA Case Officer Review</strong>
+                <span style="color: var(--color-text-light); font-size: 0.85rem;">Primary verification of documents, biometrics, and checks.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Official Link and Disclaimer -->
+          <div style="margin-bottom: 32px; padding: 16px; border-radius: 12px; background-color: rgba(94, 51, 135, 0.03); border: 1px solid var(--border-color); font-size: 0.8rem; color: var(--color-text-light); line-height: 1.4;">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 4px;">Official Processing Times:</strong>
+            Check real-time global processing benchmarks directly on the official <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times/global-visa-processing-times" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline; font-weight: 600;">DHA Global Processing Times Portal</a>.
+            <span style="display: block; margin-top: 6px; font-size: 0.75rem; opacity: 0.85;">⚠️ <em>Legal Notice: Visa processing times are statistical distributions. Individual processing varies widely based on specific applicant profiles, complexity, and regional priorities set by the Minister.</em></span>
+          </div>
+
+          <!-- Call to Action Buttons -->
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: auto;">
+            <a href="index.html#booking" class="btn btn-primary btn-full-width" style="padding: 16px 28px;">Speed Up Application Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQS ON PROCESSING TIMES -->
+  <section class="calculator-faqs"
+    style="padding: 72px 0; background-color: var(--bg-secondary); border-top: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="text-center-wrapper reveal fade-up" style="margin-bottom: 48px;">
+        <span class="section-tag">Important Details</span>
+        <h2 class="section-heading">Processing Times FAQs</h2>
+        <p class="section-subtext">Essential regulatory guidelines regarding visa application timeframes.</p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+        <div class="faq-item glass-panel"
+          style="padding: 24px; border-radius: 16px; background-color: var(--bg-primary);">
+          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--bg-dark);">What factors influence visa processing times?</h4>
+          <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">Processing times vary significantly based on whether the application is decision-ready (all checklist items, biometrics, and medicals completed upfront), response times to Requests for Information (RFI), complexity of background checks, and caseload volumes.</p>
+        </div>
+
+        <div class="faq-item glass-panel"
+          style="padding: 24px; border-radius: 16px; background-color: var(--bg-primary);">
+          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--bg-dark);">What does a 'Decision-Ready' application mean?</h4>
+          <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">A decision-ready application is one submitted with all required documentation pre-attached—such as skills assessments, language results, police clearances, and medical examinations—meaning the case officer can make a decision immediately without issuing an RFI.</p>
+        </div>
+
+        <div class="faq-item glass-panel"
+          style="padding: 24px; border-radius: 16px; background-color: var(--bg-primary);">
+          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--bg-dark);">Are the listed processing times guaranteed?</h4>
+          <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">No, they are based on statistical distributions published by the Department of Home Affairs showing how long 90% of cases take to process. Actual processing times can vary widely based on government priorities and individual case profiles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <!-- Footer Brand Info -->
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+        </div>
+        <p class="footer-desc">
+          Professional and trustworthy migration and education consulting services. We facilitate global mobility with
+          absolute legal compliance.
+        </p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/pictorservices/" target="_blank" rel="noopener" aria-label="Facebook"
+            class="social-link-btn">FB</a>
+          <a href="https://www.instagram.com/pictorservices/" target="_blank" rel="noopener" aria-label="Instagram"
+            class="social-link-btn">IG</a>
+          <a href="https://www.linkedin.com/company/pictor-services" target="_blank" rel="noopener"
+            aria-label="LinkedIn" class="social-link-btn">LN</a>
+          <a href="https://www.tiktok.com/@pictorservices" target="_blank" rel="noopener" aria-label="TikTok"
+            class="social-link-btn">TK</a>
+        </div>
+
+        <div class="footer-accreditation-badges regional-block" data-region="au" style="margin-top: 20px;">
+          <div class="mara-badge-statement"
+            style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
+            <div
+              style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">
+              Registered Migration Agent</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN:
+              0000000 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
+          </div>
+        </div>
+
+        <div class="footer-accreditation-badges regional-block" data-region="np" style="margin-top: 20px;">
+          <div class="ecan-badge-statement"
+            style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
+            <div
+              style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">
+              ECAN Member & QEAC Certified</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">
+              Qualified Education Agent Counsellors (QEAC Q000, T000, A000, B000) for direct placement in Elite
+              Institutions.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About Founder</a></li>
+          <li><a href="calculator.html">Visa Cost Estimator</a></li>
+          <li><a href="points-calculator.html">PR Points Calculator</a></li>
+          <li><a href="processing-times.html">Visa Processing Times</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+
+      <!-- Services List Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Expertise</h4>
+        <ul class="footer-links-list">
+          <li class="regional-text-li show-au"><a href="services.html#migration">Skilled Visas (189/190)</a></li>
+          <li class="regional-text-li show-au"><a href="services.html#migration">Employer Sponsorship</a></li>
+          <li class="regional-text-li show-au"><a href="services.html#professional-year">Professional Year</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#education">University Placement</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#migration">Student Visa 500</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#pte-naati">IELTS & PTE Training</a></li>
+          <li><a href="index.html#booking">Roadmap Consultation</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter and Offices -->
+      <div class="footer-col footer-contact-col">
+        <h4 class="footer-col-title">Newsletter</h4>
+        <p class="footer-newsletter-p">Get current regulatory visa policy alerts in your inbox.</p>
+        <form class="footer-newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Your email address" class="newsletter-input" required>
+          <button type="submit" class="btn btn-primary newsletter-submit" aria-label="Subscribe">➔</button>
+        </form>
+        <div class="newsletter-success-msg" id="newsletter-success">Subscribed successfully!</div>
+      </div>
+    </div>
+
+    <!-- Offices list footer row -->
+    <div class="container footer-offices-row">
+      <div class="footer-office-item">
+        <strong>🇦🇺 Melbourne Office:</strong> Suite 314, Level 4, 365 Little Collins Street, Melbourne VIC 3000 | 03
+        9973 2117 | info@pictorservices.com
+      </div>
+      <div class="footer-office-item">
+        <strong>🇳🇵 Kathmandu Office:</strong> D&D Tower, Level 5, Mid Baneshwor, Kathmandu, Nepal | +977 01 4464969 |
+        hello@pictorservices.com
+      </div>
+    </div>
+
+    <!-- Copyright and compliance legal statement -->
+    <div class="container footer-bottom">
+      <p class="copyright-text">
+        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration #0000000. The
+        material on this website is for informational purposes and does not constitute formal legal immigration advice.
+      </p>
+      <a href="index.html" class="back-to-top-btn" id="back-to-top" aria-label="Back to Top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m18 15-6-6-6 6" />
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Link script file as ES Module -->
+  <script type="module" src="script.js"></script>
+
+  <!-- Script for Visa Processing calculations -->
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const DEFAULT_PROCESSING_CONFIG = {
+        subclasses: [
+          { value: "189", text: "Skilled Independent (Subclass 189)", base: 6, unit: "Months" },
+          { value: "190", text: "Skilled Nominated (Subclass 190)", base: 7, unit: "Months" },
+          { value: "491", text: "Skilled Work Regional (Subclass 491)", base: 12, unit: "Months" },
+          { value: "500", text: "Student Visa (Subclass 500 - Higher Education)", base: 35, unit: "Days" },
+          { value: "482", text: "Temporary Skill Shortage (Subclass 482)", base: 25, unit: "Days" },
+          { value: "820", text: "Partner Visa (Subclass 820)", base: 18, unit: "Months" }
+        ],
+        modifiers: {
+          notComplete: 0.3,
+          notBiometrics: 0.2,
+          notResponse: 0.4
+        }
+      };
+
+      let config = DEFAULT_PROCESSING_CONFIG;
+
+      async function loadProcessingConfig() {
+        try {
+          const res = await fetch('processing-times.json');
+          if (res.ok) {
+            config = await res.json();
+          }
+        } catch (err) {
+          console.warn('Could not load processing-times.json dynamically. Using local fallback.', err);
+        }
+        initProcessingCalculator();
+      }
+
+      function initProcessingCalculator() {
+        populateSelect('proc-subclass', config.subclasses);
+
+        const procForm = document.getElementById('processing-calc-form');
+        if (procForm) {
+          procForm.addEventListener('input', calculateProcessingTimes);
+          procForm.addEventListener('change', calculateProcessingTimes);
+          calculateProcessingTimes();
+        }
+      }
+
+      function populateSelect(id, options) {
+        const select = document.getElementById(id);
+        if (!select || !options) return;
+        select.innerHTML = '';
+        options.forEach(opt => {
+          const el = document.createElement('option');
+          el.value = opt.value;
+          el.textContent = opt.text;
+          select.appendChild(el);
+        });
+      }
+
+      function calculateProcessingTimes() {
+        const subclassVal = document.getElementById('proc-subclass').value;
+        const isComplete = document.getElementById('proc-complete').checked;
+        const isBiometrics = document.getElementById('proc-biometrics').checked;
+        const isResponse = document.getElementById('proc-response').checked;
+
+        const details = config.subclasses.find(s => s.value === subclassVal);
+        if (!details) return;
+
+        let baseTime = details.base;
+        let modifier = 0;
+
+        const mods = config.modifiers || DEFAULT_PROCESSING_CONFIG.modifiers;
+
+        if (!isComplete) modifier += mods.notComplete;
+        if (!isBiometrics) modifier += mods.notBiometrics;
+        if (!isResponse) modifier += mods.notResponse;
+
+        let calculatedTime = Math.ceil(baseTime * (1 + modifier));
+        let timeLabel = `${calculatedTime} ${details.unit}`;
+        
+        document.getElementById('live-processing-time').textContent = timeLabel;
+
+        const statusEl = document.getElementById('proc-status-modifier');
+        if (statusEl) {
+          if (modifier === 0) {
+            statusEl.textContent = "✓ Optimal (Decision-Ready Pathway)";
+            statusEl.style.color = "#4cae4c";
+          } else if (modifier < 0.5) {
+            statusEl.textContent = "⚠ Moderate Delay (Checklist items missing)";
+            statusEl.style.color = "#f0ad4e";
+          } else {
+            statusEl.textContent = "🛑 High Risk of Significant Delays";
+            statusEl.style.color = "#d9534f";
+          }
+        }
+      }
+
+      loadProcessingConfig();
+    });
+  </script>
+</body>
+
+</html>

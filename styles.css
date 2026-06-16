@@ -340,6 +340,28 @@ img {
   box-shadow: 0 2px 8px rgba(94, 51, 135, 0.3);
 }
 
+.calc-tab-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calc-tab-btn:hover {
+  color: var(--color-primary);
+}
+
+.calc-tab-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-text-white) !important;
+  box-shadow: 0 4px 12px rgba(94, 51, 135, 0.2);
+}
+
 /* 6. STICKY NAVIGATION HEADER */
 .main-header {
   position: sticky;
@@ -1076,6 +1098,12 @@ img {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
+}
+
+@media (min-width: 769px) {
+  .services-grid .service-card:nth-child(7) {
+    grid-column: 2;
+  }
 }
 
 .service-card {
