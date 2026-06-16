@@ -1,0 +1,15 @@
+{
+  "subclasses": [
+    { "value": "189", "text": "Skilled Independent (Subclass 189)", "base": 6, "unit": "Months" },
+    { "value": "190", "text": "Skilled Nominated (Subclass 190)", "base": 7, "unit": "Months" },
+    { "value": "491", "text": "Skilled Work Regional (Subclass 491)", "base": 12, "unit": "Months" },
+    { "value": "500", "text": "Student Visa (Subclass 500 - Higher Education)", "base": 35, "unit": "Days" },
+    { "value": "482", "text": "Temporary Skill Shortage (Subclass 482)", "base": 25, "unit": "Days" },
+    { "value": "820", "text": "Partner Visa (Subclass 820)", "base": 18, "unit": "Months" }
+  ],
+  "modifiers": {
+    "notComplete": 0.3,
+    "notBiometrics": 0.2,
+    "notResponse": 0.4
+  }
+}

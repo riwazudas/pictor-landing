@@ -1,0 +1,51 @@
+{
+  "age": [
+    { "value": "30", "text": "25 to 32 years (30 points)" },
+    { "value": "25", "text": "18 to 24 years (25 points)" },
+    { "value": "25", "text": "33 to 39 years (25 points)" },
+    { "value": "15", "text": "40 to 44 years (15 points)" },
+    { "value": "0", "text": "45 years and over (Ineligible / 0 points)" }
+  ],
+  "english": [
+    { "value": "20", "text": "Superior English (PTE 79+ / IELTS 8+) (20 points)" },
+    { "value": "10", "text": "Proficient English (PTE 65+ / IELTS 7+) (10 points)" },
+    { "value": "0", "text": "Competent English (PTE 50+ / IELTS 6+) (0 points)" }
+  ],
+  "education": [
+    { "value": "15", "text": "Bachelor or Master Degree (15 points)" },
+    { "value": "20", "text": "Doctorate (PhD) (20 points)" },
+    { "value": "10", "text": "Diploma or Trade Qualification (10 points)" },
+    { "value": "0", "text": "Other Qualification (0 points)" }
+  ],
+  "experienceOS": [
+    { "value": "0", "text": "Less than 3 years (0 points)" },
+    { "value": "5", "text": "3 to 4 years (5 points)" },
+    { "value": "10", "text": "5 to 7 years (10 points)" },
+    { "value": "15", "text": "8 to 10 years (15 points)" }
+  ],
+  "experienceAU": [
+    { "value": "0", "text": "Less than 1 year (0 points)" },
+    { "value": "5", "text": "1 to 2 years (5 points)" },
+    { "value": "10", "text": "3 to 4 years (10 points)" },
+    { "value": "15", "text": "5 to 7 years (15 points)" },
+    { "value": "20", "text": "8 to 10 years (20 points)" }
+  ],
+  "partner": [
+    { "value": "10", "text": "Single (or partner is Australian Citizen/PR) (10 points)" },
+    { "value": "10", "text": "Partner has positive Skills Assessment & competent English (10 points)" },
+    { "value": "5", "text": "Partner has competent English (but no skills assessment) (5 points)" },
+    { "value": "0", "text": "Partner has neither / Not applicable (0 points)" }
+  ],
+  "pathway": [
+    { "value": "0", "text": "Subclass 189 - Skilled Independent (0 points)" },
+    { "value": "5", "text": "Subclass 190 - Skilled Nominated (State Nomination) (5 points)" },
+    { "value": "15", "text": "Subclass 491 - Skilled Work Regional (State/Family Sponsored) (15 points)" }
+  ],
+  "boosts": [
+    { "id": "pts-study-au", "value": 5, "text": "Completed Australian Study (min. 2 years) (+5 pts)" },
+    { "id": "pts-stem", "value": 10, "text": "STEM Specialist Education in Australia (Research Master/PhD) (+10 pts)" },
+    { "id": "pts-py", "value": 5, "text": "Completed Professional Year (PY) in Australia (+5 pts)" },
+    { "id": "pts-naati", "value": 5, "text": "NAATI CCL Credentialed Community Language (+5 pts)" },
+    { "id": "pts-regional", "value": 5, "text": "Study & Live in Regional Australia (+5 pts)" }
+  ]
+}
