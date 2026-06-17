@@ -81,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       
+      // Initialize/Reset services tabs for the active region
+      initServicesTabs(region);
+      
       // Update the Lead capture form target pathways dropdown
       populateVisaOptions(region);
       
@@ -216,6 +219,56 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+
+
+  // ==========================================================================
+  // 3. INTERACTIVE SERVICES TAB ENGINE
+  // ==========================================================================
+  const serviceTabBtns = document.querySelectorAll('.services-tab-btn');
+  
+  function initServicesTabs(region) {
+    const wrapper = document.querySelector(`.services-tab-wrapper[data-region="${region}"]`);
+    if (!wrapper) return;
+
+    const wrapperBtns = wrapper.querySelectorAll('.services-tab-btn');
+    const wrapperCards = wrapper.querySelectorAll('.service-detail-card');
+
+    if (wrapperBtns.length > 0) {
+      wrapperBtns.forEach(btn => btn.classList.remove('active'));
+      wrapperCards.forEach(card => card.classList.remove('active'));
+
+      const firstBtn = wrapperBtns[0];
+      firstBtn.classList.add('active');
+
+      const targetId = firstBtn.getAttribute('data-tab');
+      const targetCard = document.getElementById(targetId);
+      if (targetCard) {
+        targetCard.classList.add('active');
+      }
+    }
+  }
+
+  serviceTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parentWrapper = btn.closest('.services-tab-wrapper');
+      if (!parentWrapper) return;
+
+      const wrapperBtns = parentWrapper.querySelectorAll('.services-tab-btn');
+      const wrapperCards = parentWrapper.querySelectorAll('.service-detail-card');
+
+      wrapperBtns.forEach(b => b.classList.remove('active'));
+      wrapperCards.forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+
+      const targetId = btn.getAttribute('data-tab');
+      const targetCard = document.getElementById(targetId);
+      if (targetCard) {
+        targetCard.classList.add('active');
+      }
+    });
+  });
 
 
 

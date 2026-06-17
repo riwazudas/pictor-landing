@@ -259,221 +259,387 @@
         </p>
       </div>
 
-      <!-- Services Grid - Switchable by region -->
-      <div class="services-grid-container regional-content-wrapper">
+      <!-- Services Tabs - Switchable by region -->
+      <div class="services-tab-container-wrapper regional-content-wrapper">
         
-        <!-- Australia Services Grid -->
-        <div class="services-grid regional-block" data-region="au">
-          
-          <!-- Service Card 1: Education -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+        <!-- Australia Services Tabs -->
+        <div class="services-tab-wrapper regional-block" data-region="au">
+          <div class="services-tabs-container">
+            
+            <!-- Tab buttons on the left -->
+            <div class="services-tab-buttons">
+              <button class="services-tab-btn active" data-tab="au-education">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                </span>
+                <span class="tab-btn-title">Education Placement</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="au-migration">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                </span>
+                <span class="tab-btn-title">Migration Services</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="au-assessment">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                </span>
+                <span class="tab-btn-title">Skill Assessment</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="au-professional-year">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </span>
+                <span class="tab-btn-title">Professional Year</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="au-pte-naati">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tab-btn-title">PTE & NAATI Support</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="au-career">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
+                </span>
+                <span class="tab-btn-title">Career Counselling</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="au-job">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                </span>
+                <span class="tab-btn-title">Job Placement</span>
+              </button>
             </div>
-            <h3 class="service-title">Education Placement</h3>
-            <p class="service-desc">Professional assistance for course changes, university transfers, credit evaluations, and onshore GTE/GS reviews.</p>
-            <ul class="service-points">
-              <li>Course & Provider Shifts</li>
-              <li>Credit Transfer Audit</li>
-              <li>University Application Management</li>
-            </ul>
-            <a href="services.html#education" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 2: Migration -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            
+            <!-- Tab contents on the right -->
+            <div class="services-tab-content">
+              
+              <!-- Service Detail Card 1: Education -->
+              <div class="service-detail-card glass-panel active" id="au-education">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                </div>
+                <h3 class="service-title">Education Placement</h3>
+                <p class="service-desc">Professional assistance for course changes, university transfers, credit evaluations, and onshore Genuine Student (GS) reviews. If you are looking to change your field of study or transition to a different institution, our team ensures a seamless transfer without compromising your visa status.</p>
+                <ul class="service-points">
+                  <li>Course & Provider Shifts</li>
+                  <li>Credit Transfer Audit</li>
+                  <li>University Application Management</li>
+                  <li>Genuine Student (GS) Statement Review</li>
+                  <li>Scholarship Search & Application</li>
+                  <li>COE Renewal & Extension Support</li>
+                </ul>
+                <a href="services.html#education" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 2: Migration -->
+              <div class="service-detail-card glass-panel" id="au-migration">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                </div>
+                <h3 class="service-title">Migration Services</h3>
+                <p class="service-desc">Complete legal representation for skilled visas, employer sponsorships, partner visas, and status extensions. Our registered migration agents guide you through complex state nomination requirements, occupational list changes, and Department policies to maximize your approval odds.</p>
+                <ul class="service-points">
+                  <li>Subclasses 189, 190, 491</li>
+                  <li>TSS 482 & 186 Sponsorship</li>
+                  <li>AAT Appeals & Representation</li>
+                  <li>Partner & Spouse Visas</li>
+                  <li>Temporary Graduate 485 Visas</li>
+                  <li>Resident Return Visas (RRV)</li>
+                </ul>
+                <a href="services.html#migration" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 3: Skill Assessment -->
+              <div class="service-detail-card glass-panel" id="au-assessment">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                </div>
+                <h3 class="service-title">Skill Assessment</h3>
+                <p class="service-desc">Liaising with Australian skills assessing authorities to validate qualifications and professional experience. We perform comprehensive document pre-audits to ensure your letters, duties, and transcripts align perfectly with the guidelines of your assessing body.</p>
+                <ul class="service-points">
+                  <li>ACS, CPA, CA, IPA Audits</li>
+                  <li>Engineers Australia CDRs</li>
+                  <li>TRA & Vetassess Submissions</li>
+                  <li>AIM & VETASSESS Management</li>
+                  <li>Medical & Nursing Registrations</li>
+                  <li>Trade Occupation Assessments</li>
+                </ul>
+                <a href="services.html#assessment" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 4: Professional Year -->
+              <div class="service-detail-card glass-panel" id="au-professional-year">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <h3 class="service-title">Professional Year</h3>
+                <p class="service-desc">Boost your migration points and secure career-building internships in Australian accounting, IT, or engineering sectors. This structured program bridges the gap between study and professional employment, preparing you for the local corporate culture.</p>
+                <ul class="service-points">
+                  <li>Additional 5 Migration Points</li>
+                  <li>Corporate Internship Placement</li>
+                  <li>Professional Networking</li>
+                  <li>ACS / EEA / Accounting Approved</li>
+                  <li>CV Writing & Interview Training</li>
+                  <li>Workplace Culture & Safety</li>
+                </ul>
+                <a href="services.html#professional-year" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 5: PTE NAATI -->
+              <div class="service-detail-card glass-panel" id="au-pte-naati">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <h3 class="service-title">PTE & NAATI Support</h3>
+                <p class="service-desc">Maximize your language score potential and secure bonus points with credential translation exam support. We provide targeted mock tests, strategies for high scores, and direct assistance for booking slots.</p>
+                <ul class="service-points">
+                  <li>PTE Academic Mock Feedback</li>
+                  <li>NAATI CCL Prep Resources</li>
+                  <li>Exam Slot Booking Assistance</li>
+                  <li>Diagnostic Test Score Analysis</li>
+                  <li>Speaking & Writing Practice Packs</li>
+                  <li>Speaking Lab Access</li>
+                </ul>
+                <a href="services.html#pte-naati" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 6: Career Counselling -->
+              <div class="service-detail-card glass-panel" id="au-career">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
+                </div>
+                <h3 class="service-title">Career Counselling</h3>
+                <p class="service-desc">Aligning your academic choices and professional skills with long-term career demands and state list openings. We review your profile to construct a career roadmap that matches state nomination targets and industry skill gaps.</p>
+                <ul class="service-points">
+                  <li>Onshore Study Roadmap Plan</li>
+                  <li>Resume & Interview Coaching</li>
+                  <li>State Nomination Profiling</li>
+                  <li>Industry Demand Analysis</li>
+                  <li>Professional Branding & LinkedIn</li>
+                  <li>Skill Gap Identification</li>
+                </ul>
+                <a href="services.html#career" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 7: Job Placement -->
+              <div class="service-detail-card glass-panel" id="au-job">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                </div>
+                <h3 class="service-title">Job Placement</h3>
+                <p class="service-desc">Connecting skilled graduates and professional candidates with active Australian employers and recruitment networks. We work with local business partners to match qualified candidates with temporary or permanent employment opportunities.</p>
+                <ul class="service-points">
+                  <li>Direct Employer Referrals</li>
+                  <li>Resume & Profile Optimization</li>
+                  <li>Interview Simulations</li>
+                  <li>Local Industry Connects</li>
+                  <li>Employment Contract Reviews</li>
+                  <li>Ongoing Post-Placement Mentoring</li>
+                </ul>
+                <a href="services.html#job-placement" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
             </div>
-            <h3 class="service-title">Migration Services</h3>
-            <p class="service-desc">Complete legal representation for skilled visas, employer sponsorships, partner visas, and status extensions.</p>
-            <ul class="service-points">
-              <li>Subclasses 189, 190, 491</li>
-              <li>TSS 482 & 186 Sponsorship</li>
-              <li>AAT Appeals & Representation</li>
-            </ul>
-            <a href="services.html#migration" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            
           </div>
-
-          <!-- Service Card 3: Skill Assessment -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-            </div>
-            <h3 class="service-title">Skill Assessment</h3>
-            <p class="service-desc">Liaising with Australian skills assessing authorities to validate qualifications and professional experience.</p>
-            <ul class="service-points">
-              <li>ACS, CPA, CA, IPA Audits</li>
-              <li>Engineers Australia CDRs</li>
-              <li>TRA & Vetassess Submissions</li>
-            </ul>
-            <a href="services.html#assessment" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 4: Professional Year -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            </div>
-            <h3 class="service-title">Professional Year</h3>
-            <p class="service-desc">Boost your migration points and secure career-building internships in Australian accounting, IT, or engineering sectors.</p>
-            <ul class="service-points">
-              <li>Additional 5 Migration Points</li>
-              <li>Corporate Internship Placement</li>
-              <li>Professional Networking</li>
-            </ul>
-            <a href="services.html#professional-year" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 5: PTE NAATI -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
-            <h3 class="service-title">PTE & NAATI Support</h3>
-            <p class="service-desc">Maximize your language score potential and secure bonus points with credential translation exam support.</p>
-            <ul class="service-points">
-              <li>PTE Academic Mock Feedback</li>
-              <li>NAATI CCL Prep Resources</li>
-              <li>Exam Slot Booking Assistance</li>
-            </ul>
-            <a href="services.html#pte-naati" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 6: Career Counselling -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
-            </div>
-            <h3 class="service-title">Career Counselling</h3>
-            <p class="service-desc">Aligning your academic choices and professional skills with long-term career demands and state list openings.</p>
-            <ul class="service-points">
-              <li>Onshore Study Roadmap Plan</li>
-              <li>Resume & Interview Coaching</li>
-          </div>
-          
-          <!-- Service Card 7: Job Placement -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
-            </div>
-            <h3 class="service-title">Job Placement</h3>
-            <p class="service-desc">Connecting skilled graduates and professional candidates with active Australian employers and recruitment networks.</p>
-            <ul class="service-points">
-              <li>Direct Employer Referrals</li>
-              <li>Resume & Profile Optimization</li>
-              <li>Interview Simulations</li>
-            </ul>
-            <a href="services.html#job-placement" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-          
         </div>
-
-        <!-- Nepal Services Grid -->
-        <div class="services-grid regional-block" data-region="np">
-          
-          <!-- Service Card 1: Education -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+        
+        <!-- Nepal Services Tabs -->
+        <div class="services-tab-wrapper regional-block" data-region="np" style="display: none;">
+          <div class="services-tabs-container">
+            
+            <!-- Tab buttons on the left -->
+            <div class="services-tab-buttons">
+              <button class="services-tab-btn active" data-tab="np-education">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                </span>
+                <span class="tab-btn-title">Education Placement</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="np-migration">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                </span>
+                <span class="tab-btn-title">Migration Services</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="np-assessment">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                </span>
+                <span class="tab-btn-title">Skill Assessment</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="np-professional-year">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </span>
+                <span class="tab-btn-title">Professional Year Info</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="np-pte-naati">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tab-btn-title">PTE & IELTS Training</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="np-career">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
+                </span>
+                <span class="tab-btn-title">Career Counselling</span>
+              </button>
+              
+              <button class="services-tab-btn" data-tab="np-job">
+                <span class="tab-btn-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                </span>
+                <span class="tab-btn-title">Job Placement</span>
+              </button>
             </div>
-            <h3 class="service-title">Education Placement</h3>
-            <p class="service-desc">Direct enrollment in Australia's elite Group of Eight (Go8) universities and specialized colleges.</p>
-            <ul class="service-points">
-              <li>Course Selection & Admission</li>
-              <li>Scholarship Sourcing support</li>
-              <li>Credit & Course Transfer Guides</li>
-            </ul>
-            <a href="services.html#education" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 2: Migration -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            
+            <!-- Tab contents on the right -->
+            <div class="services-tab-content">
+              
+              <!-- Service Detail Card 1: Education -->
+              <div class="service-detail-card glass-panel active" id="np-education">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                </div>
+                <h3 class="service-title">Education Placement</h3>
+                <p class="service-desc">Direct enrollment in Australia's elite Group of Eight (Go8) universities and specialized colleges. Our Kathmandu-based QEAC counselors guide you through course selection, admission procedures, and scholarship applications to match your academic background and career goals.</p>
+                <ul class="service-points">
+                  <li>Course Selection & Admission</li>
+                  <li>Scholarship Sourcing Support</li>
+                  <li>Credit & Course Transfer Guides</li>
+                  <li>Go8 & Regional Uni Placements</li>
+                  <li>Document Pre-Screening & Auditing</li>
+                  <li>Fast-Track Application Processing</li>
+                </ul>
+                <a href="services.html#education" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 2: Migration -->
+              <div class="service-detail-card glass-panel" id="np-migration">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                </div>
+                <h3 class="service-title">Migration Services</h3>
+                <p class="service-desc">Complete processing of Subclass 500 Student Visas, parent visitor visas, and family streams. Under the guidance of our registered migration agents, we manage the entire visa submission process, ensuring all documentation is compliant and complete.</p>
+                <ul class="service-points">
+                  <li>Subclass 500 Visa Lodgement</li>
+                  <li>Genuine Student (GS) Checks</li>
+                  <li>Visa Compliance Reviews</li>
+                  <li>Parent & Visitor Visa Submissions</li>
+                  <li>Dependent & Spouse Visa Cases</li>
+                  <li>Visa Interview Prep Seminars</li>
+                </ul>
+                <a href="services.html#migration" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 3: Skill Assessment -->
+              <div class="service-detail-card glass-panel" id="np-assessment">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                </div>
+                <h3 class="service-title">Skill Assessment</h3>
+                <p class="service-desc">Offshore qualification checks and guidance for professionals preparing to apply for skilled pathways. We assist Nepalese graduates and professionals in certifying their home-country credentials and work history with Australian authorities.</p>
+                <ul class="service-points">
+                  <li>Document Compliance Auditing</li>
+                  <li>Assessing Authority Advice</li>
+                  <li>Work Experience Verification</li>
+                  <li>Academic Equivalence Audits</li>
+                  <li>CDR & Project Report Guidance</li>
+                  <li>Stage-by-Stage File Assembly</li>
+                </ul>
+                <a href="services.html#assessment" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 4: Professional Year -->
+              <div class="service-detail-card glass-panel" id="np-professional-year">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <h3 class="service-title">Professional Year Info</h3>
+                <p class="service-desc">Pre-departure package counseling for students planning to secure PY placements upon arriving onshore. Learn how completing a Professional Year in IT, accounting, or engineering will benefit your migration strategy and career prospects.</p>
+                <ul class="service-points">
+                  <li>Pathway Planning & Packages</li>
+                  <li>Intake & Provider Timelines</li>
+                  <li>Post-Study Points Strategy</li>
+                  <li>Melbourne & Sydney Partner Maps</li>
+                  <li>Internship Integration Outlines</li>
+                  <li>Cost & Installment Comparisons</li>
+                </ul>
+                <a href="services.html#professional-year" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 5: PTE NAATI -->
+              <div class="service-detail-card glass-panel" id="np-pte-naati">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <h3 class="service-title">PTE & IELTS Training</h3>
+                <p class="service-desc">Prep classes in Kathmandu with certified instructors, computer test labs, and diagnostic tools. We provide structured daily lectures, intensive practice sessions, and realistic mock tests to help you achieve your desired bands.</p>
+                <ul class="service-points">
+                  <li>Computerized Lab Mock Exams</li>
+                  <li>Daily Feedback & Grammar Tips</li>
+                  <li>High-Score Strategy Sessions</li>
+                  <li>Certified In-House Instructors</li>
+                  <li>Custom Prep Materials & Books</li>
+                  <li>Small Batch Personalized Attention</li>
+                </ul>
+                <a href="services.html#pte-naati" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 6: Career Counselling -->
+              <div class="service-detail-card glass-panel" id="np-career">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
+                </div>
+                <h3 class="service-title">Career Counselling</h3>
+                <p class="service-desc">Aligning candidate academic profiles and course choices with industry demands and visa parameters. We help you choose courses with strong employment prospects in Australia, ensuring a positive return on your education investment.</p>
+                <ul class="service-points">
+                  <li>Comprehensive Academic Review</li>
+                  <li>Australian Market Demand Checks</li>
+                  <li>Course Selection Advising</li>
+                  <li>Pre-Departure Briefings</li>
+                  <li>Career Pathway Mapping</li>
+                  <li>Sector-Specific Salary Guidance</li>
+                </ul>
+                <a href="services.html#career" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
+              <!-- Service Detail Card 7: Job Placement -->
+              <div class="service-detail-card glass-panel" id="np-job">
+                <div class="service-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                </div>
+                <h3 class="service-title">Job Placement</h3>
+                <p class="service-desc">Pre-departure employment counseling and placement connections for a seamless transition into the Australian workforce. We equip you with the skills to secure part-time roles during studies and professional roles post-graduation.</p>
+                <ul class="service-points">
+                  <li>Workforce Entry Strategy</li>
+                  <li>Australian Recruiter Connect</li>
+                  <li>Post-Arrival Internship Prep</li>
+                  <li>Part-Time Job Hunt Guidance</li>
+                  <li>Local Resume/CV Structuring</li>
+                  <li>Workplace Rights & Law Seminars</li>
+                </ul>
+                <a href="services.html#job-placement" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              </div>
+              
             </div>
-            <h3 class="service-title">Migration Services</h3>
-            <p class="service-desc">Complete processing of Subclass 500 Student Visas, parent visitor visas, and family streams.</p>
-            <ul class="service-points">
-              <li>Subclass 500 Visa Lodgement</li>
-              <li>Genuine Student (GS) Checks</li>
-              <li>Visa Compliance Reviews</li>
-            </ul>
-            <a href="services.html#migration" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            
           </div>
-
-          <!-- Service Card 3: Skill Assessment -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-            </div>
-            <h3 class="service-title">Skill Assessment</h3>
-            <p class="service-desc">Offshore qualification checks and guidance for professionals preparing to apply for skilled pathways.</p>
-            <ul class="service-points">
-              <li>Document Compliance Auditing</li>
-              <li>Assessing Authority Advice</li>
-              <li>Work Experience Verification</li>
-            </ul>
-            <a href="services.html#assessment" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 4: Professional Year -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            </div>
-            <h3 class="service-title">Professional Year Info</h3>
-            <p class="service-desc">Pre-departure package counseling for students planning to secure Py placements upon arriving onshore.</p>
-            <ul class="service-points">
-              <li>Pathway Planning & Packages</li>
-              <li>Intake & Provider Timelines</li>
-              <li>Post-Study Points Strategy</li>
-            </ul>
-            <a href="services.html#professional-year" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 5: PTE NAATI -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
-            <h3 class="service-title">PTE & IELTS Training</h3>
-            <p class="service-desc">Prep classes in Kathmandu with certified instructors, computer test labs, and diagnostic tools.</p>
-            <ul class="service-points">
-              <li>Computerized Lab Mock Exams</li>
-              <li>Daily Feedback & Grammar Tips</li>
-              <li>High-Score Strategy Sessions</li>
-            </ul>
-            <a href="services.html#pte-naati" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
-          <!-- Service Card 6: Career Counselling -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
-            </div>
-            <h3 class="service-title">Career Counselling</h3>
-            <p class="service-desc">Aligning candidate academic profiles and course choices with industry demands and visa parameters.</p>
-            <ul class="service-points">
-              <li>Comprehensive Academic Review</li>
-              <li>Australian Market Demand Checks</li>
-          </div>
-
-          <!-- Service Card 7: Job Placement -->
-          <div class="service-card glass-panel card-lift">
-            <div class="service-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
-            </div>
-            <h3 class="service-title">Job Placement</h3>
-            <p class="service-desc">Pre-departure employment counseling and placement connections for a seamless transition into the Australian workforce.</p>
-            <ul class="service-points">
-              <li>Workforce Entry Strategy</li>
-              <li>Australian Recruiter Connect</li>
-              <li>Post-Arrival Internship Prep</li>
-            </ul>
-            <a href="services.html#job-placement" class="service-link">Learn More <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-
         </div>
       </div>
     </div>
