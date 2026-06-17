@@ -90,6 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update active states on visualizers if applicable
       updateTimezoneLabels(region);
       
+      // Update live Google Calendar if integrated
+      if (typeof initGoogleCalendar === 'function') {
+        initGoogleCalendar();
+      }
+      
       // Re-trigger timeline calculations for new content
       if (typeof updateTimelineProgress === 'function') {
         updateTimelineProgress();
@@ -454,6 +459,137 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnStep3 = document.getElementById('btn-goto-step-3');
   const bookingDetailsForm = document.getElementById('booking-details-form');
 
+  // Google Calendar Integration State & Logic
+  let googleScriptLoaded = false;
+  
+  window.initGoogleCalendar = function() {
+    const config = window.GOOGLE_CALENDAR_CONFIG;
+    if (!config || !config.enabled) {
+      const selector = document.getElementById('booking-method-selector');
+      if (selector) selector.style.display = 'none';
+      window.toggleBookingMethod('manual');
+      return;
+    }
+    
+    // Determine active region
+    const isAu = document.body.classList.contains('region-au');
+    const region = isAu ? 'au' : 'np';
+    const scheduleUrl = config.schedules[region];
+    
+    const iframe = document.getElementById('google-calendar-iframe');
+    const directLink = document.getElementById('google-calendar-direct-link');
+    const loader = document.getElementById('calendar-loader');
+    const fallback = document.getElementById('calendar-fallback');
+    const popupCard = document.getElementById('calendar-popup-card');
+    const popupTarget = document.getElementById('google-calendar-popup-target');
+    
+    if (directLink) {
+      directLink.href = scheduleUrl;
+    }
+    
+    if (config.displayMode === 'inline') {
+      if (popupCard) popupCard.style.display = 'none';
+      if (iframe && loader) {
+        loader.style.display = 'flex';
+        iframe.style.display = 'none';
+        if (fallback) fallback.style.display = 'none';
+        
+        // Load the iframe
+        iframe.src = scheduleUrl;
+        
+        // Handle iframe onload
+        iframe.onload = () => {
+          loader.style.display = 'none';
+          iframe.style.display = 'block';
+        };
+        
+        // Fallback timeout: If iframe doesn't load in 8 seconds, show fallback link
+        setTimeout(() => {
+          if (loader.style.display === 'flex') {
+            loader.style.display = 'none';
+            if (fallback) fallback.style.display = 'block';
+          }
+        }, 8000);
+      }
+    } else if (config.displayMode === 'popup') {
+      if (iframe) iframe.style.display = 'none';
+      if (loader) loader.style.display = 'none';
+      if (fallback) fallback.style.display = 'none';
+      if (popupCard) popupCard.style.display = 'flex';
+      
+      // Load Google Calendar JS/CSS if not already loaded
+      if (!googleScriptLoaded) {
+        // Load CSS
+        const cssLink = document.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.href = 'https://calendar.google.com/calendar/scheduling-button-script.css';
+        document.head.appendChild(cssLink);
+        
+        // Load JS
+        const jsScript = document.createElement('script');
+        jsScript.src = 'https://calendar.google.com/calendar/scheduling-button-script.js';
+        jsScript.async = true;
+        jsScript.onload = () => {
+          googleScriptLoaded = true;
+          renderGooglePopupButton(scheduleUrl, config.themeColor, popupTarget);
+        };
+        document.head.appendChild(jsScript);
+      } else {
+        renderGooglePopupButton(scheduleUrl, config.themeColor, popupTarget);
+      }
+    }
+  }
+
+  function renderGooglePopupButton(url, color, targetEl) {
+    if (!targetEl) return;
+    if (window.calendar && window.calendar.schedulingButton) {
+      // Clear previous button contents
+      targetEl.innerHTML = '';
+      window.calendar.schedulingButton.load({
+        url: url,
+        color: color,
+        label: 'Book consultation session',
+        target: targetEl
+      });
+    } else {
+      // Retry after a short delay if script is not fully parsed yet
+      setTimeout(() => renderGooglePopupButton(url, color, targetEl), 100);
+    }
+  }
+
+  window.toggleBookingMethod = function(method) {
+    const liveBtn = document.getElementById('method-btn-live');
+    const manualBtn = document.getElementById('method-btn-manual');
+    const googleContainer = document.getElementById('google-calendar-container');
+    const wizardIndicator = document.querySelector('.wizard-steps-indicator');
+    const wizardBody = document.querySelector('.wizard-body');
+    
+    if (!googleContainer || !wizardIndicator || !wizardBody) return;
+    
+    if (method === 'live') {
+      if (liveBtn) liveBtn.classList.add('active');
+      if (manualBtn) manualBtn.classList.remove('active');
+      googleContainer.style.display = 'block';
+      wizardIndicator.style.display = 'none';
+      wizardBody.style.display = 'none';
+      
+      // Initialize/load active region schedule
+      window.initGoogleCalendar();
+    } else {
+      if (manualBtn) manualBtn.classList.add('active');
+      if (liveBtn) liveBtn.classList.remove('active');
+      googleContainer.style.display = 'none';
+      wizardIndicator.style.display = 'flex';
+      wizardBody.style.display = 'block';
+    }
+  }
+
+  // Bind tab click events
+  const liveBtn = document.getElementById('method-btn-live');
+  const manualBtn = document.getElementById('method-btn-manual');
+  if (liveBtn) liveBtn.addEventListener('click', () => window.toggleBookingMethod('live'));
+  if (manualBtn) manualBtn.addEventListener('click', () => window.toggleBookingMethod('manual'));
+
   let chosenDate = null;
   let chosenTime = null;
   let currentMonth = new Date().getMonth();
@@ -580,6 +716,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load calendar on start
   renderCalendar(currentMonth, currentYear);
 
+  // Initialize booking method based on config
+  const calConfig = window.GOOGLE_CALENDAR_CONFIG;
+  let initialMethod = 'manual';
+  if (calConfig && calConfig.enabled) {
+    if (calConfig.displayMode === 'api') {
+      const selector = document.getElementById('booking-method-selector');
+      if (selector) selector.style.display = 'none';
+      initialMethod = 'manual';
+    } else {
+      const selector = document.getElementById('booking-method-selector');
+      if (selector) selector.style.display = 'flex';
+      initialMethod = calConfig.defaultMethod || 'live';
+    }
+  } else {
+    const selector = document.getElementById('booking-method-selector');
+    if (selector) selector.style.display = 'none';
+  }
+  window.toggleBookingMethod(initialMethod);
+
   // Next steps triggers
   if (btnStep2) {
     btnStep2.addEventListener('click', () => {
@@ -600,15 +755,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Fetch available slots from backend
+  async function fetchAvailableSlots(dateStr, region) {
+    const config = window.GOOGLE_CALENDAR_CONFIG;
+    if (!config || !config.enabled || config.displayMode !== 'api') {
+      return ["09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM"];
+    }
+
+    try {
+      const url = `${config.apiUrl}/available-slots?date=${dateStr}&region=${region}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('API server returned error');
+      const data = await response.json();
+      return data.slots || [];
+    } catch (e) {
+      console.warn('Could not fetch slots from backend. Falling back to default slots.', e);
+      return ["09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM"];
+    }
+  }
+
   // Timeslots generator
-  function renderTimeslots() {
+  async function renderTimeslots() {
     if (!timeslotsGrid) return;
     timeslotsGrid.innerHTML = '';
 
-    const slots = [
-      "09:00 AM", "10:00 AM", "11:00 AM",
-      "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM"
-    ];
+    // Show loading state
+    const loaderContainer = document.createElement('div');
+    loaderContainer.className = 'timeslots-loader';
+    loaderContainer.innerHTML = '<div class="spinner-ring small-spinner"></div><p style="font-size:0.85rem; color:var(--color-text-light);">Loading slots...</p>';
+    timeslotsGrid.appendChild(loaderContainer);
+
+    // Disable step 3 button while loading
+    if (btnStep3) btnStep3.setAttribute('disabled', 'true');
+
+    // Get active region and formatted date
+    const isAu = document.body.classList.contains('region-au');
+    const region = isAu ? 'au' : 'np';
+
+    const year = chosenDate.getFullYear();
+    const month = String(chosenDate.getMonth() + 1).padStart(2, '0');
+    const day = String(chosenDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+
+    const slots = await fetchAvailableSlots(dateStr, region);
+
+    timeslotsGrid.innerHTML = '';
+
+    if (slots.length === 0) {
+      const emptyMsg = document.createElement('p');
+      emptyMsg.className = 'no-slots-msg';
+      emptyMsg.textContent = 'No available consultation slots for this date. Please select another day.';
+      emptyMsg.style.cssText = 'grid-column: 1 / -1; text-align: center; font-size: 0.9rem; color: var(--color-text-light); padding: 20px 0;';
+      timeslotsGrid.appendChild(emptyMsg);
+      return;
+    }
 
     slots.forEach(slot => {
       const btn = document.createElement('button');
@@ -618,13 +818,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (chosenTime === slot) {
         btn.classList.add('selected');
+        if (btnStep3) btnStep3.removeAttribute('disabled');
       }
 
       btn.addEventListener('click', () => {
         document.querySelectorAll('.timeslot-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
         chosenTime = slot;
-        btnStep3.removeAttribute('disabled');
+        
+        // Enable next step button
+        if (btnStep3) btnStep3.removeAttribute('disabled');
       });
 
       timeslotsGrid.appendChild(btn);
@@ -649,7 +852,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Details form submission
   if (bookingDetailsForm) {
-    bookingDetailsForm.addEventListener('submit', (e) => {
+    bookingDetailsForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const clientName = document.getElementById('booking-name').value;
@@ -658,15 +861,85 @@ document.addEventListener('DOMContentLoaded', () => {
       const clientMode = document.getElementById('booking-mode');
       const clientModeText = clientMode.options[clientMode.selectedIndex].text;
 
+      const submitBtn = bookingDetailsForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : 'Book My Session';
+      
+      if (submitBtn) {
+        submitBtn.textContent = 'Scheduling...';
+        submitBtn.setAttribute('disabled', 'true');
+      }
+
+      // Format selected date
+      const year = chosenDate.getFullYear();
+      const month = String(chosenDate.getMonth() + 1).padStart(2, '0');
+      const day = String(chosenDate.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
+
+      const isAu = document.body.classList.contains('region-au');
+      const region = isAu ? 'au' : 'np';
+
+      const payload = {
+        name: clientName,
+        email: clientEmail,
+        phone: clientPhone,
+        notes: `Preferred Consultation Mode: ${clientModeText}`,
+        date: dateStr,
+        time: chosenTime,
+        region: region
+      };
+
+      const config = window.GOOGLE_CALENDAR_CONFIG;
+      let meetLink = '';
+      
+      if (config && config.enabled && config.displayMode === 'api') {
+        try {
+          const response = await fetch(`${config.apiUrl}/book-appointment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.error || 'Failed to submit booking');
+          }
+          
+          const result = await response.json();
+          meetLink = result.meetLink;
+        } catch (error) {
+          alert(`Booking Error: ${error.message}. Please try again.`);
+          if (submitBtn) {
+            submitBtn.textContent = originalText;
+            submitBtn.removeAttribute('disabled');
+          }
+          return;
+        }
+      }
+
+      // Restore submit button state
+      if (submitBtn) {
+        submitBtn.textContent = originalText;
+        submitBtn.removeAttribute('disabled');
+      }
+
       // Update receipts
       const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
       receiptDate.textContent = chosenDate.toLocaleDateString('en-US', dateOptions);
       
-      const isAu = document.body.classList.contains('region-au');
       const tzSuffix = isAu ? 'AEST' : 'NPT';
       receiptTime.textContent = `${chosenTime} (${tzSuffix})`;
       receiptMode.textContent = clientModeText;
       confirmedEmail.textContent = clientEmail;
+
+      // Handle Google Meet Link display
+      const meetRow = document.getElementById('receipt-meet-row');
+      const meetAnchor = document.getElementById('receipt-meet-link');
+      if (meetLink && meetRow && meetAnchor) {
+        meetAnchor.href = meetLink;
+        meetRow.style.display = 'flex';
+      } else if (meetRow) {
+        meetRow.style.display = 'none';
+      }
 
       navigateWizard(4);
     });

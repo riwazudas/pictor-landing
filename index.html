@@ -757,8 +757,66 @@
       <div class="booking-wizard-container reveal fade-left">
         <div class="wizard-card glass-panel">
           
+          <!-- Booking Method Selector (Segmented Tabs) -->
+          <div class="booking-method-selector" id="booking-method-selector">
+            <button type="button" class="method-tab-btn active" data-method="live" id="method-btn-live">
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px; height:16px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              Live Calendar
+            </button>
+            <button type="button" class="method-tab-btn" data-method="manual" id="method-btn-manual">
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px; height:16px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              Manual Request
+            </button>
+          </div>
+
+          <!-- Google Calendar Integration Container -->
+          <div class="google-calendar-container" id="google-calendar-container">
+            <div class="calendar-loader" id="calendar-loader">
+              <div class="spinner-ring"></div>
+              <p class="loader-text">Loading Live Schedule...</p>
+            </div>
+            
+            <iframe 
+              id="google-calendar-iframe"
+              src="" 
+              style="border: 0; width: 100%; height: 550px; border-radius: 12px; display: none;" 
+              frameborder="0">
+            </iframe>
+
+            <div class="calendar-popup-card" id="calendar-popup-card" style="display: none;">
+              <div class="popup-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 48px; height: 48px; color: var(--color-primary);">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                  <path d="M12 14v4M10 16h4"/>
+                </svg>
+              </div>
+              <h4 class="popup-card-title">Live Appointment Booking</h4>
+              <p class="popup-card-desc">Click below to open our real-time Google Calendar schedule in a secure popup and select your consultation slot.</p>
+              <div id="google-calendar-popup-target"></div>
+            </div>
+
+            <div class="calendar-fallback" id="calendar-fallback" style="display: none;">
+              <div class="fallback-icon">⚠️</div>
+              <p>Having trouble loading the interactive scheduler?</p>
+              <a href="#" id="google-calendar-direct-link" class="btn btn-primary btn-full-width" target="_blank">Book Directly on Google Calendar</a>
+            </div>
+          </div>
+
           <!-- Wizard Steps Indicators -->
-          <div class="wizard-steps-indicator">
+          <div class="wizard-steps-indicator" style="display: none;">
             <div class="step-indicator active" data-step="1">1<span class="step-label">Date</span></div>
             <div class="step-line"></div>
             <div class="step-indicator" data-step="2">2<span class="step-label">Time</span></div>
@@ -874,6 +932,7 @@
                   <div class="receipt-row"><span>Date:</span><strong id="receipt-date"></strong></div>
                   <div class="receipt-row"><span>Time:</span><strong id="receipt-time"></strong></div>
                   <div class="receipt-row"><span>Method:</span><strong id="receipt-mode"></strong></div>
+                  <div class="receipt-row" id="receipt-meet-row" style="display: none;"><span>Meeting Link:</span><strong><a href="#" id="receipt-meet-link" target="_blank" style="color: var(--color-primary); text-decoration: underline; word-break: break-all;">Join Google Meet</a></strong></div>
                 </div>
                 <p class="comment-notification text-center">
                   <!-- PRODUCTION NOTICE: Integration engineers may swap this native wizard with the Calendly embed code below:
@@ -1667,6 +1726,8 @@
     </div>
   </footer>
 
+  <!-- Google Calendar Appointment Schedule Configuration -->
+  <script src="booking-config.js"></script>
   <!-- Link script file as ES Module -->
   <script type="module" src="script.js"></script>
 </body>
