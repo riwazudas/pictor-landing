@@ -141,6 +141,41 @@ const SLOT_TEMPLATES = [
   { label: "04:00 PM", hour: 16, minute: 0 }
 ];
 
+const DEFAULT_FAQS = [
+  {
+    id: "faq_1",
+    question: "What is OMARA and why is it important?",
+    answer: "OMARA (Office of the Migration Agents Registration Authority) regulates migration agents in Australia. Using a registered agent guarantees they have the required legal knowledge and adhere to a strict Code of Conduct.",
+    category: "Migration",
+    region: "au",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "faq_2",
+    question: "How long does a student visa (Subclass 500) processing take?",
+    answer: "Student visa processing times vary depending on the sector. Higher education sector visas generally take 2-4 weeks, while vocational education can take longer. It depends heavily on document completeness.",
+    category: "Education",
+    region: "both",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "faq_3",
+    question: "What is the NAATI CCL test?",
+    answer: "The NAATI CCL (Credentialed Community Language) test is an exam that assesses your community language translation abilities. Passing it awards 5 bonus points toward your Australian GSM (PR) visa application.",
+    category: "General",
+    region: "au",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "faq_4",
+    question: "Do you offer university admission assistance in Nepal?",
+    answer: "Yes, our Kathmandu office is staffed with QEAC certified counselors who provide free university placement, admissions, scholarship assistance, and visa documentation support.",
+    category: "Education",
+    region: "np",
+    createdAt: new Date().toISOString()
+  }
+];
+
 // Admin authorization checker middleware
 const requireAdmin = (req, res, next) => {
   if (req.session && req.session.user && req.session.user.role === 'admin') {
@@ -410,6 +445,15 @@ app.get('/api/blog/posts', (req, res) => {
   // Sort by created date descending
   publishedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   res.json(publishedPosts);
+});
+
+/**
+ * GET /api/faqs
+ * Public endpoint to fetch active FAQ items
+ */
+app.get('/api/faqs', (req, res) => {
+  const faqs = readDataFile('faqs.json', DEFAULT_FAQS);
+  res.json(faqs);
 });
 
 
@@ -688,6 +732,71 @@ app.delete('/api/admin/blog/posts/:id', requireAdmin, (req, res) => {
 
   writeDataFile('articles.json', filtered);
   res.json({ success: true, message: 'Article deleted successfully.' });
+});
+
+/**
+ * FAQ MANAGEMENT APIs (Admin CRUD)
+ */
+app.get('/api/admin/faqs', requireAdmin, (req, res) => {
+  const faqs = readDataFile('faqs.json', DEFAULT_FAQS);
+  res.json(faqs);
+});
+
+app.post('/api/admin/faqs', requireAdmin, (req, res) => {
+  const { id, question, answer, category, region } = req.body;
+
+  if (!question || !answer || !category || !region) {
+    return res.status(400).json({ error: 'Question, answer, category, and region are required.' });
+  }
+
+  const faqs = readDataFile('faqs.json', DEFAULT_FAQS);
+  const nowStr = new Date().toISOString();
+
+  if (id) {
+    const index = faqs.findIndex(f => f.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'FAQ not found.' });
+    }
+
+    faqs[index] = {
+      ...faqs[index],
+      question,
+      answer,
+      category,
+      region,
+      updatedAt: nowStr
+    };
+
+    writeDataFile('faqs.json', faqs);
+    res.json({ success: true, faq: faqs[index] });
+  } else {
+    const newFaq = {
+      id: `faq_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      question,
+      answer,
+      category,
+      region,
+      createdAt: nowStr,
+      updatedAt: nowStr
+    };
+
+    faqs.push(newFaq);
+    writeDataFile('faqs.json', faqs);
+    res.json({ success: true, faq: newFaq });
+  }
+});
+
+app.delete('/api/admin/faqs/:id', requireAdmin, (req, res) => {
+  const { id } = req.params;
+  const faqs = readDataFile('faqs.json', DEFAULT_FAQS);
+  const filtered = faqs.filter(f => f.id !== id);
+  
+  if (faqs.length === filtered.length) {
+    return res.status(404).json({ error: 'FAQ not found.' });
+  }
+
+  writeDataFile('faqs.json', filtered);
+  res.json({ success: true, message: 'FAQ deleted successfully.' });
 });
 
 /**
