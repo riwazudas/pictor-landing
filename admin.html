@@ -822,6 +822,9 @@
         <div class="admin-menu-item" data-target="section-points">
           <span>💯 Points Config</span>
         </div>
+        <div class="admin-menu-item" data-target="section-faqs">
+          <span>❓ FAQ Manager</span>
+        </div>
       </nav>
 
       <!-- Profile Section -->
@@ -1041,6 +1044,32 @@
         </div>
       </section>
 
+      <!-- SECTION: FAQ MANAGER -->
+      <section class="admin-section-content" id="section-faqs">
+        <div class="page-title-row">
+          <h2 class="page-heading">FAQ Manager</h2>
+          <button class="btn btn-primary" id="btn-create-faq">＋ Add FAQ</button>
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Category</th>
+                <th>Region</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="faq-table-body">
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--color-text-light);">Loading FAQs...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -1105,6 +1134,52 @@
     </div>
   </div>
 
+  <!-- FAQ COMPOSER MODAL -->
+  <div class="admin-modal" id="modal-faq-composer">
+    <div class="admin-modal-content">
+      <button class="admin-modal-close" id="btn-close-faq-composer">✕</button>
+      <h3 class="panel-heading" id="faq-composer-modal-title">Add New FAQ</h3>
+      
+      <form id="faq-composer-form">
+        <input type="hidden" id="faq-id">
+        <div class="form-group">
+          <label class="form-label" for="faq-question">Question</label>
+          <input class="form-input" type="text" id="faq-question" required placeholder="E.g., What is OMARA registration?">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="faq-answer">Answer</label>
+          <textarea class="form-textarea" id="faq-answer" required placeholder="Type the answer here..." style="min-height: 150px;"></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="faq-category">Category</label>
+            <select class="form-select" id="faq-category" required>
+              <option value="General">General</option>
+              <option value="Migration">Migration</option>
+              <option value="Education">Education</option>
+              <option value="Visa Cost">Visa Cost</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="faq-region">Region Portal</label>
+            <select class="form-select" id="faq-region" required>
+              <option value="both">Both Portals</option>
+              <option value="au">Australia Only</option>
+              <option value="np">Nepal Only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-actions-row">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-faq-composer">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-faq-composer">Save FAQ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Javascript Logic -->
   <script>
     // Configures client address mapping dynamically
@@ -1125,6 +1200,7 @@
       initTabs();
       initBlogComposer();
       initPointsTabs();
+      initFaqComposer();
     });
 
     // Check status and login triggers
@@ -1230,6 +1306,7 @@
       loadTimelinesConfig();
       loadPointsConfig();
       loadBlogPosts();
+      loadFaqs();
     }
 
     // Sidebar navigation controller
@@ -1624,6 +1701,138 @@
           loadBlogPosts();
         } else {
           alert('Failed to delete post.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+
+    /* ==========================================================================
+       FAQ MANAGER CRUD
+       ========================================================================== */
+    const faqComposerModal = document.getElementById('modal-faq-composer');
+    const faqComposerForm = document.getElementById('faq-composer-form');
+
+    function initFaqComposer() {
+      // Add FAQ button trigger
+      document.getElementById('btn-create-faq').addEventListener('click', () => {
+        openFaqComposer();
+      });
+
+      // Cancel buttons triggers
+      document.getElementById('btn-close-faq-composer').addEventListener('click', closeFaqComposer);
+      document.getElementById('btn-cancel-faq-composer').addEventListener('click', closeFaqComposer);
+
+      // Save form submit
+      faqComposerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const id = document.getElementById('faq-id').value;
+        const question = document.getElementById('faq-question').value;
+        const answer = document.getElementById('faq-answer').value;
+        const category = document.getElementById('faq-category').value;
+        const region = document.getElementById('faq-region').value;
+
+        const payload = { id: id || null, question, answer, category, region };
+
+        try {
+          const res = await fetch('/api/admin/faqs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            closeFaqComposer();
+            loadFaqs();
+          } else {
+            const err = await res.json();
+            alert(err.error || 'Failed to save FAQ.');
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    }
+
+    async function loadFaqs() {
+      const tableBody = document.getElementById('faq-table-body');
+      try {
+        const res = await fetch('/api/admin/faqs');
+        if (res.ok) {
+          const faqs = await res.json();
+          tableBody.innerHTML = '';
+          
+          if (faqs.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--color-text-light);">No FAQs found. Click "Add FAQ" to start!</td></tr>`;
+            return;
+          }
+
+          faqs.forEach(faq => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+              <td><strong>${faq.question}</strong></td>
+              <td>${faq.category}</td>
+              <td><span class="status-badge ${faq.region === 'both' ? 'published' : 'scheduled'}">${faq.region === 'both' ? 'Both Portals' : (faq.region === 'au' ? 'AU Only' : 'NP Only')}</span></td>
+              <td>
+                <button class="btn-icon" onclick="editFaq('${faq.id}')" title="Edit">✏️</button>
+                <button class="btn-icon btn-danger-hover" onclick="deleteFaq('${faq.id}')" title="Delete">🗑️</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function openFaqComposer(faq = null) {
+      faqComposerForm.reset();
+      
+      if (faq) {
+        document.getElementById('faq-composer-modal-title').textContent = 'Edit FAQ';
+        document.getElementById('faq-id').value = faq.id;
+        document.getElementById('faq-question').value = faq.question;
+        document.getElementById('faq-answer').value = faq.answer;
+        document.getElementById('faq-category').value = faq.category;
+        document.getElementById('faq-region').value = faq.region;
+      } else {
+        document.getElementById('faq-composer-modal-title').textContent = 'Add New FAQ';
+        document.getElementById('faq-id').value = '';
+      }
+
+      faqComposerModal.classList.add('active');
+    }
+
+    function closeFaqComposer() {
+      faqComposerModal.classList.remove('active');
+    }
+
+    window.editFaq = async (id) => {
+      try {
+        const res = await fetch('/api/admin/faqs');
+        const faqs = await res.json();
+        const faq = faqs.find(f => f.id === id);
+        if (faq) {
+          openFaqComposer(faq);
+        }
+      } catch (err) {
+        console.error('Error fetching FAQ detail:', err);
+      }
+    };
+
+    window.deleteFaq = async (id) => {
+      if (!confirm('Are you sure you want to permanently delete this FAQ?')) return;
+
+      try {
+        const res = await fetch(`/api/admin/faqs/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          loadFaqs();
+        } else {
+          alert('Failed to delete FAQ.');
         }
       } catch (err) {
         console.error(err);
