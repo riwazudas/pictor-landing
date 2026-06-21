@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block admin panel and private data directories
+Disallow: /admin.html
+Disallow: /server/
+Disallow: /api/admin/
+
+# Point to sitemap location
+Sitemap: https://www.pictorservices.com/sitemap.xml
