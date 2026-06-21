@@ -656,6 +656,10 @@
       let activeCategory = 'all';
       let searchQuery = '';
 
+      // Original SEO values to restore when closing article
+      const originalTitle = document.title;
+      const originalDesc = document.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+
       // Premium Mock Fallback Articles in case backend is offline
       const MOCK_ARTICLES = [
         {
@@ -744,6 +748,7 @@
         }
         
         renderArticles();
+        handleUrlNavigation();
       }
 
       // Render Articles to Grid
@@ -811,7 +816,7 @@
       }
 
       // Open Article Reader Modal
-      function openArticleReader(post) {
+      function openArticleReader(post, shouldPushState = true) {
         modalCover.src = post.coverImage;
         modalCover.alt = post.title;
         modalCategory.textContent = post.category;
@@ -828,21 +833,109 @@
         modalDate.textContent = dateStr;
         modalBody.innerHTML = post.content;
         
+        // SEO: Update page title and description
+        document.title = `${post.title} | Pictor Services`;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+          metaDesc.setAttribute('content', post.summary);
+        }
+
+        // SEO: Generate and Inject Article JSON-LD Schema
+        const schema = {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.summary,
+          "image": post.coverImage,
+          "author": {
+            "@type": "Person",
+            "name": post.author
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Pictor Services",
+            "logo": {
+              "@type": "ImageObject",
+              "url": window.location.origin + "/logo.png"
+            }
+          },
+          "datePublished": post.createdAt,
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": window.location.href
+          }
+        };
+
+        let schemaScript = document.getElementById('article-json-ld');
+        if (!schemaScript) {
+          schemaScript = document.createElement('script');
+          schemaScript.type = 'application/ld+json';
+          schemaScript.id = 'article-json-ld';
+          document.head.appendChild(schemaScript);
+        }
+        schemaScript.text = JSON.stringify(schema);
+
+        // SEO: Update URL Query Param (slug or id) without reloading the page
+        if (shouldPushState) {
+          const articleSlug = post.slug || post.id;
+          history.pushState({ articleId: post.id }, '', `?post=${articleSlug}`);
+        }
+
         modal.classList.add('active');
         document.body.style.overflow = 'hidden'; // Lock background scroll
       }
 
       // Close Modal Reader
-      function closeArticleReader() {
+      function closeArticleReader(shouldPushState = true) {
         modal.classList.remove('active');
         document.body.style.overflow = ''; // Unlock scroll
+
+        // SEO: Restore original page metadata
+        document.title = originalTitle;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+          metaDesc.setAttribute('content', originalDesc);
+        }
+
+        // SEO: Remove dynamic JSON-LD Schema script
+        const schemaScript = document.getElementById('article-json-ld');
+        if (schemaScript) {
+          schemaScript.remove();
+        }
+
+        // SEO: Restore clean URL
+        if (shouldPushState) {
+          history.pushState(null, '', window.location.pathname);
+        }
       }
 
+      // Handle direct URL navigation and Back/Forward buttons (popstate)
+      function handleUrlNavigation() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postParam = urlParams.get('post');
+        if (postParam) {
+          const post = allArticles.find(p => p.slug === postParam || p.id === postParam);
+          if (post) {
+            openArticleReader(post, false);
+          } else {
+            closeArticleReader(false);
+          }
+        } else {
+          // If no post param in URL, ensure modal is closed
+          if (modal.classList.contains('active')) {
+            closeArticleReader(false);
+          }
+        }
+      }
+
+      // Set up popstate event listener for browser back/forward buttons
+      window.addEventListener('popstate', handleUrlNavigation);
+
       // Set up close triggers
-      if (modalClose) modalClose.addEventListener('click', closeArticleReader);
+      if (modalClose) modalClose.addEventListener('click', () => closeArticleReader(true));
       if (modal) {
         modal.addEventListener('click', (e) => {
-          if (e.target === modal) closeArticleReader();
+          if (e.target === modal) closeArticleReader(true);
         });
       }
 
