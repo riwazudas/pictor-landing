@@ -1087,14 +1087,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (leadForm) {
-    leadForm.addEventListener('submit', (e) => {
+    leadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const nameVal = inputName.value;
       const visaText = inputVisa.options[inputVisa.selectedIndex].text;
       
-      // Generate unique registration reference code
-      const refCode = 'PCT-' + Math.floor(1000 + Math.random() * 9000);
+      const submitBtn = leadForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : 'Submit Request';
+      
+      if (submitBtn) {
+        submitBtn.textContent = 'Sending...';
+        submitBtn.setAttribute('disabled', 'true');
+      }
+
+      const payload = {
+        name: nameVal,
+        email: inputEmail.value,
+        phone: inputPhone.value,
+        country: inputCountry.value,
+        visaType: visaText,
+        message: inputMessage.value
+      };
+
+      const config = window.GOOGLE_CALENDAR_CONFIG;
+      const apiUrl = (config && config.apiUrl) ? config.apiUrl.replace('/api', '') : 'http://localhost:3000';
+      
+      let refCode = 'PCT-' + Math.floor(1000 + Math.random() * 9000);
+
+      try {
+        const response = await fetch(`${apiUrl}/api/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          if (result.refCode) {
+            refCode = result.refCode;
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to register lead on the backend. Falling back to local offline code generation.', err);
+      } finally {
+        if (submitBtn) {
+          submitBtn.textContent = originalText;
+          submitBtn.removeAttribute('disabled');
+        }
+      }
 
       // Populate success screens receipts
       summaryName.textContent = nameVal;
