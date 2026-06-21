@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | Pictor Services</title>
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Sign-In Client library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Global Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=11">
+  
+  <!-- Custom Admin Styles -->
+  <style>
+    :root {
+      --admin-sidebar-width: 260px;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--color-text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Glass Panel implementation for light theme */
+    .glass-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Auth Wrapper */
+    .auth-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      width: 100%;
+      padding: 24px;
+      z-index: 1000;
+      background-color: var(--bg-primary);
+    }
+
+    .auth-card {
+      max-width: 450px;
+      width: 100%;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .auth-title {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: var(--color-text);
+      font-family: var(--font-headings);
+    }
+
+    .auth-subtitle {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+    }
+
+    .google-signin-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .bypass-divider {
+      display: flex;
+      align-items: center;
+      color: var(--color-text-light);
+      margin: 24px 0;
+      font-size: 0.85rem;
+    }
+
+    .bypass-divider::before, .bypass-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+    
+    .bypass-divider span {
+      padding: 0 12px;
+    }
+
+    .bypass-card {
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .bypass-card-title {
+      font-family: var(--font-headings);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: var(--color-primary);
+    }
+
+    .bypass-input-group {
+      margin-bottom: 12px;
+    }
+
+    .bypass-label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-bottom: 4px;
+    }
+
+    .bypass-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--color-text);
+      font-size: 0.9rem;
+    }
+
+    .bypass-input:focus {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+
+    /* Admin Workspace Dashboard */
+    .admin-wrapper {
+      display: none; /* Shown after auth */
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      width: var(--admin-sidebar-width);
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .admin-brand {
+      padding: 0 24px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-brand img {
+      height: 35px;
+    }
+
+    .admin-menu-list {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 12px;
+    }
+
+    .admin-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: var(--color-text-light);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font-headings);
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      transition: all var(--transition-fast);
+      text-transform: uppercase;
+    }
+
+    .admin-menu-item:hover, .admin-menu-item.active {
+      background: rgba(94, 51, 135, 0.08);
+      color: var(--color-primary);
+    }
+
+    .admin-menu-item.active {
+      background: var(--color-primary);
+      color: var(--color-text-white);
+      box-shadow: 0 4px 10px rgba(94, 51, 135, 0.2);
+    }
+
+    .admin-user-profile {
+      margin-top: auto;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--color-primary);
+    }
+
+    .admin-user-info {
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .admin-user-name {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--color-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .admin-user-email {
+      font-size: 0.75rem;
+      color: var(--color-text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .admin-logout-btn {
+      background: none;
+      border: none;
+      color: var(--color-text-light);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color var(--transition-fast);
+    }
+
+    .admin-logout-btn:hover {
+      color: var(--color-primary);
+    }
+
+    /* Main Content Area */
+    .admin-main {
+      flex-grow: 1;
+      margin-left: var(--admin-sidebar-width);
+      padding: 40px;
+      max-width: calc(100% - var(--admin-sidebar-width));
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-primary);
+      overflow-y: auto;
+    }
+
+    .admin-section-content {
+      display: none;
+    }
+
+    .admin-section-content.active {
+      display: block;
+      animation: fadeIn var(--transition-normal);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .page-heading {
+      font-size: 2.2rem;
+      margin: 0;
+      color: var(--color-text);
+      font-family: var(--font-headings);
+    }
+
+    /* Cards Grid */
+    .stat-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(94, 51, 135, 0.1);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .stat-card-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-card-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      line-height: 1.2;
+    }
+
+    .stat-card-label {
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+    }
+
+    /* Settings Sections */
+    .config-panel {
+      padding: 32px;
+      margin-bottom: 30px;
+    }
+
+    .panel-heading {
+      font-family: var(--font-headings);
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      color: var(--color-text);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--color-text-light);
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--color-text);
+      font-size: 0.95rem;
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px rgba(94, 51, 135, 0.15);
+      background: #ffffff;
+      outline: none;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .panel-actions-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    /* Editable Lists */
+    .editable-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .editable-list-item {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .editable-list-item input {
+      flex: 1;
+      padding: 8px 12px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--color-text);
+      font-size: 0.9rem;
+    }
+
+    .editable-list-item input:focus {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+
+    .editable-list-item input.item-value {
+      max-width: 100px;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: var(--color-text-light);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 4px;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--color-primary);
+    }
+
+    .btn-icon.btn-danger-hover:hover {
+      color: #ff5e5e;
+      background: rgba(255, 94, 94, 0.08);
+    }
+
+    /* Subclasses Config List Card Style */
+    .subclass-config-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .subclass-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .subclass-card-title {
+      font-family: var(--font-headings);
+      font-size: 1.25rem;
+      margin: 0;
+      color: var(--color-primary);
+    }
+
+    /* Tables & Lists */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .admin-table th {
+      background: var(--bg-secondary);
+      font-family: var(--font-headings);
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+      color: var(--color-text);
+      text-transform: uppercase;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: rgba(0, 0, 0, 0.01);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-badge.published {
+      background: rgba(79, 125, 79, 0.1);
+      color: var(--color-success);
+    }
+
+    .status-badge.draft {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--color-text-light);
+    }
+
+    .status-badge.scheduled {
+      background: rgba(217, 156, 83, 0.1);
+      color: var(--color-highlight);
+    }
+
+    /* Notifications List */
+    .notification-item {
+      padding: 24px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--color-primary);
+    }
+
+    .notification-item.message {
+      border-left-color: var(--color-highlight);
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .notification-sender {
+      font-weight: bold;
+      color: var(--color-text);
+    }
+
+    .notification-date {
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+    }
+
+    .notification-body {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      color: var(--color-text);
+      white-space: pre-wrap;
+    }
+
+    .notification-details {
+      display: flex;
+      gap: 20px;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-bottom: 16px;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 8px 12px;
+      border-radius: 6px;
+      width: fit-content;
+    }
+
+    .replies-container {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .reply-item {
+      background: rgba(94, 51, 135, 0.03);
+      border: 1px solid rgba(94, 51, 135, 0.08);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+    }
+
+    .reply-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--color-primary);
+      margin-bottom: 6px;
+    }
+
+    .reply-message {
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    .quick-reply-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .quick-reply-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--color-text);
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .quick-reply-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Modal dialog */
+    .admin-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(26, 21, 32, 0.4);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .admin-modal.active {
+      display: flex;
+    }
+
+    .admin-modal-content {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .admin-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--color-text);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* Tabs block inside sections */
+    .section-tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .section-tab-btn {
+      background: none;
+      border: none;
+      color: var(--color-text-light);
+      padding: 8px 16px;
+      font-family: var(--font-headings);
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all var(--transition-fast);
+      text-transform: uppercase;
+    }
+
+    .section-tab-btn:hover, .section-tab-btn.active {
+      color: var(--color-primary);
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .section-tab-btn.active {
+      color: var(--color-text-white);
+      background: var(--color-primary);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- AUTHENTICATION FORM (Shown by default) -->
+  <div class="auth-overlay" id="auth-overlay">
+    <div class="auth-card glass-panel">
+      <div style="margin-bottom: 20px; display: flex; justify-content: center;">
+        <img src="logo.png" alt="Pictor Services Logo" style="height: 48px;">
+      </div>
+      <h1 class="auth-title">Admin Portal</h1>
+      <p class="auth-subtitle">Log in to update estimators, write articles, and reply to clients.</p>
+
+      <!-- Google Sign In Button Container -->
+      <div class="google-signin-btn-wrap">
+        <div id="g_id_onload"
+          data-client_id="" 
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+          data-type="standard"
+          data-shape="pill"
+          data-theme="filled_blue"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left">
+        </div>
+      </div>
+
+      <!-- Developer Bypass Mode -->
+      <div class="bypass-divider">
+        <span>Developer Bypass Mode</span>
+      </div>
+
+      <div class="bypass-card">
+        <div class="bypass-card-title">Local Tester Bypass</div>
+        <p style="font-size: 0.78rem; color: var(--color-text-light); margin-bottom: 12px; line-height: 1.4;">
+          If GOOGLE_CLIENT_ID is not configured in .env, verify your identity locally using any address ending in <strong>@pictorservices.com</strong>.
+        </p>
+        <form id="mock-login-form">
+          <div class="bypass-input-group">
+            <label class="bypass-label" for="mock-name">Full Name</label>
+            <input class="bypass-input" type="text" id="mock-name" placeholder="E.g. Riwaz Udas" value="Riwaz Udas" required>
+          </div>
+          <div class="bypass-input-group">
+            <label class="bypass-label" for="mock-email">Workspace Email (@pictorservices.com)</label>
+            <input class="bypass-input" type="email" id="mock-email" placeholder="admin@pictorservices.com" value="admin@pictorservices.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full-width" style="padding: 10px; font-size: 1.1rem; margin-top: 6px;">
+            Log In As Developer
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE DASHBOARD (Hidden until authenticated) -->
+  <div class="admin-wrapper" id="admin-wrapper">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <img src="logo.png" alt="Pictor Services Logo">
+      </div>
+
+      <nav class="admin-menu-list">
+        <div class="admin-menu-item active" data-target="section-dashboard">
+          <span>📊 Dashboard</span>
+        </div>
+        <div class="admin-menu-item" data-target="section-blog">
+          <span>✍️ Blog Manager</span>
+        </div>
+        <div class="admin-menu-item" data-target="section-visa-costs">
+          <span>💰 Visa Prices</span>
+        </div>
+        <div class="admin-menu-item" data-target="section-timelines">
+          <span>⏳ Timelines</span>
+        </div>
+        <div class="admin-menu-item" data-target="section-points">
+          <span>💯 Points Config</span>
+        </div>
+      </nav>
+
+      <!-- Profile Section -->
+      <div class="admin-user-profile">
+        <img class="admin-user-avatar" id="admin-avatar" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Avatar">
+        <div class="admin-user-info">
+          <div class="admin-user-name" id="admin-name">Administrator</div>
+          <div class="admin-user-email" id="admin-email">admin@pictorservices.com</div>
+        </div>
+        <button class="admin-logout-btn" id="logout-btn" title="Sign Out">
+          <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN BODY CONTENT -->
+    <main class="admin-main">
+
+      <!-- SECTION: DASHBOARD (Notifications Desk) -->
+      <section class="admin-section-content active" id="section-dashboard">
+        <div class="page-title-row">
+          <h2 class="page-heading">Dashboard Desk</h2>
+          <span class="section-tag" style="margin-bottom:0;">Live Leads & Bookings</span>
+        </div>
+
+        <div class="stat-cards-grid">
+          <div class="stat-card glass-panel">
+            <div class="stat-card-icon">📅</div>
+            <div class="stat-card-info">
+              <span class="stat-card-value" id="stat-appointments-count">0</span>
+              <span class="stat-card-label">Total Appointments</span>
+            </div>
+          </div>
+          <div class="stat-card glass-panel">
+            <div class="stat-card-icon">✉️</div>
+            <div class="stat-card-info">
+              <span class="stat-card-value" id="stat-messages-count">0</span>
+              <span class="stat-card-label">Inquiries Received</span>
+            </div>
+          </div>
+          <div class="stat-card glass-panel">
+            <div class="stat-card-icon">🔔</div>
+            <div class="stat-card-info">
+              <span class="stat-card-value" id="stat-pending-replies">0</span>
+              <span class="stat-card-label">Pending Replies</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-tab-nav">
+          <button class="section-tab-btn active" data-tab-content="tab-appointments">Consultations booked</button>
+          <button class="section-tab-btn" data-tab-content="tab-messages">Contact Form Inquiries</button>
+        </div>
+
+        <!-- Consultation Bookings Listing -->
+        <div class="tab-pane active" id="tab-appointments">
+          <div id="appointments-list-container">
+            <p style="color: var(--color-text-light);">Loading bookings...</p>
+          </div>
+        </div>
+
+        <!-- Inquiries Listing -->
+        <div class="tab-pane" id="tab-messages" style="display: none;">
+          <div id="messages-list-container">
+            <p style="color: var(--color-text-light);">Loading contact inquiries...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: BLOG ARTICLES MANAGER -->
+      <section class="admin-section-content" id="section-blog">
+        <div class="page-title-row">
+          <h2 class="page-heading">Blog Manager</h2>
+          <button class="btn btn-primary" id="btn-create-post">✍️ Write Article</button>
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Publish Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="blog-table-body">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--color-text-light);">Loading articles...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: VISA COSTS CONFIG -->
+      <section class="admin-section-content" id="section-visa-costs">
+        <div class="page-title-row">
+          <h2 class="page-heading">Visa Cost Configuration</h2>
+          <button class="btn btn-primary" id="btn-save-visa-config">Save Changes</button>
+        </div>
+
+        <div class="config-panel glass-panel">
+          <div class="panel-heading">Standard Fees Estimations</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="visa-eng-test">English Language Test Fee (AUD)</label>
+              <input class="form-input" type="number" id="visa-eng-test">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="visa-health-chk">Health Examination Fee (AUD)</label>
+              <input class="form-input" type="number" id="visa-health-chk">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="visa-police-chk">Federal Police Check Fee (AUD)</label>
+              <input class="form-input" type="number" id="visa-police-chk">
+            </div>
+          </div>
+        </div>
+
+        <div class="config-panel glass-panel">
+          <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Subclass Visa Charges</span>
+            <button class="btn btn-secondary" style="font-size:1rem; padding: 6px 12px;" id="btn-add-subclass">＋ Add Subclass</button>
+          </div>
+          <div id="subclasses-config-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: TIMELINES CONFIG -->
+      <section class="admin-section-content" id="section-timelines">
+        <div class="page-title-row">
+          <h2 class="page-heading">Processing Timelines Configuration</h2>
+          <button class="btn btn-primary" id="btn-save-timelines-config">Save Changes</button>
+        </div>
+
+        <div class="config-panel glass-panel">
+          <div class="panel-heading">Delay Factor Modifiers (Percentage Penalty)</div>
+          <p style="font-size: 0.85rem; color: var(--color-text-light); margin-bottom: 20px; line-height: 1.4;">
+            Specify the decimal multipliers added to processing times when files are incomplete or responses delayed. E.g., 0.3 = +30% duration.
+          </p>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="time-mod-incomplete">Incomplete Documents Penalty</label>
+              <input class="form-input" type="number" step="0.05" id="time-mod-incomplete">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="time-mod-biometrics">Missing Biometrics Penalty</label>
+              <input class="form-input" type="number" step="0.05" id="time-mod-biometrics">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="time-mod-response">Late Request response Penalty</label>
+              <input class="form-input" type="number" step="0.05" id="time-mod-response">
+            </div>
+          </div>
+        </div>
+
+        <div class="config-panel glass-panel">
+          <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Subclass Visa Processing Estimations</span>
+            <button class="btn btn-secondary" style="font-size: 1rem; padding: 6px 12px;" id="btn-add-timeline-subclass">＋ Add Subclass</button>
+          </div>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Subclass Code</th>
+                  <th>Visual Label text</th>
+                  <th>Base Period</th>
+                  <th>Unit</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="timeline-subclasses-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: POINTS CALCULATOR CONFIG -->
+      <section class="admin-section-content" id="section-points">
+        <div class="page-title-row">
+          <h2 class="page-heading">Points Calculator Variable config</h2>
+          <button class="btn btn-primary" id="btn-save-points-config">Save Changes</button>
+        </div>
+
+        <div class="section-tab-nav" id="points-category-tabs">
+          <button class="section-tab-btn active" data-points-category="age">Age</button>
+          <button class="section-tab-btn" data-points-category="english">English</button>
+          <button class="section-tab-btn" data-points-category="education">Education</button>
+          <button class="section-tab-btn" data-points-category="experienceOS">Experience (OS)</button>
+          <button class="section-tab-btn" data-points-category="experienceAU">Experience (AU)</button>
+          <button class="section-tab-btn" data-points-category="partner">Partner</button>
+          <button class="section-tab-btn" data-points-category="pathway">Visa Pathway</button>
+          <button class="section-tab-btn" data-points-category="boosts">Boosts</button>
+        </div>
+
+        <div class="config-panel glass-panel">
+          <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+            <span id="points-editor-title">Points Options Editor</span>
+            <button class="btn btn-secondary" style="font-size: 1rem; padding: 6px 12px;" id="btn-add-points-option">＋ Add Option</button>
+          </div>
+          
+          <div class="editable-list-container" id="points-options-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ARTICLE COMPOSER MODAL -->
+  <div class="admin-modal" id="modal-blog-composer">
+    <div class="admin-modal-content">
+      <button class="admin-modal-close" id="btn-close-composer">✕</button>
+      <h3 class="panel-heading" id="composer-modal-title">Write New Blog Article</h3>
+      
+      <form id="blog-composer-form">
+        <input type="hidden" id="post-id">
+        <div class="form-group">
+          <label class="form-label" for="post-title">Article Title</label>
+          <input class="form-input" type="text" id="post-title" required placeholder="E.g., Key Visa Changes for Accounting Onshore Graduates">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="post-summary">Article Summary (Short excerpt)</label>
+          <input class="form-input" type="text" id="post-summary" placeholder="E.g., Essential updates regarding the new migration schedules...">
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="post-category">Category</label>
+            <select class="form-select" id="post-category" required>
+              <option value="Migration">Migration</option>
+              <option value="Education">Education</option>
+              <option value="Visa Policy">Visa Policy</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="post-cover">Cover Image URL</label>
+            <input class="form-input" type="url" id="post-cover" placeholder="Https://images.unsplash.com/...">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="post-content">Article Content (Supports HTML paragraphs & lists)</label>
+          <textarea class="form-textarea" id="post-content" required placeholder="Use standard paragraphs <p></p>, titles <h2></h2>, and lists..."></textarea>
+        </div>
+
+        <div class="form-grid" style="align-items: flex-end;">
+          <div class="form-group">
+            <label class="form-label" for="post-status">Publication Status</label>
+            <select class="form-select" id="post-status" required>
+              <option value="draft">Draft</option>
+              <option value="published">Published Immediately</option>
+              <option value="scheduled">Scheduled Upload</option>
+            </select>
+          </div>
+          <div class="form-group" id="scheduled-date-wrap" style="display: none;">
+            <label class="form-label" for="post-scheduled-date">Scheduled Date & Time (AEST)</label>
+            <input class="form-input" type="datetime-local" id="post-scheduled-date">
+          </div>
+        </div>
+
+        <div class="panel-actions-row">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-composer">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-composer">Publish / Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Javascript Logic -->
+  <script>
+    // Configures client address mapping dynamically
+    const API_URL = ''; // Relative paths since frontend is hosted statically on same server
+
+    // Application state
+    let currentUser = null;
+    let dashboardStats = { appointments: [], messages: [] };
+    let visaConfig = { subclasses: {}, standardFees: {} };
+    let timelinesConfig = { subclasses: [], modifiers: {} };
+    let pointsConfig = {};
+    let activePointsCategory = 'age';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup UI hooks
+      initAuth();
+      initNavigation();
+      initTabs();
+      initBlogComposer();
+      initPointsTabs();
+    });
+
+    // Check status and login triggers
+    async function initAuth() {
+      // Detect Google Client ID if dynamically exposed, else check environment
+      try {
+        const res = await fetch('/api/auth/status');
+        const data = await res.json();
+        if (data.loggedIn) {
+          showDashboard(data.user);
+        }
+      } catch (err) {
+        console.warn('Backend server is offline or unavailable.', err);
+      }
+
+      // Check if Google Client ID is configured on GSI loader
+      const gsiLoader = document.getElementById('g_id_onload');
+      if (gsiLoader) {
+        // Query server config
+        // If not configured, we'll display a warning inside the login form
+        gsiLoader.setAttribute('data-client_id', window.GOOGLE_CLIENT_ID || 'dummy-client-id');
+      }
+
+      // Mock Login Submit
+      const mockForm = document.getElementById('mock-login-form');
+      if (mockForm) {
+        mockForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('mock-name').value;
+          const email = document.getElementById('mock-email').value;
+
+          try {
+            const res = await fetch('/api/auth/mock-login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email })
+            });
+
+            const result = await res.json();
+            if (res.ok && result.success) {
+              showDashboard(result.user);
+            } else {
+              alert(result.error || 'Login failed.');
+            }
+          } catch (err) {
+            alert('Could not submit mock login. Verify server is running on port 3000.');
+          }
+        });
+      }
+
+      // Logout trigger
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          try {
+            const res = await fetch('/api/auth/logout', { method: 'POST' });
+            if (res.ok) {
+              location.reload();
+            }
+          } catch (err) {
+            console.error('Logout error:', err);
+          }
+        });
+      }
+    }
+
+    // Google Auth Credential Handler (global scope callback)
+    window.handleCredentialResponse = async (response) => {
+      try {
+        const res = await fetch('/api/auth/google-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: response.credential })
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          showDashboard(result.user);
+        } else {
+          alert(result.error || 'Access denied.');
+        }
+      } catch (err) {
+        console.error('Google verification error:', err);
+        alert('Server validation of Google ID failed.');
+      }
+    };
+
+    // Transition between Auth screen and Main workspace
+    function showDashboard(user) {
+      currentUser = user;
+      document.getElementById('auth-overlay').style.display = 'none';
+      document.getElementById('admin-wrapper').style.display = 'flex';
+      
+      // Update UI components
+      document.getElementById('admin-name').textContent = user.name;
+      document.getElementById('admin-email').textContent = user.email;
+      if (user.picture) {
+        document.getElementById('admin-avatar').src = user.picture;
+      }
+
+      // Fetch all dashboard configs and notification list
+      loadDashboardStats();
+      loadVisaConfig();
+      loadTimelinesConfig();
+      loadPointsConfig();
+      loadBlogPosts();
+    }
+
+    // Sidebar navigation controller
+    function initNavigation() {
+      const menuItems = document.querySelectorAll('.admin-menu-item');
+      const sectionPanels = document.querySelectorAll('.admin-section-content');
+
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const target = item.getAttribute('data-target');
+          
+          menuItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+
+          sectionPanels.forEach(p => {
+            if (p.id === target) {
+              p.classList.add('active');
+            } else {
+              p.classList.remove('active');
+            }
+          });
+        });
+      });
+    }
+
+    // General Sub-tabs controller (Dashboard list switches)
+    function initTabs() {
+      const tabs = document.querySelectorAll('.section-tab-btn');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const parent = tab.parentElement;
+          // Only check siblings
+          parent.querySelectorAll('.section-tab-btn').forEach(b => b.classList.remove('active'));
+          tab.classList.add('active');
+
+          const paneId = tab.getAttribute('data-tab-content');
+          if (paneId) {
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+              if (pane.id === paneId) {
+                pane.style.display = 'block';
+              } else {
+                pane.style.display = 'none';
+              }
+            });
+          }
+        });
+      });
+    }
+
+    /* ==========================================================================
+       DASHBOARD DESK (APPOINTMENTS & MESSAGES)
+       ========================================================================== */
+    async function loadDashboardStats() {
+      try {
+        const res = await fetch('/api/admin/notifications');
+        if (res.ok) {
+          const data = await res.json();
+          dashboardStats = data;
+          
+          renderAppointmentsList();
+          renderMessagesList();
+          updateDashboardCounters();
+        }
+      } catch (err) {
+        console.error('Error fetching admin notifications:', err);
+      }
+    }
+
+    function updateDashboardCounters() {
+      const aptsCount = dashboardStats.appointments.length;
+      const msgsCount = dashboardStats.messages.length;
+
+      // Count items with 0 replies
+      const pendingApts = dashboardStats.appointments.filter(a => !a.replies || a.replies.length === 0).length;
+      const pendingMsgs = dashboardStats.messages.filter(m => !m.replies || m.replies.length === 0).length;
+      const totalPending = pendingApts + pendingMsgs;
+
+      document.getElementById('stat-appointments-count').textContent = aptsCount;
+      document.getElementById('stat-messages-count').textContent = msgsCount;
+      document.getElementById('stat-pending-replies').textContent = totalPending;
+    }
+
+    function renderAppointmentsList() {
+      const container = document.getElementById('appointments-list-container');
+      if (dashboardStats.appointments.length === 0) {
+        container.innerHTML = `<p style="padding:20px; color:var(--color-text-light); text-align:center;">No consultations booked yet.</p>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      dashboardStats.appointments.forEach(apt => {
+        const dateStr = new Date(apt.createdAt).toLocaleString();
+        const hasReplies = apt.replies && apt.replies.length > 0;
+        
+        const card = document.createElement('div');
+        card.className = `notification-item glass-panel ${hasReplies ? '' : 'pending'}`;
+        card.innerHTML = `
+          <div class="notification-header">
+            <span class="notification-sender">👤 ${apt.name} (${apt.email})</span>
+            <span class="notification-date">${dateStr}</span>
+          </div>
+          <div class="notification-details">
+            <span>📞 Phone: ${apt.phone}</span>
+            <span>📍 Region: ${apt.region.toUpperCase()}</span>
+            <span>🔖 Visa: ${apt.visaType}</span>
+            <span>📅 Booking: ${apt.date} @ ${apt.time}</span>
+          </div>
+          <div class="notification-body"><strong>Consultation Notes:</strong><br>${apt.notes}</div>
+          
+          <div class="replies-container" id="replies-apt-${apt.id}">
+            ${(apt.replies || []).map(r => `
+              <div class="reply-item">
+                <div class="reply-header">
+                  <span>✉️ Sent by: ${r.sentBy}</span>
+                  <span>${new Date(r.sentAt).toLocaleString()}</span>
+                </div>
+                <div class="reply-message">${r.message}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="quick-reply-box">
+            <textarea class="quick-reply-textarea" id="reply-text-apt-${apt.id}" placeholder="Type email response to client..."></textarea>
+            <div class="quick-reply-actions">
+              <button class="btn btn-primary" style="font-size: 1rem; padding: 6px 16px;" onclick="sendReply('appointment', '${apt.id}')">
+                Send Simulated Email Reply
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderMessagesList() {
+      const container = document.getElementById('messages-list-container');
+      if (dashboardStats.messages.length === 0) {
+        container.innerHTML = `<p style="padding:20px; color:var(--color-text-light); text-align:center;">No contact messages received.</p>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      dashboardStats.messages.forEach(msg => {
+        const dateStr = new Date(msg.createdAt).toLocaleString();
+        const hasReplies = msg.replies && msg.replies.length > 0;
+        
+        const card = document.createElement('div');
+        card.className = `notification-item message glass-panel ${hasReplies ? '' : 'pending'}`;
+        card.innerHTML = `
+          <div class="notification-header">
+            <span class="notification-sender">✉️ ${msg.name} (${msg.email})</span>
+            <span class="notification-date">${dateStr}</span>
+          </div>
+          <div class="notification-details">
+            <span>📞 Phone: ${msg.phone}</span>
+            <span>🌍 Country: ${msg.country}</span>
+            <span>🔖 Visa Pathway: ${msg.visaType}</span>
+            <span>🧾 Ref Code: ${msg.refCode}</span>
+          </div>
+          <div class="notification-body"><strong>Client message:</strong><br>${msg.message}</div>
+          
+          <div class="replies-container" id="replies-msg-${msg.id}">
+            ${(msg.replies || []).map(r => `
+              <div class="reply-item">
+                <div class="reply-header">
+                  <span>✉️ Sent by: ${r.sentBy}</span>
+                  <span>${new Date(r.sentAt).toLocaleString()}</span>
+                </div>
+                <div class="reply-message">${r.message}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="quick-reply-box">
+            <textarea class="quick-reply-textarea" id="reply-text-msg-${msg.id}" placeholder="Type email response to client..."></textarea>
+            <div class="quick-reply-actions">
+              <button class="btn btn-primary" style="font-size: 1rem; padding: 6px 16px;" onclick="sendReply('message', '${msg.id}')">
+                Send Simulated Email Reply
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Submit Simulated Reply Email
+    window.sendReply = async (type, id) => {
+      const textarea = document.getElementById(`reply-text-${type === 'appointment' ? 'apt' : 'msg'}-${id}`);
+      const replyMessage = textarea.value.trim();
+      
+      if (!replyMessage) {
+        alert('Please enter a response.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/notifications/reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type, id, replyMessage })
+        });
+
+        if (res.ok) {
+          const result = await res.json();
+          textarea.value = '';
+          
+          // Append reply to DOM dynamically
+          const repliesContainer = document.getElementById(`replies-${type === 'appointment' ? 'apt' : 'msg'}-${id}`);
+          const newReplyDiv = document.createElement('div');
+          newReplyDiv.className = 'reply-item';
+          newReplyDiv.innerHTML = `
+            <div class="reply-header">
+              <span>✉️ Sent by: ${result.reply.sentBy}</span>
+              <span>${new Date(result.reply.sentAt).toLocaleString()}</span>
+            </div>
+            <div class="reply-message">${result.reply.message}</div>
+          `;
+          repliesContainer.appendChild(newReplyDiv);
+          
+          // Update local state and counters
+          loadDashboardStats();
+        } else {
+          alert('Failed to send reply.');
+        }
+      } catch (err) {
+        console.error('Error submitting reply:', err);
+      }
+    };
+
+
+    /* ==========================================================================
+       BLOG ARTICLES MANAGER CRUD
+       ========================================================================== */
+    const composerModal = document.getElementById('modal-blog-composer');
+    const composerForm = document.getElementById('blog-composer-form');
+    const statusSelect = document.getElementById('post-status');
+    const scheduledDateWrap = document.getElementById('scheduled-date-wrap');
+
+    function initBlogComposer() {
+      // Toggle scheduled date wrapper
+      statusSelect.addEventListener('change', () => {
+        if (statusSelect.value === 'scheduled') {
+          scheduledDateWrap.style.display = 'block';
+          document.getElementById('post-scheduled-date').setAttribute('required', 'true');
+        } else {
+          scheduledDateWrap.style.display = 'none';
+          document.getElementById('post-scheduled-date').removeAttribute('required');
+        }
+      });
+
+      // Write button trigger
+      document.getElementById('btn-create-post').addEventListener('click', () => {
+        openComposer();
+      });
+
+      // Cancel buttons triggers
+      document.getElementById('btn-close-composer').addEventListener('click', closeComposer);
+      document.getElementById('btn-cancel-composer').addEventListener('click', closeComposer);
+
+      // Save form submit
+      composerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const id = document.getElementById('post-id').value;
+        const title = document.getElementById('post-title').value;
+        const summary = document.getElementById('post-summary').value;
+        const category = document.getElementById('post-category').value;
+        const coverImage = document.getElementById('post-cover').value;
+        const content = document.getElementById('post-content').value;
+        const status = statusSelect.value;
+        const scheduledDate = document.getElementById('post-scheduled-date').value;
+
+        const payload = { id: id || null, title, summary, category, coverImage, content, status, scheduledDate };
+
+        try {
+          const res = await fetch('/api/admin/blog/posts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            closeComposer();
+            loadBlogPosts();
+          } else {
+            const err = await res.json();
+            alert(err.error || 'Failed to save post.');
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    }
+
+    async function loadBlogPosts() {
+      const tableBody = document.getElementById('blog-table-body');
+      try {
+        const res = await fetch('/api/admin/blog/posts');
+        if (res.ok) {
+          const posts = await res.json();
+          tableBody.innerHTML = '';
+          
+          if (posts.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-text-light);">No articles found. Click "Write Article" to start!</td></tr>`;
+            return;
+          }
+
+          posts.forEach(post => {
+            const row = document.createElement('tr');
+            
+            const dateVal = post.status === 'scheduled' ? post.scheduledDate : (post.createdAt || post.updatedAt);
+            const dateStr = new Date(dateVal).toLocaleDateString() + ' ' + new Date(dateVal).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            row.innerHTML = `
+              <td><strong>${post.title}</strong></td>
+              <td>${post.category}</td>
+              <td>${post.author || 'Admin'}</td>
+              <td>${dateStr}</td>
+              <td><span class="status-badge ${post.status}">${post.status}</span></td>
+              <td>
+                <button class="btn-icon" onclick="editPost('${post.id}')" title="Edit">✏️</button>
+                <button class="btn-icon btn-danger-hover" onclick="deletePost('${post.id}')" title="Delete">🗑️</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Modal composers openers
+    function openComposer(post = null) {
+      composerForm.reset();
+      
+      if (post) {
+        document.getElementById('composer-modal-title').textContent = 'Edit Blog Article';
+        document.getElementById('post-id').value = post.id;
+        document.getElementById('post-title').value = post.title;
+        document.getElementById('post-summary').value = post.summary;
+        document.getElementById('post-category').value = post.category;
+        document.getElementById('post-cover').value = post.coverImage;
+        document.getElementById('post-content').value = post.content;
+        statusSelect.value = post.status;
+        
+        if (post.status === 'scheduled' && post.scheduledDate) {
+          // Format ISO to datetime-local string format YYYY-MM-DDTHH:MM
+          const localDt = new Date(post.scheduledDate);
+          const offset = localDt.getTimezoneOffset();
+          const offsetDt = new Date(localDt.getTime() - (offset * 60 * 1000));
+          document.getElementById('post-scheduled-date').value = offsetDt.toISOString().slice(0, 16);
+          scheduledDateWrap.style.display = 'block';
+        } else {
+          scheduledDateWrap.style.display = 'none';
+        }
+      } else {
+        document.getElementById('composer-modal-title').textContent = 'Write New Blog Article';
+        document.getElementById('post-id').value = '';
+        scheduledDateWrap.style.display = 'none';
+      }
+
+      composerModal.classList.add('active');
+    }
+
+    function closeComposer() {
+      composerModal.classList.remove('active');
+    }
+
+    // Edit Post trigger fetch
+    window.editPost = async (id) => {
+      try {
+        const res = await fetch('/api/admin/blog/posts');
+        const posts = await res.json();
+        const post = posts.find(p => p.id === id);
+        if (post) {
+          openComposer(post);
+        }
+      } catch (err) {
+        console.error('Error fetching post detail:', err);
+      }
+    };
+
+    // Delete post request
+    window.deletePost = async (id) => {
+      if (!confirm('Are you sure you want to permanently delete this article?')) return;
+
+      try {
+        const res = await fetch(`/api/admin/blog/posts/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          loadBlogPosts();
+        } else {
+          alert('Failed to delete post.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+
+    /* ==========================================================================
+       VISA COSTS PRICING SECTION
+       ========================================================================== */
+    async function loadVisaConfig() {
+      try {
+        const res = await fetch('/api/admin/config/visa');
+        if (res.ok) {
+          visaConfig = await res.json();
+          
+          document.getElementById('visa-eng-test').value = visaConfig.standardFees.englishTestEst;
+          document.getElementById('visa-health-chk').value = visaConfig.standardFees.healthCheckPerPerson;
+          document.getElementById('visa-police-chk').value = visaConfig.standardFees.policeCheckPerPerson;
+
+          renderSubclassesList();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderSubclassesList() {
+      const container = document.getElementById('subclasses-config-list');
+      container.innerHTML = '';
+
+      Object.entries(visaConfig.subclasses).forEach(([code, data]) => {
+        const card = document.createElement('div');
+        card.className = 'subclass-config-card';
+        card.innerHTML = `
+          <div class="subclass-card-header">
+            <h4 class="subclass-card-title">Subclass ${code}</h4>
+            <button class="btn-icon btn-danger-hover" onclick="removeSubclass('${code}')" title="Remove Subclass">🗑️ Remove</button>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Full Visa Label/Name</label>
+              <input class="form-input" type="text" id="visa-name-${code}" value="${data.name}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primary Applicant Base Fee (AUD)</label>
+              <input class="form-input" type="number" id="visa-base-${code}" value="${data.baseFee}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Secondary Applicant 18+ Fee (AUD)</label>
+              <input class="form-input" type="number" id="visa-sec-18-${code}" value="${data.secondaryApplicant18Plus}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Secondary Applicant Under 18 Fee (AUD)</label>
+              <input class="form-input" type="number" id="visa-sec-u18-${code}" value="${data.secondaryApplicantUnder18}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Estimated Skills Assessment Cost (AUD)</label>
+              <input class="form-input" type="number" id="visa-skills-${code}" value="${data.skillsAssessmentEst}">
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Save Visa Pricing Config
+    document.getElementById('btn-save-visa-config').addEventListener('click', async () => {
+      // Rebuild config payload
+      const standardFees = {
+        englishTestEst: parseInt(document.getElementById('visa-eng-test').value) || 0,
+        healthCheckPerPerson: parseInt(document.getElementById('visa-health-chk').value) || 0,
+        policeCheckPerPerson: parseInt(document.getElementById('visa-police-chk').value) || 0
+      };
+
+      const subclasses = {};
+      Object.keys(visaConfig.subclasses).forEach(code => {
+        subclasses[code] = {
+          name: document.getElementById(`visa-name-${code}`).value,
+          baseFee: parseInt(document.getElementById(`visa-base-${code}`).value) || 0,
+          secondaryApplicant18Plus: parseInt(document.getElementById(`visa-sec-18-${code}`).value) || 0,
+          secondaryApplicantUnder18: parseInt(document.getElementById(`visa-sec-u18-${code}`).value) || 0,
+          skillsAssessmentEst: parseInt(document.getElementById(`visa-skills-${code}`).value) || 0
+        };
+      });
+
+      const payload = { subclasses, standardFees };
+
+      try {
+        const res = await fetch('/api/admin/config/visa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        
+        if (res.ok) {
+          alert('Visa configuration variables saved successfully.');
+          loadVisaConfig();
+        } else {
+          alert('Failed to save visa configuration.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // Add new subclass block dynamically
+    document.getElementById('btn-add-subclass').addEventListener('click', () => {
+      const code = prompt('Enter visa subclass code (e.g. 186):');
+      if (!code) return;
+      if (visaConfig.subclasses[code]) {
+        alert('Subclass already exists.');
+        return;
+      }
+
+      visaConfig.subclasses[code] = {
+        name: `Subclass ${code} Visa`,
+        baseFee: 0,
+        secondaryApplicant18Plus: 0,
+        secondaryApplicantUnder18: 0,
+        skillsAssessmentEst: 0
+      };
+
+      renderSubclassesList();
+    });
+
+    window.removeSubclass = (code) => {
+      if (!confirm(`Are you sure you want to remove Subclass ${code}?`)) return;
+      delete visaConfig.subclasses[code];
+      renderSubclassesList();
+    };
+
+
+    /* ==========================================================================
+       PROCESSING TIMELINES SECTION
+       ========================================================================== */
+    async function loadTimelinesConfig() {
+      try {
+        const res = await fetch('/api/admin/config/timelines');
+        if (res.ok) {
+          timelinesConfig = await res.json();
+
+          document.getElementById('time-mod-incomplete').value = timelinesConfig.modifiers.notComplete;
+          document.getElementById('time-mod-biometrics').value = timelinesConfig.modifiers.notBiometrics;
+          document.getElementById('time-mod-response').value = timelinesConfig.modifiers.notResponse;
+
+          renderTimelinesTable();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderTimelinesTable() {
+      const tbody = document.getElementById('timeline-subclasses-body');
+      tbody.innerHTML = '';
+
+      timelinesConfig.subclasses.forEach((sub, idx) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><input class="form-input" type="text" id="time-val-${idx}" value="${sub.value}" style="padding: 6px 10px; max-width:80px;"></td>
+          <td><input class="form-input" type="text" id="time-txt-${idx}" value="${sub.text}" style="padding: 6px 10px;"></td>
+          <td><input class="form-input" type="number" id="time-base-${idx}" value="${sub.base}" style="padding: 6px 10px; max-width:80px;"></td>
+          <td>
+            <select class="form-select" id="time-unit-${idx}" style="padding: 6px 10px; max-width:120px;">
+              <option value="Days" ${sub.unit === 'Days' ? 'selected' : ''}>Days</option>
+              <option value="Weeks" ${sub.unit === 'Weeks' ? 'selected' : ''}>Weeks</option>
+              <option value="Months" ${sub.unit === 'Months' ? 'selected' : ''}>Months</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn-icon btn-danger-hover" onclick="removeTimelineSubclass(${idx})" title="Remove">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Save Timeline Configurations
+    document.getElementById('btn-save-timelines-config').addEventListener('click', async () => {
+      const modifiers = {
+        notComplete: parseFloat(document.getElementById('time-mod-incomplete').value) || 0,
+        notBiometrics: parseFloat(document.getElementById('time-mod-biometrics').value) || 0,
+        notResponse: parseFloat(document.getElementById('time-mod-response').value) || 0
+      };
+
+      const subclasses = [];
+      const tbodyRows = document.getElementById('timeline-subclasses-body').children;
+      
+      for (let i = 0; i < tbodyRows.length; i++) {
+        subclasses.push({
+          value: document.getElementById(`time-val-${i}`).value,
+          text: document.getElementById(`time-txt-${i}`).value,
+          base: parseInt(document.getElementById(`time-base-${i}`).value) || 0,
+          unit: document.getElementById(`time-unit-${i}`).value
+        });
+      }
+
+      const payload = { subclasses, modifiers };
+
+      try {
+        const res = await fetch('/api/admin/config/timelines', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          alert('Processing timeline configuration variables saved.');
+          loadTimelinesConfig();
+        } else {
+          alert('Failed to save timelines.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    document.getElementById('btn-add-timeline-subclass').addEventListener('click', () => {
+      timelinesConfig.subclasses.push({
+        value: '100',
+        text: 'New Visa Category Subclass 100',
+        base: 10,
+        unit: 'Months'
+      });
+      renderTimelinesTable();
+    });
+
+    window.removeTimelineSubclass = (idx) => {
+      timelinesConfig.subclasses.splice(idx, 1);
+      renderTimelinesTable();
+    };
+
+
+    /* ==========================================================================
+       POINTS CALCULATOR CONFIG SECTION
+       ========================================================================== */
+    function initPointsTabs() {
+      const tabs = document.querySelectorAll('#points-category-tabs .section-tab-btn');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activePointsCategory = tab.getAttribute('data-points-category');
+          renderPointsOptions();
+        });
+      });
+
+      // Save changes trigger
+      document.getElementById('btn-save-points-config').addEventListener('click', savePointsConfig);
+
+      // Add option trigger
+      document.getElementById('btn-add-points-option').addEventListener('click', addPointsOption);
+    }
+
+    async function loadPointsConfig() {
+      try {
+        const res = await fetch('/api/admin/config/points');
+        if (res.ok) {
+          pointsConfig = await res.json();
+          renderPointsOptions();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderPointsOptions() {
+      const listContainer = document.getElementById('points-options-list');
+      listContainer.innerHTML = '';
+      
+      const titleSpan = document.getElementById('points-editor-title');
+      titleSpan.textContent = `Editing: ${activePointsCategory.toUpperCase()}`;
+
+      const options = pointsConfig[activePointsCategory] || [];
+
+      options.forEach((opt, idx) => {
+        const isBoost = activePointsCategory === 'boosts';
+        
+        const row = document.createElement('div');
+        row.className = 'editable-list-item';
+
+        if (isBoost) {
+          row.innerHTML = `
+            <span style="font-size:0.8rem; color:var(--color-primary-hover); font-weight:bold;">ID:</span>
+            <input type="text" id="pts-boost-id-${idx}" value="${opt.id}" style="max-width:140px;">
+            <span style="font-size:0.8rem; color:var(--color-primary-hover); font-weight:bold;">Label text:</span>
+            <input type="text" id="pts-text-${idx}" value="${opt.text}">
+            <span style="font-size:0.8rem; color:var(--color-primary-hover); font-weight:bold;">Points:</span>
+            <input type="number" class="item-value" id="pts-val-${idx}" value="${opt.value}">
+            <button class="btn-icon btn-danger-hover" onclick="removePointsOption(${idx})">🗑️</button>
+          `;
+        } else {
+          row.innerHTML = `
+            <span style="font-size:0.8rem; color:var(--color-primary-hover); font-weight:bold;">Option Label:</span>
+            <input type="text" id="pts-text-${idx}" value="${opt.text}">
+            <span style="font-size:0.8rem; color:var(--color-primary-hover); font-weight:bold;">Points:</span>
+            <input type="number" class="item-value" id="pts-val-${idx}" value="${opt.value}">
+            <button class="btn-icon btn-danger-hover" onclick="removePointsOption(${idx})">🗑️</button>
+          `;
+        }
+        listContainer.appendChild(row);
+      });
+    }
+
+    function addPointsOption() {
+      if (!pointsConfig[activePointsCategory]) {
+        pointsConfig[activePointsCategory] = [];
+      }
+
+      if (activePointsCategory === 'boosts') {
+        pointsConfig[activePointsCategory].push({
+          id: `pts-${Date.now()}`,
+          text: 'New Additional Boost Pathway Option (+5 pts)',
+          value: 5
+        });
+      } else {
+        pointsConfig[activePointsCategory].push({
+          text: 'New Option Value Description (0 points)',
+          value: 0
+        });
+      }
+
+      renderPointsOptions();
+    }
+
+    window.removePointsOption = (idx) => {
+      pointsConfig[activePointsCategory].splice(idx, 1);
+      renderPointsOptions();
+    };
+
+    async function savePointsConfig() {
+      // Rebuild the current category's arrays from UI
+      const listContainer = document.getElementById('points-options-list');
+      const items = listContainer.children;
+      const updatedOptions = [];
+
+      for (let idx = 0; idx < items.length; idx++) {
+        if (activePointsCategory === 'boosts') {
+          updatedOptions.push({
+            id: document.getElementById(`pts-boost-id-${idx}`).value,
+            text: document.getElementById(`pts-text-${idx}`).value,
+            value: parseInt(document.getElementById(`pts-val-${idx}`).value) || 0
+          });
+        } else {
+          updatedOptions.push({
+            text: document.getElementById(`pts-text-${idx}`).value,
+            value: document.getElementById(`pts-val-${idx}`).value // Note: points values (except boosts) can be string values in original points-config.json
+          });
+        }
+      }
+
+      pointsConfig[activePointsCategory] = updatedOptions;
+
+      try {
+        const res = await fetch('/api/admin/config/points', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pointsConfig)
+        });
+
+        if (res.ok) {
+          alert('Points Calculator variables configurations saved.');
+          loadPointsConfig();
+        } else {
+          alert('Failed to save points config.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+
+</html>
