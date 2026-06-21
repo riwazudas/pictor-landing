@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights & News | Pictor Services</title>
+  <meta name="description"
+    content="Stay updated with the latest Australian immigration news, visa policy changes, OMARA regulations, and study abroad guides from Pictor Services.">
+
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=11">
+  <style>
+    /* Custom Blog Styles extending the main design system */
+    .blog-hero {
+      padding: 80px 0 50px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(237, 230, 242, 0.05) 0%, rgba(250, 248, 253, 0) 100%);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .blog-filters-container {
+      margin: 40px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .blog-search-box {
+      position: relative;
+      max-width: 350px;
+      width: 100%;
+    }
+
+    .blog-search-input {
+      width: 100%;
+      padding: 12px 20px 12px 45px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      color: var(--color-text);
+      font-size: 0.95rem;
+      transition: all var(--transition-fast);
+    }
+
+    .blog-search-input:focus {
+      border-color: var(--color-primary);
+      background: #ffffff;
+      box-shadow: 0 0 15px rgba(94, 51, 135, 0.2);
+      outline: none;
+    }
+
+    .blog-search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-light);
+      pointer-events: none;
+    }
+
+    .blog-categories {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .category-btn {
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border-color);
+      color: var(--color-text-light);
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: var(--font-headings);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all var(--transition-fast);
+    }
+
+    .category-btn:hover, .category-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-text-white);
+      box-shadow: 0 0 12px rgba(94, 51, 135, 0.3);
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 32px;
+      margin-bottom: 80px;
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      cursor: pointer;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .blog-card-image-wrap {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .blog-card-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-normal);
+    }
+
+    .blog-card:hover .blog-card-image {
+      transform: scale(1.06);
+    }
+
+    .blog-card-category {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: var(--color-primary);
+      color: var(--color-text-white);
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-family: var(--font-headings);
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .blog-card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .blog-card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-bottom: 12px;
+    }
+
+    .blog-card-title {
+      font-family: var(--font-headings);
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      color: var(--color-text);
+      transition: color var(--transition-fast);
+    }
+
+    .blog-card:hover .blog-card-title {
+      color: var(--color-primary);
+    }
+
+    .blog-card-summary {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-card-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--color-primary);
+      font-family: var(--font-headings);
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .blog-card-link svg {
+      width: 14px;
+      height: 14px;
+      transition: transform var(--transition-fast);
+    }
+
+    .blog-card:hover .blog-card-link svg {
+      transform: translateX(4px);
+    }
+
+    /* Modal Article Reader Styling */
+    .article-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(26, 21, 32, 0.45);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .article-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .article-modal-content {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      max-width: 850px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      animation: modalSlideUp var(--transition-normal);
+    }
+
+    @keyframes modalSlideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .article-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all var(--transition-fast);
+    }
+
+    .article-modal-close:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-text-white);
+      transform: scale(1.05);
+    }
+
+    .article-modal-header {
+      width: 100%;
+      height: 350px;
+      position: relative;
+    }
+
+    .article-modal-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .article-modal-cover-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(0deg, #ffffff 0%, rgba(26, 21, 32, 0.4) 100%);
+    }
+
+    .article-modal-meta-card {
+      position: absolute;
+      bottom: 24px;
+      left: 32px;
+      right: 32px;
+    }
+
+    .article-modal-category {
+      background: var(--color-primary);
+      color: var(--color-text-white);
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-family: var(--font-headings);
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-modal-title {
+      font-family: var(--font-headings);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: var(--color-text);
+      line-height: 1.1;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .article-modal-info {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    .article-modal-body {
+      padding: 40px 32px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--color-text);
+    }
+
+    .article-modal-body p {
+      margin-bottom: 24px;
+      color: var(--color-text);
+    }
+
+    .article-modal-body h2, .article-modal-body h3 {
+      font-family: var(--font-headings);
+      margin: 40px 0 16px;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .article-modal-body h2 { font-size: 1.8rem; }
+    .article-modal-body h3 { font-size: 1.4rem; }
+
+    .article-modal-body ul, .article-modal-body ol {
+      margin-bottom: 24px;
+      padding-left: 24px;
+    }
+
+    .article-modal-body li {
+      margin-bottom: 8px;
+    }
+
+    .article-modal-body blockquote {
+      border-left: 4px solid var(--color-primary);
+      background: rgba(94, 51, 135, 0.04);
+      padding: 16px 24px;
+      margin: 32px 0;
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+    }
+
+    /* Loading Spinner */
+    .blog-loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 0;
+    }
+  </style>
+</head>
+
+<body class="region-au">
+
+  <!-- TOP NOTIFICATION BAR -->
+  <div class="top-bar">
+    <div class="container top-bar-container">
+      <div class="top-bar-left">
+        <span class="pulse-indicator"></span>
+        <span class="top-bar-text regional-text" data-au="Australia & Nepal Migration Experts — Registered OMARA Agents"
+          data-np="Australia & Nepal Migration Experts — Authorized University Placements">Australia & Nepal Migration
+          Experts — Registered OMARA Agents</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="portal-toggle-container">
+          <button class="portal-toggle-btn active" id="btn-au" aria-label="Switch to Australia Portal">
+            <span class="flag">🇦🇺</span> <span class="label-text">Australia Portal</span>
+          </button>
+          <button class="portal-toggle-btn" id="btn-np" aria-label="Switch to Nepal Portal">
+            <span class="flag">🇳🇵</span> <span class="label-text">Nepal Portal</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY NAVIGATION -->
+  <header class="main-header" id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-container" aria-label="Pictor Services Home">
+        <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="nav-menu" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item-dropdown">
+            <a href="resources.html" class="nav-link active">Resources <svg class="dropdown-chevron" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg></a>
+            <ul class="dropdown-menu">
+              <li><a href="calculator.html" class="">Visa Cost Estimator</a></li>
+              <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
+              <li><a href="processing-times.html" class="">Visa Processing Times</a></li>
+              <li><a href="resources.html" class="">Guides & Checklists</a></li>
+            </ul>
+          </li>
+          <li><a href="blog.html" class="nav-link active">Blog</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav CTA & Mobile Toggle -->
+      <div class="nav-actions">
+        <a href="index.html#booking" class="btn btn-primary btn-nav-cta">Book Consultation</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <nav class="mobile-nav-menu">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+        <li><a href="services.html" class="mobile-nav-link">Services</a></li>
+        <li><a href="about.html" class="mobile-nav-link">About</a></li>
+        <li><a href="resources.html" class="mobile-nav-link">Resources</a></li>
+        <li><a href="blog.html" class="mobile-nav-link active">Blog</a></li>
+        <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
+        <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book
+            Consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="blog-hero">
+    <div class="container">
+      <span class="section-tag">Expert Analysis & Updates</span>
+      <h1 class="section-heading" style="margin-bottom: 8px;">Pictor Migration & Education Blog</h1>
+      <p class="section-subtext" style="max-width: 600px; margin: 0 auto;">
+        Stay informed on policy changes, processing times, education paths, and professional PR roadmaps.
+      </p>
+    </div>
+  </section>
+
+  <!-- FILTER & SEARCH SECTION -->
+  <div class="container">
+    <div class="blog-filters-container">
+      <div class="blog-categories">
+        <button class="category-btn active" data-category="all">All Articles</button>
+        <button class="category-btn" data-category="Migration">Migration</button>
+        <button class="category-btn" data-category="Education">Education</button>
+        <button class="category-btn" data-category="Visa Policy">Visa Policy</button>
+      </div>
+
+      <div class="blog-search-box">
+        <svg class="blog-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="blog-search-input" id="blog-search" placeholder="Search insights...">
+      </div>
+    </div>
+
+    <!-- BLOG ARTICLES GRID -->
+    <div class="blog-grid" id="blog-articles-grid">
+      <div class="blog-loading">
+        <div class="spinner-ring"></div>
+        <p style="margin-top: 15px;">Loading latest insights...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL ARTICLE MODAL READER -->
+  <div class="article-modal" id="article-reader-modal" role="dialog" aria-modal="true">
+    <div class="article-modal-content">
+      <button class="article-modal-close" id="modal-close-btn" aria-label="Close article">✕</button>
+      
+      <div class="article-modal-header">
+        <img src="" alt="" class="article-modal-cover" id="modal-cover">
+        <div class="article-modal-cover-overlay"></div>
+        <div class="article-modal-meta-card">
+          <span class="article-modal-category" id="modal-category">Category</span>
+          <h2 class="article-modal-title" id="modal-title">Title</h2>
+          <div class="article-modal-info">
+            <span id="modal-author">By Author</span>
+            <span>•</span>
+            <span id="modal-date">Date</span>
+            <span>•</span>
+            <span id="modal-readtime">Read Time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-modal-body" id="modal-body">
+        <!-- Content will be injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <!-- Footer Brand Info -->
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+        </div>
+        <p class="footer-desc">
+          Professional and trustworthy migration and education consulting services. We facilitate global mobility with
+          absolute legal compliance.
+        </p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/pictorservices/" target="_blank" rel="noopener" aria-label="Facebook"
+            class="social-link-btn">FB</a>
+          <a href="https://www.instagram.com/pictorservices/" target="_blank" rel="noopener" aria-label="Instagram"
+            class="social-link-btn">IG</a>
+          <a href="https://www.linkedin.com/company/pictor-services" target="_blank" rel="noopener"
+            aria-label="LinkedIn" class="social-link-btn">LN</a>
+          <a href="https://www.tiktok.com/@pictorservices" target="_blank" rel="noopener" aria-label="TikTok"
+            class="social-link-btn">TK</a>
+        </div>
+
+        <div class="footer-accreditation-badges regional-block" data-region="au" style="margin-top: 20px;">
+          <div class="mara-badge-statement"
+            style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
+            <div
+              style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">
+              Registered Migration Agent</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN:
+              0000000 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About Founder</a></li>
+          <li><a href="calculator.html">Visa Cost Estimator</a></li>
+          <li><a href="points-calculator.html">PR Points Calculator</a></li>
+          <li><a href="processing-times.html">Visa Processing Times</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+
+      <!-- Services List Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Expertise</h4>
+        <ul class="footer-links-list">
+          <li><a href="services.html#migration">Skilled Visas (189/190)</a></li>
+          <li><a href="services.html#migration">Employer Sponsorship</a></li>
+          <li><a href="services.html#professional-year">Professional Year</a></li>
+          <li><a href="index.html#booking">Roadmap Consultation</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-col footer-contact-col">
+        <h4 class="footer-col-title">Newsletter</h4>
+        <p class="footer-newsletter-p">Get current regulatory visa policy alerts in your inbox.</p>
+        <form class="footer-newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Your email address" class="newsletter-input" required>
+          <button type="submit" class="btn btn-primary newsletter-submit" aria-label="Subscribe">➔</button>
+        </form>
+        <div class="newsletter-success-msg" id="newsletter-success">Subscribed successfully!</div>
+      </div>
+    </div>
+
+    <!-- Offices list footer row -->
+    <div class="container footer-offices-row">
+      <div class="footer-office-item">
+        <strong>🇦🇺 Melbourne Office:</strong> Suite 314, Level 4, 365 Little Collins Street, Melbourne VIC 3000 | 03
+        9973 2117 | info@pictorservices.com
+      </div>
+      <div class="footer-office-item">
+        <strong>🇳🇵 Kathmandu Office:</strong> D&D Tower, Level 5, Mid Baneshwor, Kathmandu, Nepal | +977 01 4464969 |
+        hello@pictorservices.com
+      </div>
+    </div>
+
+    <!-- Copyright and compliance legal statement -->
+    <div class="container footer-bottom">
+      <p class="copyright-text">
+        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration #0000000.
+      </p>
+      <a href="index.html" class="back-to-top-btn" id="back-to-top" aria-label="Back to Top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m18 15-6-6-6 6" />
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Link script file as ES Module -->
+  <script type="module" src="script.js"></script>
+
+  <!-- Blog Logic Script -->
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const articlesGrid = document.getElementById('blog-articles-grid');
+      const searchInput = document.getElementById('blog-search');
+      const categoryButtons = document.querySelectorAll('.category-btn');
+      
+      const modal = document.getElementById('article-reader-modal');
+      const modalClose = document.getElementById('modal-close-btn');
+      const modalCover = document.getElementById('modal-cover');
+      const modalCategory = document.getElementById('modal-category');
+      const modalTitle = document.getElementById('modal-title');
+      const modalAuthor = document.getElementById('modal-author');
+      const modalDate = document.getElementById('modal-date');
+      const modalReadTime = document.getElementById('modal-readtime');
+      const modalBody = document.getElementById('modal-body');
+
+      let allArticles = [];
+      let activeCategory = 'all';
+      let searchQuery = '';
+
+      // Premium Mock Fallback Articles in case backend is offline
+      const MOCK_ARTICLES = [
+        {
+          id: "mock_1",
+          title: "New DHA Guidelines for Subclass 189 & 190 Invitations (FY 2026/27)",
+          slug: "dha-guidelines-subclass-189-190",
+          summary: "An in-depth breakdown of the latest points criteria revisions and priority processing frameworks introduced for independent and nominated skilled pathways.",
+          content: `
+            <p>The Department of Home Affairs (DHA) has recently released its strategic roadmap outlines for the General Skilled Migration (GSM) programs. The program aims to prioritize sector-specific applications, particularly in healthcare, engineering, infrastructure, and education.</p>
+            <h2>Priority Sectors for FY 2026/27</h2>
+            <p>To optimize domestic capacity, state-nominated visas under Subclass 190 and Subclass 491 will now benefit from fast-tracked reviews if the applicant holds a decision-ready assessment from an accredited skills assessor.</p>
+            <ul>
+              <li><strong>Healthcare & Social Assistance:</strong> Target processing within 35 days.</li>
+              <li><strong>Engineering & Infrastructure:</strong> Target processing within 60 days.</li>
+              <li><strong>Secondary and Vocational Education:</strong> Focus on regional school placements.</li>
+            </ul>
+            <blockquote>
+              "The regional skill development focus is key to Australia's long term industrial capabilities. State nominations will emphasize candidates with established regional connections."
+            </blockquote>
+            <h2>Key Changes in Points Evaluation</h2>
+            <p>While the baseline pass mark remains at 65 points, statistical analysis indicates invitations in standard professional roles (ICT, Marketing) are clearing at higher thresholds (85+ points). Setting up credentials like NAATI CCL and Professional Years is highly advised.</p>
+          `,
+          category: "Migration",
+          coverImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+          author: "Riwaz Udas",
+          readTime: "4 min read",
+          createdAt: "2026-06-20T10:00:00.000Z"
+        },
+        {
+          id: "mock_2",
+          title: "Choosing the Right Australian University: ECAN Student Guide",
+          slug: "choosing-right-australian-university-ecan-guide",
+          summary: "Learn how to select institutions based on QEAC counseling parameters, post-study work rights, regional study bonuses, and career placement services.",
+          content: `
+            <p>Choosing your tertiary study path in Australia is a multifaceted decision that extends far beyond university rankings. Students should also assess regional bonus points eligibility, living costs, and post-study work streams.</p>
+            <h2>Why Regional Campuses are Gaining Popularity</h2>
+            <p>Under current regulations, studying for at least two academic years at a regional campus grants an additional 5 points towards the PR points calculator. Furthermore, it unlocks extended Temporary Graduate Visa (Subclass 485) durations.</p>
+            <h2>The ECAN Counselling Framework</h2>
+            <p>Our QEAC certified consultants analyze your academic background, career goals, and budget constraints to match you with top-tier universities. We streamline the entire GTE (Genuine Temporary Entrant) validation process.</p>
+          `,
+          category: "Education",
+          coverImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800",
+          author: "ECAN Counsellor Team",
+          readTime: "5 min read",
+          createdAt: "2026-06-18T08:30:00.000Z"
+        },
+        {
+          id: "mock_3",
+          title: "Understanding July 1st Fee Adjustments and Regulatory Updates",
+          slug: "july-1st-fee-adjustments-regulatory-updates",
+          summary: "What the annual indexation of Australian government visa charges means for your application budget and how to prepare your funds accordingly.",
+          content: `
+            <p>Every year on July 1st, the Australian government indexes visa application charges (VAC) in line with cost-of-living adjustments. This update covers primary applications, dependents, and secondary installation charges.</p>
+            <h2>Expected Increases for Main Visa Subclasses</h2>
+            <p>Current estimates indicate an adjustment of 3% to 5% across major skilled and family migration streams. It is highly recommended to lodge your application prior to July 1st if all requirements are met.</p>
+            <blockquote>
+              Note: Government fees are non-refundable. Ensuring your documentation is complete and verified prevents loss of lodgement funds due to direct refusals.
+            </blockquote>
+          `,
+          category: "Visa Policy",
+          coverImage: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800",
+          author: "Pictor Legal Team",
+          readTime: "3 min read",
+          createdAt: "2026-06-15T12:00:00.000Z"
+        }
+      ];
+
+      // Fetch Articles from Backend API
+      async function fetchArticles() {
+        const config = window.GOOGLE_CALENDAR_CONFIG;
+        const apiUrl = (config && config.apiUrl) ? config.apiUrl.replace('/api', '') : 'http://localhost:3000';
+        
+        try {
+          const res = await fetch(`${apiUrl}/api/blog/posts`);
+          if (res.ok) {
+            allArticles = await res.json();
+            if (allArticles.length === 0) {
+              allArticles = MOCK_ARTICLES;
+            }
+          } else {
+            allArticles = MOCK_ARTICLES;
+          }
+        } catch (err) {
+          console.warn('Could not contact backend for articles, displaying mock insights.', err);
+          allArticles = MOCK_ARTICLES;
+        }
+        
+        renderArticles();
+      }
+
+      // Render Articles to Grid
+      function renderArticles() {
+        if (!articlesGrid) return;
+        articlesGrid.innerHTML = '';
+
+        // Filter articles based on category and search query
+        const filtered = allArticles.filter(post => {
+          const matchCategory = activeCategory === 'all' || post.category === activeCategory;
+          
+          const searchLower = searchQuery.toLowerCase();
+          const matchSearch = post.title.toLowerCase().includes(searchLower) || 
+                              post.summary.toLowerCase().includes(searchLower) ||
+                              post.content.toLowerCase().includes(searchLower);
+                              
+          return matchCategory && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+          articlesGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: var(--color-text-light);">
+              <p style="font-size: 1.1rem; font-weight: bold; margin-bottom: 8px;">No Insights Found</p>
+              <p style="font-size: 0.9rem;">Try adjusting your keywords or category filters.</p>
+            </div>
+          `;
+          return;
+        }
+
+        filtered.forEach(post => {
+          const card = document.createElement('article');
+          card.className = 'blog-card glass-panel card-lift';
+          
+          const dateStr = new Date(post.createdAt).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+
+          card.innerHTML = `
+            <div class="blog-card-image-wrap">
+              <span class="blog-card-category">${post.category}</span>
+              <img class="blog-card-image" src="${post.coverImage}" alt="${post.title}">
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span>By ${post.author}</span>
+                <span>${dateStr}</span>
+              </div>
+              <h3 class="blog-card-title">${post.title}</h3>
+              <p class="blog-card-summary">${post.summary}</p>
+              <a href="#" class="blog-card-link" onclick="event.preventDefault();">
+                Read Full Insight
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          `;
+
+          card.addEventListener('click', () => openArticleReader(post));
+          articlesGrid.appendChild(card);
+        });
+      }
+
+      // Open Article Reader Modal
+      function openArticleReader(post) {
+        modalCover.src = post.coverImage;
+        modalCover.alt = post.title;
+        modalCategory.textContent = post.category;
+        modalTitle.textContent = post.title;
+        modalAuthor.textContent = `By ${post.author}`;
+        modalReadTime.textContent = post.readTime;
+        
+        const dateStr = new Date(post.createdAt).toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        });
+        modalDate.textContent = dateStr;
+        modalBody.innerHTML = post.content;
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Lock background scroll
+      }
+
+      // Close Modal Reader
+      function closeArticleReader() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Unlock scroll
+      }
+
+      // Set up close triggers
+      if (modalClose) modalClose.addEventListener('click', closeArticleReader);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeArticleReader();
+        });
+      }
+
+      // Search event listener
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value;
+          renderArticles();
+        });
+      }
+
+      // Category filter buttons
+      categoryButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCategory = btn.getAttribute('data-category');
+          renderArticles();
+        });
+      });
+
+      // Load on init
+      fetchArticles();
+    });
+  </script>
+</body>
+
+</html>
