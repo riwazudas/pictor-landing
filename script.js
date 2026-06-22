@@ -1185,19 +1185,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ==========================================================================
-  // 11. NEWSLETTER & BACK TO TOP BUTTONS
+  // 11. BACK TO TOP BUTTON
   // ==========================================================================
-  // Newsletter Form handler
-  const newsForm = document.getElementById('newsletter-form');
-  const newsSuccess = document.getElementById('newsletter-success');
-
-  if (newsForm && newsSuccess) {
-    newsForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      newsForm.style.display = 'none';
-      newsSuccess.style.display = 'block';
-    });
-  }
 
   // Back to top sticky button scroll listener
   const backToTopBtn = document.getElementById('back-to-top');
