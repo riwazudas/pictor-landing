@@ -2643,7 +2643,7 @@ body.portal-switching .office-box {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 35% repeat(3, 1fr);
+  grid-template-columns: 40% repeat(2, 1fr);
   gap: 48px;
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -2715,50 +2715,6 @@ body.portal-switching .office-box {
 
 .footer-links-list a:hover {
   color: var(--color-highlight);
-}
-
-.footer-newsletter-p {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 16px;
-}
-
-.footer-newsletter-form {
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px;
-  border-radius: 30px;
-  width: 100%;
-}
-
-.newsletter-input {
-  background: none;
-  border: none;
-  color: var(--color-text-white);
-  padding: 10px 16px;
-  font-size: 0.85rem;
-  flex-grow: 1;
-}
-
-.newsletter-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.newsletter-submit {
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  font-size: 0.85rem;
-}
-
-.newsletter-success-msg {
-  display: none;
-  font-size: 0.8rem;
-  color: var(--color-highlight);
-  margin-top: 10px;
-  font-weight: 500;
 }
 
 .footer-offices-row {
