@@ -861,6 +861,37 @@ app.post('/api/admin/notifications/reply', requireAdmin, (req, res) => {
 
 
 /* ==========================================================================
+   PAGE ROUTING & REDIRECTS (Auth Guards)
+   ========================================================================== */
+
+// Route for admin page (with server-side session check)
+app.get('/admin', (req, res) => {
+  if (req.session && req.session.user && req.session.user.role === 'admin') {
+    res.sendFile(path.join(__dirname, '..', 'admin.html'));
+  } else {
+    res.redirect('/login');
+  }
+});
+
+// Route for login page
+app.get('/login', (req, res) => {
+  if (req.session && req.session.user && req.session.user.role === 'admin') {
+    res.redirect('/admin');
+  } else {
+    res.sendFile(path.join(__dirname, '..', 'login.html'));
+  }
+});
+
+// Intercept direct HTML accesses to keep URLs clean and enforce auth
+app.get('/admin.html', (req, res) => {
+  res.redirect('/admin');
+});
+
+app.get('/login.html', (req, res) => {
+  res.redirect('/login');
+});
+
+/* ==========================================================================
    STATIC FILE SERVING & CATCH-ALL
    ========================================================================== */
 
