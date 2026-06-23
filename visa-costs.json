@@ -14,6 +14,13 @@
       "secondaryApplicantUnder18": 1190,
       "skillsAssessmentEst": 1050
     },
+    "482": {
+      "name": "Temporary Skill Shortage (Subclass 482 - Medium Term)",
+      "baseFee": 3115,
+      "secondaryApplicant18Plus": 3115,
+      "secondaryApplicantUnder18": 780,
+      "skillsAssessmentEst": 1200
+    },
     "491": {
       "name": "Skilled Work Regional (Subclass 491)",
       "baseFee": 4765,
@@ -27,13 +34,6 @@
       "secondaryApplicant18Plus": 1190,
       "secondaryApplicantUnder18": 390,
       "skillsAssessmentEst": 0
-    },
-    "482": {
-      "name": "Temporary Skill Shortage (Subclass 482 - Medium Term)",
-      "baseFee": 3115,
-      "secondaryApplicant18Plus": 3115,
-      "secondaryApplicantUnder18": 780,
-      "skillsAssessmentEst": 1200
     },
     "820": {
       "name": "Partner Visa (Subclass 820/801)",

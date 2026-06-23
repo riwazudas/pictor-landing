@@ -1,5 +1,5 @@
 // Pictor Services — Visa Cost Estimator Price Configuration
-// You can edit the values below manually at any time. Save the file and refresh the calculator.
+// Synchronized automatically by admin dashboard
 const VISA_COSTS_CONFIG = {
   "subclasses": {
     "189": {
@@ -16,6 +16,13 @@ const VISA_COSTS_CONFIG = {
       "secondaryApplicantUnder18": 1190,
       "skillsAssessmentEst": 1050
     },
+    "482": {
+      "name": "Temporary Skill Shortage (Subclass 482 - Medium Term)",
+      "baseFee": 3115,
+      "secondaryApplicant18Plus": 3115,
+      "secondaryApplicantUnder18": 780,
+      "skillsAssessmentEst": 1200
+    },
     "491": {
       "name": "Skilled Work Regional (Subclass 491)",
       "baseFee": 4765,
@@ -29,13 +36,6 @@ const VISA_COSTS_CONFIG = {
       "secondaryApplicant18Plus": 1190,
       "secondaryApplicantUnder18": 390,
       "skillsAssessmentEst": 0
-    },
-    "482": {
-      "name": "Temporary Skill Shortage (Subclass 482 - Medium Term)",
-      "baseFee": 3115,
-      "secondaryApplicant18Plus": 3115,
-      "secondaryApplicantUnder18": 780,
-      "skillsAssessmentEst": 1200
     },
     "820": {
       "name": "Partner Visa (Subclass 820/801)",
@@ -52,7 +52,6 @@ const VISA_COSTS_CONFIG = {
   }
 };
 
-// Export configuration for browser environments
 if (typeof window !== 'undefined') {
   window.VISA_COSTS_CONFIG = VISA_COSTS_CONFIG;
 }
