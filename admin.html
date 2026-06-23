@@ -11,9 +11,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Google Sign-In Client library -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
   <!-- Global Stylesheet -->
   <link rel="stylesheet" href="styles.css?v=11">
   
@@ -742,63 +739,8 @@
 
 <body>
 
-  <!-- AUTHENTICATION FORM (Shown by default) -->
-  <div class="auth-overlay" id="auth-overlay">
-    <div class="auth-card glass-panel">
-      <div style="margin-bottom: 20px; display: flex; justify-content: center;">
-        <img src="logo.png" alt="Pictor Services Logo" style="height: 48px;">
-      </div>
-      <h1 class="auth-title">Admin Portal</h1>
-      <p class="auth-subtitle">Log in to update estimators, write articles, and reply to clients.</p>
-
-      <!-- Google Sign In Button Container -->
-      <div class="google-signin-btn-wrap">
-        <div id="g_id_onload"
-          data-client_id="" 
-          data-context="signin"
-          data-ux_mode="popup"
-          data-callback="handleCredentialResponse"
-          data-auto_prompt="false">
-        </div>
-        <div class="g_id_signin"
-          data-type="standard"
-          data-shape="pill"
-          data-theme="filled_blue"
-          data-text="signin_with"
-          data-size="large"
-          data-logo_alignment="left">
-        </div>
-      </div>
-
-      <!-- Developer Bypass Mode -->
-      <div class="bypass-divider">
-        <span>Developer Bypass Mode</span>
-      </div>
-
-      <div class="bypass-card">
-        <div class="bypass-card-title">Local Tester Bypass</div>
-        <p style="font-size: 0.78rem; color: var(--color-text-light); margin-bottom: 12px; line-height: 1.4;">
-          If GOOGLE_CLIENT_ID is not configured in .env, verify your identity locally using any address ending in <strong>@pictorservices.com</strong>.
-        </p>
-        <form id="mock-login-form">
-          <div class="bypass-input-group">
-            <label class="bypass-label" for="mock-name">Full Name</label>
-            <input class="bypass-input" type="text" id="mock-name" placeholder="E.g. Riwaz Udas" value="Riwaz Udas" required>
-          </div>
-          <div class="bypass-input-group">
-            <label class="bypass-label" for="mock-email">Workspace Email (@pictorservices.com)</label>
-            <input class="bypass-input" type="email" id="mock-email" placeholder="admin@pictorservices.com" value="admin@pictorservices.com" required>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full-width" style="padding: 10px; font-size: 1.1rem; margin-top: 6px;">
-            Log In As Developer
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <!-- WORKSPACE DASHBOARD (Hidden until authenticated) -->
-  <div class="admin-wrapper" id="admin-wrapper">
+  <div class="admin-wrapper" id="admin-wrapper" style="display: none;">
     
     <!-- SIDEBAR NAVIGATION -->
     <aside class="admin-sidebar">
@@ -1194,8 +1136,7 @@
     let activePointsCategory = 'age';
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup UI hooks
-      initAuth();
+      checkAuthAndInit();
       initNavigation();
       initTabs();
       initBlogComposer();
@@ -1203,52 +1144,19 @@
       initFaqComposer();
     });
 
-    // Check status and login triggers
-    async function initAuth() {
-      // Detect Google Client ID if dynamically exposed, else check environment
+    // Check status and redirect if not logged in
+    async function checkAuthAndInit() {
       try {
         const res = await fetch('/api/auth/status');
         const data = await res.json();
         if (data.loggedIn) {
           showDashboard(data.user);
+        } else {
+          window.location.href = '/login';
         }
       } catch (err) {
         console.warn('Backend server is offline or unavailable.', err);
-      }
-
-      // Check if Google Client ID is configured on GSI loader
-      const gsiLoader = document.getElementById('g_id_onload');
-      if (gsiLoader) {
-        // Query server config
-        // If not configured, we'll display a warning inside the login form
-        gsiLoader.setAttribute('data-client_id', window.GOOGLE_CLIENT_ID || 'dummy-client-id');
-      }
-
-      // Mock Login Submit
-      const mockForm = document.getElementById('mock-login-form');
-      if (mockForm) {
-        mockForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const name = document.getElementById('mock-name').value;
-          const email = document.getElementById('mock-email').value;
-
-          try {
-            const res = await fetch('/api/auth/mock-login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name, email })
-            });
-
-            const result = await res.json();
-            if (res.ok && result.success) {
-              showDashboard(result.user);
-            } else {
-              alert(result.error || 'Login failed.');
-            }
-          } catch (err) {
-            alert('Could not submit mock login. Verify server is running on port 3000.');
-          }
-        });
+        window.location.href = '/login';
       }
 
       // Logout trigger
@@ -1258,7 +1166,7 @@
           try {
             const res = await fetch('/api/auth/logout', { method: 'POST' });
             if (res.ok) {
-              location.reload();
+              window.location.href = '/login';
             }
           } catch (err) {
             console.error('Logout error:', err);
@@ -1267,30 +1175,9 @@
       }
     }
 
-    // Google Auth Credential Handler (global scope callback)
-    window.handleCredentialResponse = async (response) => {
-      try {
-        const res = await fetch('/api/auth/google-login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ idToken: response.credential })
-        });
-        const result = await res.json();
-        if (res.ok && result.success) {
-          showDashboard(result.user);
-        } else {
-          alert(result.error || 'Access denied.');
-        }
-      } catch (err) {
-        console.error('Google verification error:', err);
-        alert('Server validation of Google ID failed.');
-      }
-    };
-
-    // Transition between Auth screen and Main workspace
+    // Populate dashboard data and show wrapper
     function showDashboard(user) {
       currentUser = user;
-      document.getElementById('auth-overlay').style.display = 'none';
       document.getElementById('admin-wrapper').style.display = 'flex';
       
       // Update UI components
