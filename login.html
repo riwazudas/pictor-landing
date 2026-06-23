@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Pictor Services Admin</title>
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Sign-In Client library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Global Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=11">
+  
+  <!-- Custom Login Styles -->
+  <style>
+    body {
+      background-color: var(--bg-primary);
+      color: var(--color-text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Glass Panel implementation for light theme */
+    .glass-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Auth Wrapper */
+    .auth-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 24px;
+      z-index: 1000;
+    }
+
+    .auth-card {
+      max-width: 450px;
+      width: 100%;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .auth-title {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: var(--color-text);
+      font-family: var(--font-headings);
+    }
+
+    .auth-subtitle {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+    }
+
+    .google-signin-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .bypass-divider {
+      display: flex;
+      align-items: center;
+      color: var(--color-text-light);
+      margin: 24px 0;
+      font-size: 0.85rem;
+    }
+
+    .bypass-divider::before, .bypass-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+    
+    .bypass-divider span {
+      padding: 0 12px;
+    }
+
+    .bypass-card {
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .bypass-card-title {
+      font-family: var(--font-headings);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: var(--color-primary);
+    }
+
+    .bypass-input-group {
+      margin-bottom: 12px;
+    }
+
+    .bypass-label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-bottom: 4px;
+    }
+
+    .bypass-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--color-text);
+      font-size: 0.9rem;
+    }
+
+    .bypass-input:focus {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- AUTHENTICATION FORM -->
+  <div class="auth-overlay" id="auth-overlay">
+    <div class="auth-card glass-panel">
+      <div style="margin-bottom: 20px; display: flex; justify-content: center;">
+        <img src="logo.png" alt="Pictor Services Logo" style="height: 48px;">
+      </div>
+      <h1 class="auth-title">Admin Portal</h1>
+      <p class="auth-subtitle">Log in to update estimators, write articles, and reply to clients.</p>
+
+      <!-- Google Sign In Button Container -->
+      <div class="google-signin-btn-wrap">
+        <div id="g_id_onload"
+          data-client_id="" 
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+          data-type="standard"
+          data-shape="pill"
+          data-theme="filled_blue"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left">
+        </div>
+      </div>
+
+      <!-- Developer Bypass Mode -->
+      <div class="bypass-divider">
+        <span>Developer Bypass Mode</span>
+      </div>
+
+      <div class="bypass-card">
+        <div class="bypass-card-title">Local Tester Bypass</div>
+        <p style="font-size: 0.78rem; color: var(--color-text-light); margin-bottom: 12px; line-height: 1.4;">
+          If GOOGLE_CLIENT_ID is not configured in .env, verify your identity locally using any address ending in <strong>@pictorservices.com</strong>.
+        </p>
+        <form id="mock-login-form">
+          <div class="bypass-input-group">
+            <label class="bypass-label" for="mock-name">Full Name</label>
+            <input class="bypass-input" type="text" id="mock-name" placeholder="E.g. Riwaz Udas" value="Riwaz Udas" required>
+          </div>
+          <div class="bypass-input-group">
+            <label class="bypass-label" for="mock-email">Workspace Email (@pictorservices.com)</label>
+            <input class="bypass-input" type="email" id="mock-email" placeholder="admin@pictorservices.com" value="admin@pictorservices.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full-width" style="padding: 10px; font-size: 1.1rem; margin-top: 6px;">
+            Log In As Developer
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initAuth();
+    });
+
+    async function initAuth() {
+      // Check if user is already authenticated, redirect to /admin
+      try {
+        const res = await fetch('/api/auth/status');
+        const data = await res.json();
+        if (data.loggedIn) {
+          window.location.href = '/admin';
+          return;
+        }
+      } catch (err) {
+        console.warn('Backend server is offline or unavailable.', err);
+      }
+
+      // Check if Google Client ID is configured on GSI loader
+      const gsiLoader = document.getElementById('g_id_onload');
+      if (gsiLoader) {
+        gsiLoader.setAttribute('data-client_id', window.GOOGLE_CLIENT_ID || 'dummy-client-id');
+      }
+
+      // Mock Login Submit
+      const mockForm = document.getElementById('mock-login-form');
+      if (mockForm) {
+        mockForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('mock-name').value;
+          const email = document.getElementById('mock-email').value;
+
+          try {
+            const res = await fetch('/api/auth/mock-login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email })
+            });
+
+            const result = await res.json();
+            if (res.ok && result.success) {
+              window.location.href = '/admin';
+            } else {
+              alert(result.error || 'Login failed.');
+            }
+          } catch (err) {
+            alert('Could not submit mock login. Verify server is running on port 3000.');
+          }
+        });
+      }
+    }
+
+    // Google Auth Credential Handler (global scope callback)
+    window.handleCredentialResponse = async (response) => {
+      try {
+        const res = await fetch('/api/auth/google-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: response.credential })
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          window.location.href = '/admin';
+        } else {
+          alert(result.error || 'Access denied.');
+        }
+      } catch (err) {
+        console.error('Google verification error:', err);
+        alert('Server validation of Google ID failed.');
+      }
+    };
+  </script>
+</body>
+</html>
