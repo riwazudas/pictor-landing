@@ -39,7 +39,7 @@
     <div class="container top-bar-container">
       <div class="top-bar-left">
         <span class="pulse-indicator"></span>
-        <span class="top-bar-text regional-text" data-au="Australia & Nepal Migration Experts — Registered OMARA Agents" data-np="Australia & Nepal Migration Experts — Authorized University Placements">Australia & Nepal Migration Experts — Registered OMARA Agents</span>
+        <span class="top-bar-text regional-text" data-au="Australia & Nepal Migration Experts — Registered OMARA Agents" data-np="Australia Education & Student Visa Experts — Authorized University Placements">Australia & Nepal Migration Experts — Registered OMARA Agents</span>
       </div>
       <div class="top-bar-right">
         <div class="portal-toggle-container">
@@ -73,6 +73,7 @@
               <li><a href="calculator.html" class="">Visa Cost Estimator</a></li>
               <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
               <li><a href="processing-times.html" class="">Visa Processing Times</a></li>
+              <li><a href="skilled-occupation-list.html" class="">Skilled Occupation List</a></li>
               <li><a href="resources.html" class="active">Guides & Checklists</a></li>
             </ul>
           </li>
@@ -104,6 +105,7 @@
         <li><a href="calculator.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
         <li><a href="points-calculator.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— PR Points Calculator</a></li>
         <li><a href="processing-times.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Processing Times</a></li>
+        <li><a href="skilled-occupation-list.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Skilled Occupation List</a></li>
         <li><a href="blog.html" class="mobile-nav-link">Blog</a></li>
         <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
         <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book Consultation</a></li>
@@ -126,6 +128,18 @@
   <section class="resources-section" style="padding: 72px 0;">
     <div class="container" style="display: flex; flex-direction: column; gap: 72px;">
       
+      <!-- Disclaimer section (regionalized) -->
+      <div class="regional-block" data-region="au" style="padding: 24px; border-radius: 16px; background-color: rgba(94, 51, 135, 0.04); border: 1px solid var(--border-color); font-size: 0.95rem; color: var(--color-text-light); line-height: 1.6; max-width: 800px; margin: 0 auto; width: 100%;">
+        <strong style="color: var(--color-primary); display: block; margin-bottom: 6px; font-size: 1.1rem;">Official Immigration Source Disclaimer:</strong>
+        Please review all official Australian visa subclasses, skills assessment requirements, and skilled occupation lists on the official <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline; font-weight: 600;">DHA Visa Subclass Finder</a>.
+        <span style="display: block; margin-top: 10px; font-size: 0.82rem; opacity: 0.85; border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px;">⚠️ <em>Disclaimer: Department of Home Affairs regulations, criteria, and visa pricing are subject to direct change. Always refer to official portals for real-time verification.</em></span>
+      </div>
+      <div class="regional-block" data-region="np" style="padding: 24px; border-radius: 16px; background-color: rgba(94, 51, 135, 0.04); border: 1px solid var(--border-color); font-size: 0.95rem; color: var(--color-text-light); line-height: 1.6; max-width: 800px; margin: 0 auto; width: 100%;">
+        <strong style="color: var(--color-primary); display: block; margin-bottom: 6px; font-size: 1.1rem;">Official Student Visa Source Disclaimer:</strong>
+        Please check the official student subclass 500 requirements, Genuine Student checks, and financial guidelines on the <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline; font-weight: 600;">DHA Student Visa Portal</a>.
+        <span style="display: block; margin-top: 10px; font-size: 0.82rem; opacity: 0.85; border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px;">⚠️ <em>Disclaimer: Department of Home Affairs regulations, criteria, and visa pricing are subject to direct change. Always refer to official portals for real-time verification.</em></span>
+      </div>
+
       <!-- Filter controls -->
       <div style="text-align: center;">
         <div class="filter-group" style="display: inline-flex; gap: 12px; background-color: var(--bg-secondary); padding: 6px; border-radius: 40px; border: 1px solid var(--border-color);">
@@ -133,6 +147,7 @@
           <button class="filter-btn" data-filter="migration" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Migration Guides</button>
           <button class="filter-btn" data-filter="student" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Student Checklists</button>
           <button class="filter-btn" data-filter="english" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">English & Testing</button>
+          <button class="filter-btn" data-filter="quick-links" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Quick Links</button>
         </div>
       </div>
       
@@ -140,7 +155,7 @@
       <div class="resources-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;">
         
         <!-- Resource 1: OMARA Guide -->
-        <div class="resource-card glass-panel" data-category="migration" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="resource-card glass-panel" data-category="migration quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Regulatory Document</span>
             <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">OMARA Consumer Guide</h3>
@@ -180,7 +195,77 @@
             Download PDF Checklist (Soon)
           </a>
         </div>
-        
+
+        <!-- Resource 4: Skilled Occupation List (SOL) -->
+        <div class="resource-card glass-panel" data-category="migration quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Interactive Guide</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">Skilled Occupation List (SOL)</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              Verify ANZSCO codes, skills assessment authorities, and sub-list classifications. Access the official government SOL database.
+            </p>
+          </div>
+          <a href="skilled-occupation-list.html" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+            Open SOL Guide ➔
+          </a>
+        </div>
+
+        <!-- Resource 5: DHA Visa Listing -->
+        <div class="resource-card glass-panel" data-category="migration quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Official Government Link</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">DHA Visa Listing & Finder</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              Access the official list of all available Australian visa subclasses, including pricing variables and basic criteria.
+            </p>
+          </div>
+          <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+            Open Visa Listing ➔
+          </a>
+        </div>
+
+        <!-- Resource 6: DHA Student Visa 500 Portal -->
+        <div class="resource-card glass-panel" data-category="student quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Official Government Link</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">Subclass 500 Student Visa Portal</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              Review official criteria, Genuine Student (GS) assessment guidelines, and document check matrices for international students.
+            </p>
+          </div>
+          <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+            Open Student Portal ➔
+          </a>
+        </div>
+
+        <!-- Resource 7: OMARA Registered Agent Search -->
+        <div class="resource-card glass-panel" data-category="migration quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Regulatory Portal</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">OMARA Registered Agent Portal</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              Verify registered migration agent listings, view OMARA status records, and learn about professional Code of Conduct standards.
+            </p>
+          </div>
+          <a href="https://www.mara.gov.au/" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+            Open OMARA Portal ➔
+          </a>
+        </div>
+
+        <!-- Resource 8: DHA Points Table -->
+        <div class="resource-card glass-panel" data-category="migration quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.5px;">Official Government Link</span>
+            <h3 style="font-family: var(--font-headings); font-size: 1.35rem; color: var(--bg-dark); margin-top: 8px; margin-bottom: 12px;">GSM Points Evaluation Table</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; margin-bottom: 24px;">
+              Check point awards for age, qualifications, employment, English levels, and regional study on the official DHA table.
+            </p>
+          </div>
+          <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189/points-table" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+            Open Points Table ➔
+          </a>
+        </div>
+
       </div>
       
       <!-- SCORE COMPARISON MATRIX TABLE -->
@@ -326,6 +411,7 @@
           <li><a href="calculator.html">Visa Cost Estimator</a></li>
           <li><a href="points-calculator.html">PR Points Calculator</a></li>
           <li><a href="processing-times.html">Visa Processing Times</a></li>
+          <li><a href="skilled-occupation-list.html">Skilled Occupation List</a></li>
           <li><a href="resources.html">Resources</a></li>
         </ul>
       </div>
@@ -338,7 +424,7 @@
           <li class="regional-text-li show-au"><a href="services.html#migration">Employer Sponsorship</a></li>
           <li class="regional-text-li show-au"><a href="services.html#professional-year">Professional Year</a></li>
           <li class="regional-text-li show-np"><a href="services.html#education">University Placement</a></li>
-          <li class="regional-text-li show-np"><a href="services.html#migration">Student Visa 500</a></li>
+          <li class="regional-text-li show-np"><a href="services.html#migration">Student Visa Services</a></li>
           <li class="regional-text-li show-np"><a href="services.html#pte-naati">IELTS & PTE Training</a></li>
           <li><a href="index.html#booking">Roadmap Consultation</a></li>
         </ul>
@@ -372,7 +458,7 @@
   <!-- Light Category Filter JS -->
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      const buttons = document.querySelectorAll('.filter-btn');
+      const buttons = document.querySelectorAll('.filter-group .filter-btn');
       const cards = document.querySelectorAll('.resource-card');
       
       buttons.forEach(btn => {
@@ -384,7 +470,8 @@
           const filter = btn.getAttribute('data-filter');
           
           cards.forEach(card => {
-            if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            const categories = (card.getAttribute('data-category') || '').split(' ');
+            if (filter === 'all' || categories.includes(filter)) {
               card.style.display = '';
             } else {
               card.style.display = 'none';
