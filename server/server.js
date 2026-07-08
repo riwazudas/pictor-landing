@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const session = require('express-session');
 const { OAuth2Client } = require('google-auth-library');
+const https = require('https');
 require('dotenv').config();
 
 const app = express();
@@ -36,7 +37,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 const PORT = process.env.PORT || 3000;
 
@@ -188,6 +189,149 @@ const requireAdmin = (req, res, next) => {
 /* ==========================================================================
    PUBLIC API ENDPOINTS
    ========================================================================== */
+
+// Helper to create an uncompressed POSIX TAR file from file buffers
+function createTar(files) {
+  let totalLength = 0;
+  for (const f of files) {
+    const fileLen = f.data.length;
+    const padding = (512 - (fileLen % 512)) % 512;
+    totalLength += 512 + fileLen + padding;
+  }
+  totalLength += 1024; // two blocks of zeroes at the end
+
+  const buffer = Buffer.alloc(totalLength);
+  let offset = 0;
+
+  for (const f of files) {
+    // Write name (100 bytes)
+    buffer.write(f.name, offset, 100, 'utf8');
+    // Mode
+    buffer.write('0000644\0', offset + 100, 8, 'utf8');
+    // UID
+    buffer.write('0000000\0', offset + 108, 8, 'utf8');
+    // GID
+    buffer.write('0000000\0', offset + 116, 8, 'utf8');
+    // Size (12 bytes octal)
+    const sizeStr = f.data.length.toString(8).padStart(11, '0') + '\0';
+    buffer.write(sizeStr, offset + 124, 12, 'utf8');
+    // Mtime
+    buffer.write('14000000000\0', offset + 136, 12, 'utf8');
+    // Checksum placeholder (8 spaces)
+    buffer.write('        ', offset + 148, 8, 'utf8');
+    // Type flag '0' (normal file)
+    buffer[offset + 156] = 48; // ASCII '0'
+    // Magic
+    buffer.write('ustar\0', offset + 257, 6, 'utf8');
+    // Version
+    buffer.write('00', offset + 263, 2, 'utf8');
+
+    // Calculate checksum: sum of the 512 header bytes
+    let chk = 0;
+    for (let i = 0; i < 512; i++) {
+      chk += buffer[offset + i];
+    }
+    const chkStr = chk.toString(8).padStart(6, '0') + '\0 ';
+    buffer.write(chkStr, offset + 148, 8, 'utf8');
+
+    offset += 512;
+
+    // Copy file data
+    f.data.copy(buffer, offset);
+    offset += f.data.length;
+
+    // Padding to block boundary (512 bytes)
+    const padding = (512 - (f.data.length % 512)) % 512;
+    offset += padding;
+  }
+
+  return buffer;
+}
+
+/**
+ * POST /api/compile
+ * Compiles LaTeX source with logo.png via latexonline.cc
+ */
+app.post('/api/compile', async (req, res) => {
+  const { latex, documentTitle } = req.body;
+  if (!latex) {
+    return res.status(400).json({ error: 'LaTeX source code is required.' });
+  }
+
+  try {
+    const logoPath = path.join(__dirname, '..', 'logo.png');
+    let logoBuffer = Buffer.alloc(0);
+    if (fs.existsSync(logoPath)) {
+      logoBuffer = fs.readFileSync(logoPath);
+    } else {
+      console.warn('logo.png not found at root, compiling without it');
+    }
+
+    const files = [
+      { name: 'main.tex', data: Buffer.from(latex, 'utf8') }
+    ];
+    if (logoBuffer.length > 0) {
+      files.push({ name: 'logo.png', data: logoBuffer });
+    }
+
+    const tarBuffer = createTar(files);
+
+    const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
+    const headerStr = 
+      `--${boundary}\r\n` +
+      `Content-Disposition: form-data; name="file"; filename="project.tar"\r\n` +
+      `Content-Type: application/x-tar\r\n\r\n`;
+    
+    const footerStr = `\r\n--${boundary}--\r\n`;
+
+    const requestBody = Buffer.concat([
+      Buffer.from(headerStr, 'utf8'),
+      tarBuffer,
+      Buffer.from(footerStr, 'utf8')
+    ]);
+
+    const options = {
+      hostname: 'latexonline.cc',
+      port: 443,
+      path: '/data?target=main.tex&command=pdflatex',
+      method: 'POST',
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${boundary}`,
+        'Content-Length': requestBody.length
+      }
+    };
+
+    const clientReq = https.request(options, (clientRes) => {
+      const chunks = [];
+      clientRes.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+
+      clientRes.on('end', () => {
+        const responseData = Buffer.concat(chunks);
+        if (clientRes.statusCode >= 200 && clientRes.statusCode < 300) {
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `attachment; filename="${documentTitle || 'document'}.pdf"`);
+          res.send(responseData);
+        } else {
+          res.status(clientRes.statusCode).send(responseData.toString('utf8'));
+        }
+      });
+    });
+
+    clientReq.on('error', (err) => {
+      console.error('Error compiling via latexonline.cc:', err);
+      res.status(500).json({ error: 'Failed to communicate with LaTeX compilation server.' });
+    });
+
+    clientReq.write(requestBody);
+    clientReq.end();
+
+  } catch (error) {
+    console.error('Compile endpoint error:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
 
 /**
  * GET /api/available-slots
