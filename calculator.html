@@ -255,7 +255,7 @@
           <!-- Call to Action Buttons -->
           <div style="display: flex; flex-direction: column; gap: 12px; margin-top: auto;">
             <a href="index.html#booking" id="btn-calc-booking" class="btn btn-primary btn-full-width" style="padding: 16px 28px;">Discuss Cost & Apply Now</a>
-            <button type="button" onclick="window.print()" class="btn btn-secondary btn-full-width" style="padding: 14px 28px; gap: 8px;">
+            <button type="button" id="btn-print-cost" class="btn btn-secondary btn-full-width" style="padding: 14px 28px; gap: 8px;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
                 <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
                 <path d="M6 14h12v8H6z" />
@@ -423,6 +423,8 @@
 
   <!-- Script for Visa calculations -->
   <script type="module">
+    import { escapeLaTeX, compileLaTeX } from './latex-pdf-helper.js';
+
     document.addEventListener('DOMContentLoaded', () => {
       const DEFAULT_COST_CONFIG = {
         subclasses: {
@@ -586,6 +588,157 @@
         if (bookingLink) {
           bookingLink.href = `index.html#booking?subclass=${subclassVal}&partner=${includePartner}&kids18=${childOver18Count}&kidsUnder18=${childUnder18Count}`;
         }
+      }
+
+      function printVisaCostsLaTeXReport() {
+        const subclassVal = document.getElementById('calc-subclass').value;
+        const includePartner = document.getElementById('calc-partner').checked;
+        const childUnder18Count = parseInt(document.getElementById('calc-child-under18').value) || 0;
+        const childOver18Count = parseInt(document.getElementById('calc-child-over18').value) || 0;
+
+        const includeSkills = document.getElementById('calc-skills').checked;
+        const includeEnglish = document.getElementById('calc-english').checked;
+        const includeHealth = document.getElementById('calc-health').checked;
+
+        const details = costConfig.subclasses[subclassVal];
+        if (!details) return;
+
+        const baseFee = details.baseFee;
+
+        let familyFee = 0;
+        if (includePartner) {
+          familyFee += details.secondaryApplicant18Plus;
+        }
+        familyFee += childOver18Count * details.secondaryApplicant18Plus;
+        familyFee += childUnder18Count * details.secondaryApplicantUnder18;
+
+        let assessmentsFee = 0;
+        let assessmentItems = [];
+        if (includeSkills && details.skillsAssessmentEst > 0) {
+          assessmentsFee += details.skillsAssessmentEst;
+          assessmentItems.push(`Skills Assessment ($${details.skillsAssessmentEst.toLocaleString()} AUD)`);
+        }
+        if (includeEnglish) {
+          assessmentsFee += costConfig.standardFees.englishTestEst;
+          assessmentItems.push(`English Test ($${costConfig.standardFees.englishTestEst.toLocaleString()} AUD)`);
+        }
+        let assessmentDetailsStr = assessmentItems.length > 0 ? assessmentItems.join(', ') : 'None included';
+
+        let healthFee = 0;
+        if (includeHealth) {
+          let headCount = 1;
+          if (includePartner) headCount += 1;
+          headCount += childUnder18Count + childOver18Count;
+          healthFee += headCount * (costConfig.standardFees.healthCheckPerPerson + costConfig.standardFees.policeCheckPerPerson);
+        }
+
+        const grandTotal = baseFee + familyFee + assessmentsFee + healthFee;
+
+        const dateStr = new Date().toLocaleDateString('en-AU', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        const isAu = document.body.classList.contains('region-au');
+        const portalText = isAu ? "Australia Portal" : "Nepal Portal";
+
+        const latex = `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[margin=2.2cm]{geometry}
+\\usepackage[table]{xcolor}
+\\usepackage{array}
+\\usepackage{tikz}
+\\usepackage{tcolorbox}
+\\usepackage{fancyhdr}
+\\usepackage{graphicx}
+
+\\definecolor{primary}{HTML}{5E3387}
+\\definecolor{secondary}{HTML}{D99C53}
+\\definecolor{textcolor}{HTML}{251E2B}
+\\definecolor{lightbg}{HTML}{FAF8FD}
+
+\\pagecolor{white}
+\\color{textcolor}
+
+\\begin{document}
+\\thispagestyle{empty}
+
+% Logo \\& Header
+\\noindent
+\\begin{minipage}{0.5\\textwidth}
+  \\includegraphics[height=1.2cm]{logo.png}
+\\end{minipage}
+\\begin{minipage}{0.5\\textwidth}
+  \\raggedleft
+  {\\small\\fontfamily{phv}\\selectfont\\color{textcolor!70} Migration \\& Education Experts} \\\\[0.1cm]
+  {\\small\\fontfamily{phv}\\selectfont\\color{textcolor!70} ${portalText}}
+\\end{minipage}
+
+\\vspace{0.4cm}
+{\\color{secondary}\\hrule height 2pt}
+\\vspace{0.6cm}
+
+\\begin{center}
+  {\\Large\\bfseries VISA COST ESTIMATION REPORT} \\\\[0.15cm]
+  {\\small Date generated: ${escapeLaTeX(dateStr)} | Portal: ${escapeLaTeX(portalText)}}
+\\end{center}
+
+\\vspace{0.4cm}
+
+\\subsection*{Pathway \\& Applicant Details}
+\\renewcommand{\\arraystretch}{1.2}
+\\noindent
+\\begin{tabular}{ll}
+  \\textbf{Selected Pathway:} & ${escapeLaTeX(details.name)} \\\\
+  \\textbf{Secondary Applicant (Spouse):} & ${includePartner ? 'Included' : 'Not Included'} \\\\
+  \\textbf{Dependents (Under 18):} & ${childUnder18Count} \\\\
+  \\textbf{Dependents (18 or Over):} & ${childOver18Count} \\\\
+\\end{tabular}
+
+\\vspace{0.6cm}
+
+\\subsection*{Itemized Cost Estimation}
+\\renewcommand{\\arraystretch}{1.3}
+\\noindent
+\\begin{tabular}{|p{8.5cm}|r|}
+\\hline
+\\rowcolor{primary}
+\\textbf{\\color{white} Fee Category \\& Description} & \\textbf{\\color{white} Amount (AUD)} \\\\
+\\hline
+Primary Applicant Charge (Base VAC) & \\$ ${baseFee.toLocaleString()} \\\\
+\\hline
+Additional Family Applicants Charge & \\$ ${familyFee.toLocaleString()} \\\\
+\\hline
+Assessments \\& English Tests (${escapeLaTeX(assessmentDetailsStr)}) & \\$ ${assessmentsFee.toLocaleString()} \\\\
+\\hline
+Health \\& Character Checks (Medicals, Police Clearances) & \\$ ${healthFee.toLocaleString()} \\\\
+\\hline
+\\rowcolor{lightbg}
+\\textbf{ESTIMATED GRAND TOTAL} & \\textbf{\\$ ${Math.round(grandTotal).toLocaleString()} AUD} \\\\
+\\hline
+\\end{tabular}
+
+\\vspace{0.5cm}
+\\begin{tcolorbox}[colback=primary!5, colframe=primary!40, arc=4pt, boxrule=0.5pt, title={\\small\\bfseries IMPORTANT NOTICE ON JULY 1ST FEES}]
+\\scriptsize\\color{textcolor!90}
+The Australian Department of Home Affairs (DHA) typically updates and indexes visa application fees on July 1st annually. Costs calculated in this estimation are based on current rates and should be used as a planning estimate.
+\\end{tcolorbox}
+
+\\vfill
+\\begin{tcolorbox}[colback=lightbg, colframe=primary!30, arc=4pt, boxrule=0.5pt, title={\\small\\bfseries LEGAL NOTICE \\& DISCLAIMER}]
+\\scriptsize\\color{textcolor!80}
+Pictor Services is registered with the Office of the Migration Agents Registration Authority (OMARA), MARN 0000000. The calculations and estimates provided in this report are for planning and guidance purposes only. Migration laws, policies, and visa fees are subject to change without notice. This document does not constitute formal legal immigration advice or a guarantee of visa approval or eligibility. For formal representation and advice, please consult with a registered migration agent.
+\\end{tcolorbox}
+
+\\end{document}`;
+
+        compileLaTeX(latex, `Visa_Cost_Report_${subclassVal}`);
+      }
+
+      const printBtn = document.getElementById('btn-print-cost');
+      if (printBtn) {
+        printBtn.addEventListener('click', printVisaCostsLaTeXReport);
       }
 
       loadConfig();

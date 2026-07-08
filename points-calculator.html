@@ -138,227 +138,274 @@
   </section>
 
   <!-- CALCULATOR INTERACTIVE SECTION -->
-  <section class="calculator-section" style="padding: 72px 0;">
+  <section class="calculator-section" style="padding: 24px 0 48px 0;">
     <div class="container">
 
-      <!-- Standalone Layout: PR Points Calculator Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; align-items: stretch;">
+      <!-- WIZARD CONTAINER WRAPPER -->
+      <div class="calculator-wizard-layout">
         
-        <!-- Left Column: Inputs Form -->
-        <div class="calculator-inputs-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
-          <h2 style="font-family: var(--font-headings); font-size: 1.8rem; margin-bottom: 8px; color: var(--bg-dark);">Calculate Your Points</h2>
-          <p style="color: var(--color-text-light); margin-bottom: 32px; font-size: 0.95rem;">Select your parameters to estimate your points for General Skilled Migration (189, 190, 491).</p>
+        <!-- Left Column: Sticky Points Panel & Disclaimer -->
+        <div class="sticky-score-banner" id="sticky-score-banner">
+          <div class="score-top-section">
+            <div class="banner-content-row">
+              <div class="score-display-box">
+                <span class="score-label">YOUR CURRENT SCORE</span>
+                <span class="score-number" id="live-points-total">0 Points</span>
+              </div>
+              <div class="score-badge-box">
+                <span class="badge-status" id="points-eligibility-badge">NOT STARTED</span>
+              </div>
+            </div>
+            <div class="score-message" id="points-eligibility-status">Select your details below to calculate your points.</div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" id="points-progress-bar" style="width: 0%;"></div>
+              <div class="progress-threshold-line" style="left: 65%;">
+                <span class="threshold-marker-text">65 pts</span>
+              </div>
+            </div>
+          </div>
+          <div class="left-panel-disclaimer">
+            <strong style="color: var(--color-highlight); font-size: 0.85rem; display: block; margin-bottom: 4px;">Official Points Table:</strong>
+            <p style="font-size: 0.78rem; margin: 0; line-height: 1.4; color: rgba(255,255,255,0.7);">
+              Cross-reference criteria on the <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189/points-table" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline;">Home Affairs Points Table</a>.
+            </p>
+            <span class="legal-notice" style="display: block; margin-top: 8px; font-size: 0.72rem; opacity: 0.8; line-height: 1.35;">
+              ⚠️ <em>Legal Notice: Migration policies are subject to change. Estimates are for guidance purposes only.</em>
+            </span>
+          </div>
+        </div>
+
+        <!-- Wizard Main Content Column -->
+        <div class="wizard-main-content">
+
+          <!-- Step Tracker / Progress dots -->
+          <div class="wizard-tracker">
+          <div class="wizard-step-info">
+            <span class="wizard-step-badge" id="wizard-step-badge">Step 1 of 9</span>
+            <h4 class="wizard-current-step-name" id="wizard-step-name">Age Bracket</h4>
+          </div>
+          <div class="wizard-progress-dots" id="wizard-progress-dots">
+            <span class="dot active" data-step="0"></span>
+            <span class="dot" data-step="1"></span>
+            <span class="dot" data-step="2"></span>
+            <span class="dot" data-step="3"></span>
+            <span class="dot" data-step="4"></span>
+            <span class="dot" data-step="5"></span>
+            <span class="dot" data-step="6"></span>
+            <span class="dot" data-step="7"></span>
+            <span class="dot" data-step="8"></span>
+          </div>
+        </div>
+
+        <!-- Wizard Slider Outer Container -->
+        <div class="wizard-slider-container">
           
-          <form id="points-calc-form" style="display: flex; flex-direction: column; gap: 24px;">
-            <!-- Age Group -->
-            <div class="form-group">
-              <label for="pts-age" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Age Bracket:</label>
-              <select id="pts-age" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="30">25 to 32 years (30 points)</option>
-                <option value="25">18 to 24 years (25 points)</option>
-                <option value="25">33 to 39 years (25 points)</option>
-                <option value="15">40 to 44 years (15 points)</option>
-                <option value="0">45 years and over (Ineligible / 0 points)</option>
-              </select>
+          <!-- Slider Window (contains the track and navigation) -->
+          <div class="wizard-slider-window">
+            <form id="points-calc-form" class="wizard-form" onsubmit="return false;">
+              <div class="wizard-slider-track" id="wizard-slider-track">
+                
+                <!-- Slide 1: Age Section -->
+                <div class="wizard-slide" data-section="age" data-slide-index="0">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Age Bracket</h3>
+                      <p class="section-description">Your points depend on your age bracket at the time of visa invitation.</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-age">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-age">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 2: English Language Ability -->
+                <div class="wizard-slide" data-section="english" data-slide-index="1">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">English Language Ability</h3>
+                      <p class="section-description">English language test results (PTE Academic, IELTS, OET, TOEFL iBT, CAE).</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-english">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-english">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 3: Skilled Employment Outside Australia -->
+                <div class="wizard-slide" data-section="experienceOS" data-slide-index="2">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Skilled Work Experience (Outside Australia)</h3>
+                      <p class="section-description">Skilled work experience in your nominated occupation in the last 10 years.</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-experience-os">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-experienceOS">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 4: Skilled Employment In Australia -->
+                <div class="wizard-slide" data-section="experienceAU" data-slide-index="3">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Skilled Work Experience (In Australia)</h3>
+                      <p class="section-description">Skilled work experience in Australia in your nominated occupation in the last 10 years.</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-experience-au">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-experienceAU">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 5: Educational Qualifications -->
+                <div class="wizard-slide" data-section="education" data-slide-index="4">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Educational Qualifications</h3>
+                      <p class="section-description">Your highest level of completed academic qualification (must be assessed).</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-education">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-education">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 6: Partner Status & Skills -->
+                <div class="wizard-slide" data-section="partner" data-slide-index="5">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Partner Status & Skills</h3>
+                      <p class="section-description">Your points can be boosted based on your marital status and partner qualifications.</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-partner">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-partner">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 7: Visa Subclass Nomination -->
+                <div class="wizard-slide" data-section="pathway" data-slide-index="6">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Visa Subclass Nomination</h3>
+                      <p class="section-description">Select the subclass pathway you intend to apply for to claim nomination points.</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-nomination">+0 pts</div>
+                  </div>
+                  <div class="options-container" id="options-pathway">
+                    <!-- Radio options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 8: Special Points Boosts -->
+                <div class="wizard-slide" data-section="boosts" data-slide-index="7">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Special Points Boosts</h3>
+                      <p class="section-description">Select all additional credentials that apply to your profile.</p>
+                    </div>
+                    <div class="section-score-badge" id="lbl-pts-boosts">+0 pts</div>
+                  </div>
+                  <div class="checkboxes-container" id="options-boosts">
+                    <!-- Checkbox options generated dynamically -->
+                  </div>
+                </div>
+
+                <!-- Slide 9: Points Breakdown Summary & Actions -->
+                <div class="wizard-slide" data-section="breakdown" data-slide-index="8">
+                  <div class="calc-section-header">
+                    <div class="section-title-wrapper">
+                      <h3 class="section-title">Final Calculation Report</h3>
+                      <p class="section-description">Review your visa points estimation breakdown and next steps.</p>
+                    </div>
+                  </div>
+
+                  <!-- Final Points Breakdown Block -->
+                  <div class="points-breakdown-card">
+                    <h4 class="breakdown-title">Points Breakdown</h4>
+                    <div class="breakdown-grid">
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">AGE</span>
+                        <span class="breakdown-val" id="bd-age">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">ENGLISH</span>
+                        <span class="breakdown-val" id="bd-english">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">OVERSEAS WORK</span>
+                        <span class="breakdown-val" id="bd-experience-os">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">AUSTRALIAN WORK</span>
+                        <span class="breakdown-val" id="bd-experience-au">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">EDUCATION</span>
+                        <span class="breakdown-val" id="bd-education">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">PARTNER SKILLS</span>
+                        <span class="breakdown-val" id="bd-partner">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">NOMINATION</span>
+                        <span class="breakdown-val" id="bd-nomination">—</span>
+                      </div>
+                      <div class="breakdown-item">
+                        <span class="breakdown-label">BONUS POINTS</span>
+                        <span class="breakdown-val" id="bd-boosts">—</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Action buttons directly below grid -->
+                  <div class="action-buttons" style="margin-top: auto; display: flex; gap: 12px; justify-content: center; width: 100%;">
+                    <a href="index.html#booking" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem; font-weight: 600; text-align: center; border-radius: 50px; white-space: nowrap;">Discuss Pathways & Apply</a>
+                    <button type="button" id="btn-print-report" class="btn btn-secondary print-btn" style="padding: 10px 24px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 50px; white-space: nowrap;">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                        <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                        <path d="M6 14h12v8H6z" />
+                      </svg>
+                      Print Points Report
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            </form>
+            <!-- Bottom Navigation Bar inside the slide container window -->
+            <div class="wizard-bottom-nav">
+              <div class="wizard-nav-buttons-container">
+                <button type="button" class="wizard-nav-arrow-btn prev-arrow" id="bottom-prev-btn" aria-label="Previous Step">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <button type="button" class="wizard-nav-arrow-btn next-arrow" id="bottom-next-btn" aria-label="Next Step">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
             </div>
-
-            <!-- English Proficiency -->
-            <div class="form-group">
-              <label for="pts-english" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">English Language Ability:</label>
-              <select id="pts-english" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="20">Superior English (PTE 79+ / IELTS 8+) (20 points)</option>
-                <option value="10">Proficient English (PTE 65+ / IELTS 7+) (10 points)</option>
-                <option value="0">Competent English (PTE 50+ / IELTS 6+) (0 points)</option>
-              </select>
-            </div>
-
-            <!-- Educational Qualifications -->
-            <div class="form-group">
-              <label for="pts-education" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Highest Educational Qualification:</label>
-              <select id="pts-education" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="15">Bachelor or Master Degree (15 points)</option>
-                <option value="20">Doctorate (PhD) (20 points)</option>
-                <option value="10">Diploma or Trade Qualification (10 points)</option>
-                <option value="0">Other Qualification (0 points)</option>
-              </select>
-            </div>
-
-            <!-- Skilled Employment (Outside Australia) -->
-            <div class="form-group">
-              <label for="pts-experience-os" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Skilled Work Experience (Outside Australia - Last 10 Years):</label>
-              <select id="pts-experience-os" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="0">Less than 3 years (0 points)</option>
-                <option value="5">3 to 4 years (5 points)</option>
-                <option value="10">5 to 7 years (10 points)</option>
-                <option value="15">8 to 10 years (15 points)</option>
-              </select>
-            </div>
-
-            <!-- Skilled Employment (In Australia) -->
-            <div class="form-group">
-              <label for="pts-experience-au" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Skilled Work Experience (In Australia - Last 10 Years):</label>
-              <select id="pts-experience-au" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="0">Less than 1 year (0 points)</option>
-                <option value="5">1 to 2 years (5 points)</option>
-                <option value="10">3 to 4 years (10 points)</option>
-                <option value="15">5 to 7 years (15 points)</option>
-                <option value="20">8 to 10 years (20 points)</option>
-              </select>
-            </div>
-
-            <!-- Partner Qualifications & Status -->
-            <div class="form-group">
-              <label for="pts-partner" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Partner Status & Skills:</label>
-              <select id="pts-partner" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="10">Single (or partner is Australian Citizen/PR) (10 points)</option>
-                <option value="10">Partner has positive Skills Assessment & competent English (10 points)</option>
-                <option value="5">Partner has competent English (but no skills assessment) (5 points)</option>
-                <option value="0">Partner has neither / Not applicable (0 points)</option>
-              </select>
-            </div>
-
-            <!-- Visa Pathway (Nomination Points) -->
-            <div class="form-group">
-              <label for="pts-pathway" style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--bg-dark);">Visa Subclass Nomination:</label>
-              <select id="pts-pathway" class="form-control" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-primary); color: var(--color-text); cursor: pointer;">
-                <option value="0">Subclass 189 - Skilled Independent (0 points)</option>
-                <option value="5">Subclass 190 - Skilled Nominated (State Nomination) (5 points)</option>
-                <option value="15">Subclass 491 - Skilled Work Regional (State/Family Sponsored) (15 points)</option>
-              </select>
-            </div>
-
-            <!-- Additional Checklist Boosts -->
-            <div style="border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; flex-direction: column; gap: 16px;">
-              <h3 style="font-size: 1rem; font-weight: 700; color: var(--bg-dark);">Special Points Boosts</h3>
-              
-              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-                <input type="checkbox" id="pts-study-au" value="5" style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-                <span>Completed Australian Study (min. 2 years) (+5 pts)</span>
-              </label>
-
-              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-                <input type="checkbox" id="pts-stem" value="10" style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-                <span>STEM Specialist Education in Australia (Research Master/PhD) (+10 pts)</span>
-              </label>
-
-              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-                <input type="checkbox" id="pts-py" value="5" style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-                <span>Completed Professional Year (PY) in Australia (+5 pts)</span>
-              </label>
-
-              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-                <input type="checkbox" id="pts-naati" value="5" style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-                <span>NAATI CCL Credentialed Community Language (+5 pts)</span>
-              </label>
-
-              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.95rem; color: var(--color-text);">
-                <input type="checkbox" id="pts-regional" value="5" style="width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer;">
-                <span>Study & Live in Regional Australia (+5 pts)</span>
-              </label>
-            </div>
-          </form>
-        </div>
-
-        <!-- Right Column: Score Summary -->
-        <div class="calculator-results-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
-          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
-            <h2 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--bg-dark);">Points Summary</h2>
-            <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-primary); letter-spacing: 0.5px;">GSM Points Grid</span>
           </div>
 
-          <!-- Live Score Circle/Panel -->
-          <div style="background-color: var(--bg-secondary); padding: 32px 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; border: 1px solid rgba(94, 51, 135, 0.08);">
-            <div id="live-points-total" style="font-family: var(--font-headings); font-size: 4rem; font-weight: 700; color: var(--color-primary); line-height: 1.1;">0 Points</div>
-            <div id="points-eligibility-status" style="font-size: 1rem; font-weight: 600; color: #d9534f; margin-top: 10px;">Minimum Threshold (65 pts) Not Met</div>
-          </div>
+        </div> <!-- Closes .wizard-slider-container -->
 
-          <!-- Score Breakdown List -->
-          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; font-size: 0.9rem;">
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">Age points:</span>
-              <strong id="lbl-pts-age" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">English points:</span>
-              <strong id="lbl-pts-english" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">Education points:</span>
-              <strong id="lbl-pts-education" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">Work Experience points:</span>
-              <strong id="lbl-pts-experience" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">Partner points:</span>
-              <strong id="lbl-pts-partner" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">Nomination points:</span>
-              <strong id="lbl-pts-nomination" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; padding-bottom: 6px;">
-              <span style="color: var(--color-text-light);">Boost points:</span>
-              <strong id="lbl-pts-boosts" style="color: var(--bg-dark);">0 pts</strong>
-            </div>
-          </div>
+      </div> <!-- Closes .wizard-main-content -->
 
-          <!-- Official Link and Disclaimer -->
-          <div style="margin-bottom: 32px; padding: 16px; border-radius: 12px; background-color: rgba(94, 51, 135, 0.03); border: 1px solid var(--border-color); font-size: 0.8rem; color: var(--color-text-light); line-height: 1.4;">
-            <strong style="color: var(--color-primary); display: block; margin-bottom: 4px;">Official Points Table:</strong>
-            Cross-reference points allocation on the official <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189/points-table" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline; font-weight: 600;">Department of Home Affairs Points Calculator</a>.
-            <span style="display: block; margin-top: 6px; font-size: 0.75rem; opacity: 0.85;">⚠️ <em>Legal Notice: Migration policies are subject to change. The points estimated here are for guidance purposes only and do not guarantee an invitation to apply.</em></span>
-          </div>
+    </div> <!-- Closes .calculator-wizard-layout -->
 
-          <!-- Call to Action Buttons -->
-          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: auto;">
-            <a href="index.html#booking" class="btn btn-primary btn-full-width" style="padding: 16px 28px;">Discuss Pathways & Apply</a>
-            <button type="button" onclick="window.print()" class="btn btn-secondary btn-full-width" style="padding: 14px 28px; gap: 8px;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                <path d="M6 14h12v8H6z" />
-              </svg>
-              Print Points Report
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- FAQS ON POINTS -->
-  <section class="calculator-faqs"
-    style="padding: 72px 0; background-color: var(--bg-secondary); border-top: 1px solid var(--border-color);">
-    <div class="container">
-      <div class="text-center-wrapper reveal fade-up" style="margin-bottom: 48px;">
-        <span class="section-tag">Important Details</span>
-        <h2 class="section-heading">PR Points FAQs</h2>
-        <p class="section-subtext">Essential regulatory guidelines regarding visa application point scores.</p>
-      </div>
-
-      <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
-        <div class="faq-item glass-panel"
-          style="padding: 24px; border-radius: 16px; background-color: var(--bg-primary);">
-          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--bg-dark);">What is the minimum points score required to apply?</h4>
-          <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">The minimum score required to submit an Expression of Interest (EOI) is 65 points. However, due to high competition, higher scores are often required to receive an invitation to apply depending on your occupation and state nominated.</p>
-        </div>
-
-        <div class="faq-item glass-panel"
-          style="padding: 24px; border-radius: 16px; background-color: var(--bg-primary);">
-          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--bg-dark);">How long are points calculator factors valid?</h4>
-          <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">Your age points are locked at the time you receive an invitation to apply (ITA). English language tests are valid for up to 3 years prior to invitation, and skills assessments are generally valid for up to 3 years.</p>
-        </div>
-
-        <div class="faq-item glass-panel"
-          style="padding: 24px; border-radius: 16px; background-color: var(--bg-primary);">
-          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--bg-dark);">Can I combine work experience points?</h4>
-          <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">Yes, you can claim points for both overseas and Australian work experience. However, the combined points for skilled employment are capped at a maximum of 20 points, which is fully modeled in our calculator.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </div> <!-- Closes .container -->
+  </section> <!-- Closes .calculator-section -->
 
   <!-- FOOTER -->
   <footer class="main-footer">
@@ -468,7 +515,12 @@
 
   <!-- Script for Points calculations -->
   <script type="module">
+    import { escapeLaTeX, compileLaTeX } from './latex-pdf-helper.js';
+
     document.addEventListener('DOMContentLoaded', () => {
+      let currentSlideIndex = 0;
+      let autoAdvanceTimeout = null;
+
       const DEFAULT_POINTS_CONFIG = {
         age: [
           { value: "30", text: "25 to 32 years (30 points)" },
@@ -535,56 +587,159 @@
         initPointsCalculator();
       }
 
-      function initPointsCalculator() {
-        populateSelect('pts-age', pointsConfig.age);
-        populateSelect('pts-english', pointsConfig.english);
-        populateSelect('pts-education', pointsConfig.education);
-        populateSelect('pts-experience-os', pointsConfig.experienceOS);
-        populateSelect('pts-experience-au', pointsConfig.experienceAU);
-        populateSelect('pts-partner', pointsConfig.partner);
-        populateSelect('pts-pathway', pointsConfig.pathway);
-
-        if (pointsConfig.boosts) {
-          pointsConfig.boosts.forEach(boost => {
-            const el = document.getElementById(boost.id);
-            if (el) {
-              el.value = boost.value;
-              const span = el.nextElementSibling;
-              if (span && span.tagName === 'SPAN') {
-                span.textContent = boost.text;
-              }
-            }
-          });
-        }
-
-        const ptsForm = document.getElementById('points-calc-form');
-        if (ptsForm) {
-          ptsForm.addEventListener('input', calculatePoints);
-          ptsForm.addEventListener('change', calculatePoints);
-          calculatePoints();
-        }
+      function cleanOptionText(text) {
+        let cleaned = text.replace(/\s*\(\+?\d+\s*(points?|pts)\)/i, '');
+        cleaned = cleaned.replace(/\s*\(Ineligible\s*\/\s*\d+\s*points?\)/i, ' (Ineligible)');
+        return cleaned.trim();
       }
 
-      function populateSelect(id, options) {
-        const select = document.getElementById(id);
-        if (!select || !options) return;
-        select.innerHTML = '';
+      function initPointsCalculator() {
+        renderRadioGroup('options-age', pointsConfig.age, 'age');
+        renderRadioGroup('options-english', pointsConfig.english, 'english');
+        renderRadioGroup('options-education', pointsConfig.education, 'education');
+        renderRadioGroup('options-experienceOS', pointsConfig.experienceOS, 'experienceOS');
+        renderRadioGroup('options-experienceAU', pointsConfig.experienceAU, 'experienceAU');
+        renderRadioGroup('options-partner', pointsConfig.partner, 'partner');
+        renderRadioGroup('options-pathway', pointsConfig.pathway, 'pathway');
+        renderCheckboxGroup('options-boosts', pointsConfig.boosts);
+
+        calculatePoints();
+        setupWizard();
+      }
+
+      function renderRadioGroup(containerId, options, name) {
+        const container = document.getElementById(containerId);
+        if (!container || !options) return;
+        container.innerHTML = '';
+
+        options.forEach((opt, idx) => {
+          const card = document.createElement('label');
+          card.className = 'option-card';
+          if (idx === 0) {
+            card.classList.add('selected');
+          }
+
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = name;
+          input.value = opt.value;
+          input.className = 'option-radio-input';
+          if (idx === 0) {
+            input.checked = true;
+          }
+
+          const circle = document.createElement('span');
+          circle.className = 'option-radio-circle';
+
+          const textSpan = document.createElement('span');
+          textSpan.className = 'option-label-text';
+          textSpan.textContent = cleanOptionText(opt.text);
+
+          const ptsSpan = document.createElement('span');
+          ptsSpan.className = 'option-points-val';
+          const val = parseInt(opt.value) || 0;
+          ptsSpan.textContent = val > 0 ? `+${val} pts` : `0 pts`;
+
+          card.appendChild(input);
+          card.appendChild(circle);
+          card.appendChild(textSpan);
+          card.appendChild(ptsSpan);
+
+          input.addEventListener('change', () => {
+            if (input.checked) {
+              container.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+              card.classList.add('selected');
+              calculatePoints();
+              
+              // Auto-advance to next slide after a short delay
+              setTimeout(() => {
+                const currentSlide = card.closest('.wizard-slide');
+                if (currentSlide) {
+                  const slideIdx = parseInt(currentSlide.dataset.slideIndex);
+                  if (slideIdx < 8) {
+                    showSlide(slideIdx + 1);
+                  }
+                }
+              }, 400);
+            }
+          });
+
+          container.appendChild(card);
+        });
+      }
+
+      function renderCheckboxGroup(containerId, options) {
+        const container = document.getElementById(containerId);
+        if (!container || !options) return;
+        container.innerHTML = '';
+
         options.forEach(opt => {
-          const el = document.createElement('option');
-          el.value = opt.value;
-          el.textContent = opt.text;
-          select.appendChild(el);
+          const card = document.createElement('label');
+          card.className = 'option-card';
+
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.id = opt.id;
+          input.value = opt.value;
+          input.className = 'option-checkbox-input';
+
+          const square = document.createElement('span');
+          square.className = 'option-checkbox-square';
+
+          const textSpan = document.createElement('span');
+          textSpan.className = 'option-label-text';
+          textSpan.textContent = cleanOptionText(opt.text);
+
+          const ptsSpan = document.createElement('span');
+          ptsSpan.className = 'option-points-val';
+          const val = parseInt(opt.value) || 0;
+          ptsSpan.textContent = `+${val} pts`;
+
+          card.appendChild(input);
+          card.appendChild(square);
+          card.appendChild(textSpan);
+          card.appendChild(ptsSpan);
+
+          input.addEventListener('change', () => {
+            if (input.checked) {
+              card.classList.add('selected');
+            } else {
+              card.classList.remove('selected');
+            }
+            calculatePoints();
+
+            if (autoAdvanceTimeout) {
+              clearTimeout(autoAdvanceTimeout);
+            }
+
+            autoAdvanceTimeout = setTimeout(() => {
+              const currentSlide = card.closest('.wizard-slide');
+              if (currentSlide) {
+                const slideIdx = parseInt(currentSlide.dataset.slideIndex);
+                if (slideIdx < 8) {
+                  showSlide(slideIdx + 1);
+                }
+              }
+            }, 3000); // 3 seconds delay before automatically moving to the next slide
+          });
+
+          container.appendChild(card);
         });
       }
 
       function calculatePoints() {
-        const age = parseInt(document.getElementById('pts-age').value) || 0;
-        const english = parseInt(document.getElementById('pts-english').value) || 0;
-        const education = parseInt(document.getElementById('pts-education').value) || 0;
-        const expOS = parseInt(document.getElementById('pts-experience-os').value) || 0;
-        const expAU = parseInt(document.getElementById('pts-experience-au').value) || 0;
-        const partner = parseInt(document.getElementById('pts-partner').value) || 0;
-        const nomination = parseInt(document.getElementById('pts-pathway').value) || 0;
+        const getRadioValue = (name) => {
+          const checked = document.querySelector(`input[name="${name}"]:checked`);
+          return checked ? parseInt(checked.value) || 0 : 0;
+        };
+
+        const age = getRadioValue('age');
+        const english = getRadioValue('english');
+        const education = getRadioValue('education');
+        const expOS = getRadioValue('experienceOS');
+        const expAU = getRadioValue('experienceAU');
+        const partner = getRadioValue('partner');
+        const nomination = getRadioValue('pathway');
 
         let boosts = 0;
         if (pointsConfig.boosts) {
@@ -599,31 +754,355 @@
         const workExpPoints = Math.min(20, expOS + expAU);
         const total = age + english + education + workExpPoints + partner + nomination + boosts;
 
-        document.getElementById('lbl-pts-age').textContent = `${age} pts`;
-        document.getElementById('lbl-pts-english').textContent = `${english} pts`;
-        document.getElementById('lbl-pts-education').textContent = `${education} pts`;
-        document.getElementById('lbl-pts-experience').textContent = `${workExpPoints} pts`;
-        document.getElementById('lbl-pts-partner').textContent = `${partner} pts`;
-        document.getElementById('lbl-pts-nomination').textContent = `${nomination} pts`;
-        document.getElementById('lbl-pts-boosts').textContent = `${boosts} pts`;
+        document.getElementById('lbl-pts-age').textContent = `+${age} pts`;
+        document.getElementById('lbl-pts-english').textContent = `+${english} pts`;
+        document.getElementById('lbl-pts-education').textContent = `+${education} pts`;
+        document.getElementById('lbl-pts-experience-os').textContent = `+${expOS} pts`;
+        document.getElementById('lbl-pts-experience-au').textContent = `+${expAU} pts`;
+        document.getElementById('lbl-pts-partner').textContent = `+${partner} pts`;
+        document.getElementById('lbl-pts-nomination').textContent = `+${nomination} pts`;
+        document.getElementById('lbl-pts-boosts').textContent = `+${boosts} pts`;
+
+        updateSectionBadgeState('lbl-pts-age', age);
+        updateSectionBadgeState('lbl-pts-english', english);
+        updateSectionBadgeState('lbl-pts-education', education);
+        updateSectionBadgeState('lbl-pts-experience-os', expOS);
+        updateSectionBadgeState('lbl-pts-experience-au', expAU);
+        updateSectionBadgeState('lbl-pts-partner', partner);
+        updateSectionBadgeState('lbl-pts-nomination', nomination);
+        updateSectionBadgeState('lbl-pts-boosts', boosts);
 
         document.getElementById('live-points-total').textContent = `${total} Points`;
 
+        const badgeEl = document.getElementById('points-eligibility-badge');
         const statusEl = document.getElementById('points-eligibility-status');
-        if (statusEl) {
-          if (total >= 65) {
-            statusEl.textContent = "✓ Eligible for EOI Submission (Min. 65 pts met)";
-            statusEl.style.color = "#4cae4c";
-          } else {
-            statusEl.textContent = `Minimum Threshold (65 pts) Not Met — Need ${65 - total} more`;
-            statusEl.style.color = "#d9534f";
-          }
+        const progressEl = document.getElementById('points-progress-bar');
+
+        if (total === 0) {
+          badgeEl.textContent = "NOT STARTED";
+          badgeEl.className = "badge-status";
+          statusEl.textContent = "Select your details below to calculate your points.";
+        } else if (total >= 65) {
+          badgeEl.textContent = "ELIGIBLE";
+          badgeEl.className = "badge-status eligible";
+          statusEl.textContent = `✓ Eligible for EOI Submission (Min. 65 pts met! You have ${total} points)`;
+        } else {
+          badgeEl.textContent = "GETTING CLOSE";
+          badgeEl.className = "badge-status getting-close";
+          statusEl.textContent = `You need ${65 - total} more points for the 65-point minimum (Currently: ${total} pts).`;
         }
+
+        const progressPercent = Math.min(100, total);
+        progressEl.style.width = `${progressPercent}%`;
+
+        document.getElementById('bd-age').textContent = age > 0 ? `${age} pts` : '—';
+        document.getElementById('bd-english').textContent = english > 0 ? `${english} pts` : '—';
+        document.getElementById('bd-experience-os').textContent = expOS > 0 ? `${expOS} pts` : '—';
+        document.getElementById('bd-experience-au').textContent = expAU > 0 ? `${expAU} pts` : '—';
+        document.getElementById('bd-education').textContent = education > 0 ? `${education} pts` : '—';
+        document.getElementById('bd-partner').textContent = partner > 0 ? `${partner} pts` : '—';
+        document.getElementById('bd-nomination').textContent = nomination > 0 ? `${nomination} pts` : '—';
+        document.getElementById('bd-boosts').textContent = boosts > 0 ? `${boosts} pts` : '—';
+        const bdTotalEl = document.getElementById('bd-total');
+        if (bdTotalEl) bdTotalEl.textContent = total;
+      }
+
+      function updateSectionBadgeState(elementId, value) {
+        const badge = document.getElementById(elementId);
+        if (!badge) return;
+        if (value > 0) {
+          badge.classList.add('active');
+        } else {
+          badge.classList.remove('active');
+        }
+      }
+
+      function setupWizard() {
+        const prevArrow = document.getElementById('wizard-prev-btn');
+        const nextArrow = document.getElementById('wizard-next-btn');
+        const prevBottom = document.getElementById('bottom-prev-btn');
+        const nextBottom = document.getElementById('bottom-next-btn');
+        const dots = document.querySelectorAll('.wizard-progress-dots .dot');
+
+        const handlePrev = () => {
+          if (currentSlideIndex > 0) {
+            showSlide(currentSlideIndex - 1);
+          }
+        };
+
+        const handleNext = () => {
+          if (currentSlideIndex < 8) {
+            showSlide(currentSlideIndex + 1);
+          }
+        };
+
+        if (prevArrow) prevArrow.addEventListener('click', handlePrev);
+        if (nextArrow) nextArrow.addEventListener('click', handleNext);
+        if (prevBottom) prevBottom.addEventListener('click', handlePrev);
+        if (nextBottom) nextBottom.addEventListener('click', handleNext);
+
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => {
+            const targetStep = parseInt(dot.dataset.step);
+            showSlide(targetStep);
+          });
+        });
+
+        const sliderWindow = document.querySelector('.wizard-slider-window');
+        if (sliderWindow) {
+          sliderWindow.addEventListener('scroll', () => {
+            sliderWindow.scrollLeft = 0;
+          });
+        }
+
+        // Init
+        showSlide(0);
+      }
+
+      function showSlide(index) {
+        if (autoAdvanceTimeout) {
+          clearTimeout(autoAdvanceTimeout);
+          autoAdvanceTimeout = null;
+        }
+        currentSlideIndex = index;
+        const track = document.getElementById('wizard-slider-track');
+        if (track) {
+          track.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        // Toggle active slide class for visibility hidden control
+        const slides = document.querySelectorAll('.wizard-slide');
+        slides.forEach((slide, idx) => {
+          if (idx === index) {
+            slide.classList.add('active-slide');
+          } else {
+            slide.classList.remove('active-slide');
+          }
+        });
+
+        // Update step labels
+        const stepBadge = document.getElementById('wizard-step-badge');
+        const stepName = document.getElementById('wizard-step-name');
+
+        const stepNames = [
+          "Age Bracket",
+          "English Language Ability",
+          "Overseas Skilled Employment",
+          "Australian Skilled Employment",
+          "Educational Qualifications",
+          "Partner Status & Skills",
+          "Visa Subclass Nomination",
+          "Special Points Boosts",
+          "Final Calculation Report"
+        ];
+
+        if (stepBadge) stepBadge.textContent = `Step ${index + 1} of 9`;
+        if (stepName) stepName.textContent = stepNames[index];
+
+        // Update dots styling
+        const dots = document.querySelectorAll('.wizard-progress-dots .dot');
+        dots.forEach((dot, idx) => {
+          if (idx === index) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+
+        // Update navigation buttons state
+        const prevArrow = document.getElementById('wizard-prev-btn');
+        const nextArrow = document.getElementById('wizard-next-btn');
+        const prevBottom = document.getElementById('bottom-prev-btn');
+        const nextBottom = document.getElementById('bottom-next-btn');
+
+        if (prevArrow) prevArrow.disabled = (index === 0);
+        if (nextArrow) nextArrow.disabled = (index === 8);
+
+        if (prevBottom) {
+          prevBottom.style.visibility = (index === 0) ? 'hidden' : 'visible';
+        }
+        if (nextBottom) {
+          nextBottom.style.visibility = (index === 8) ? 'hidden' : 'visible';
+        }
+
+        // Smooth scroll to top of calculator section
+        const calcSection = document.querySelector('.calculator-section');
+        if (calcSection) {
+          calcSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function printPointsLaTeXReport() {
+        const getRadioValue = (name) => {
+          const checked = document.querySelector(`input[name="${name}"]:checked`);
+          return checked ? parseInt(checked.value) || 0 : 0;
+        };
+
+        const getSelectedRadioText = (name) => {
+          const checked = document.querySelector(`input[name="${name}"]:checked`);
+          if (!checked) return 'Not Selected';
+          const label = checked.closest('.option-card');
+          if (!label) return 'Not Selected';
+          const labelText = label.querySelector('.option-label-text');
+          return labelText ? labelText.textContent.trim() : 'Not Selected';
+        };
+
+        const age = getRadioValue('age');
+        const english = getRadioValue('english');
+        const education = getRadioValue('education');
+        const expOS = getRadioValue('experienceOS');
+        const expAU = getRadioValue('experienceAU');
+        const partner = getRadioValue('partner');
+        const nomination = getRadioValue('pathway');
+
+        const ageText = getSelectedRadioText('age');
+        const englishText = getSelectedRadioText('english');
+        const educationText = getSelectedRadioText('education');
+        const expOSText = getSelectedRadioText('experienceOS');
+        const expAUText = getSelectedRadioText('experienceAU');
+        const partnerText = getSelectedRadioText('partner');
+        const nominationText = getSelectedRadioText('pathway');
+
+        let boosts = 0;
+        let boostsList = [];
+        if (pointsConfig.boosts) {
+          pointsConfig.boosts.forEach(boost => {
+            const el = document.getElementById(boost.id);
+            if (el && el.checked) {
+              boosts += parseInt(boost.value) || 0;
+              boostsList.push(boost.text.replace(/\s*\(\+?\d+\s*(points?|pts)\)/i, '').trim());
+            }
+          });
+        }
+
+        const workExpPoints = Math.min(20, expOS + expAU);
+        const total = age + english + education + workExpPoints + partner + nomination + boosts;
+
+        const dateStr = new Date().toLocaleDateString('en-AU', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        let boostsText = boostsList.length > 0 ? boostsList.join(', ') : 'None selected';
+        const isAu = document.body.classList.contains('region-au');
+        const portalText = isAu ? "Australia Portal" : "Nepal Portal";
+
+        const latex = `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[margin=2.2cm]{geometry}
+\\usepackage[table]{xcolor}
+\\usepackage{array}
+\\usepackage{tikz}
+\\usepackage{tcolorbox}
+\\usepackage{fancyhdr}
+\\usepackage{graphicx}
+
+\\definecolor{primary}{HTML}{5E3387}
+\\definecolor{secondary}{HTML}{D99C53}
+\\definecolor{textcolor}{HTML}{251E2B}
+\\definecolor{lightbg}{HTML}{FAF8FD}
+
+\\pagecolor{white}
+\\color{textcolor}
+
+\\begin{document}
+\\thispagestyle{empty}
+
+% Logo \\& Header
+\\noindent
+\\begin{minipage}{0.5\\textwidth}
+  \\includegraphics[height=1.2cm]{logo.png}
+\\end{minipage}
+\\begin{minipage}{0.5\\textwidth}
+  \\raggedleft
+  {\\small\\fontfamily{phv}\\selectfont\\color{textcolor!70} Migration \\& Education Experts} \\\\[0.1cm]
+  {\\small\\fontfamily{phv}\\selectfont\\color{textcolor!70} ${portalText}}
+\\end{minipage}
+
+\\vspace{0.4cm}
+{\\color{secondary}\\hrule height 2pt}
+\\vspace{0.6cm}
+
+\\begin{center}
+  {\\Large\\bfseries EXPRESSION OF INTEREST (EOI) POINTS REPORT} \\\\[0.15cm]
+  {\\small Date generated: ${escapeLaTeX(dateStr)} | Portal: ${escapeLaTeX(portalText)}}
+\\end{center}
+
+\\vspace{0.4cm}
+
+\\subsection*{Points Breakdown Summary}
+\\renewcommand{\\arraystretch}{1.3}
+\\noindent
+\\begin{tabular}{|p{5.5cm}|p{8.5cm}|r|}
+\\hline
+\\rowcolor{primary}
+\\textbf{\\color{white} Category} & \\textbf{\\color{white} Selected Criteria} & \\textbf{\\color{white} Points} \\\\
+\\hline
+Age Bracket & ${escapeLaTeX(ageText)} & ${age} pts \\\\
+\\hline
+English Language Ability & ${escapeLaTeX(englishText)} & ${english} pts \\\\
+\\hline
+Overseas Skilled Work & ${escapeLaTeX(expOSText)} & ${expOS} pts \\\\
+\\hline
+Australian Skilled Work & ${escapeLaTeX(expAUText)} & ${expAU} pts \\\\
+\\hline
+Educational Qualification & ${escapeLaTeX(educationText)} & ${education} pts \\\\
+\\hline
+Partner Status \\& Skills & ${escapeLaTeX(partnerText)} & ${partner} pts \\\\
+\\hline
+Visa Subclass Nomination & ${escapeLaTeX(nominationText)} & ${nomination} pts \\\\
+\\hline
+Special Points Boosts & ${escapeLaTeX(boostsText)} & ${boosts} pts \\\\
+\\hline
+\\rowcolor{lightbg}
+\\textbf{ESTIMATED SCORE} & \\multicolumn{2}{r|}{\\textbf{${total} Points}} \\\\
+\\hline
+\\end{tabular}
+
+\\vspace{0.6cm}
+
+${total >= 65 ? `
+\\begin{tcolorbox}[colback=green!5, colframe=green!60!black, arc=6pt, boxrule=1pt, halign=center]
+  \\large\\bfseries\\color{green!40!black} ELIGIBLE FOR EXPRESSION OF INTEREST (EOI) SUBMISSION
+  \\vskip 0.1cm
+  \\small\\color{green!30!black} Minimum threshold of 65 points met. Your current estimated score is \\textbf{${total} points}.
+\\end{tcolorbox}
+` : `
+\\begin{tcolorbox}[colback=orange!5, colframe=orange!80!black, arc=6pt, boxrule=1pt, halign=center]
+  \\large\\bfseries\\color{orange!50!black} ADDITIONAL POINTS REQUIRED
+  \\vskip 0.1cm
+  \\small\\color{orange!40!black} You require ${65 - total} more points to reach the 65-point EOI submission threshold (Current score: \\textbf{${total} points}).
+\\end{tcolorbox}
+`}
+
+\\subsection*{Recommended Next Steps}
+\\begin{enumerate}
+  \\item \\textbf{Skill Assessment:} Obtain a positive skills assessment for your nominated occupation from your designated Australian assessing authority.
+  \\item \\textbf{English Language Proficiency:} Maximize points by aiming for Superior English (PTE 79+ / IELTS 8.0+) if not already achieved.
+  \\item \\textbf{State Nomination Pathways:} Explore Subclass 190 (State Nominated) or 491 (Skilled Work Regional) which grant an automatic +5 or +15 points boost.
+  \\item \\textbf{Professional Consultation:} Meet with a registered migration agent at Pictor Services to formulate your visa roadmap and verify all points claims.
+\\end{enumerate}
+
+\\vfill
+\\begin{tcolorbox}[colback=lightbg, colframe=primary!30, arc=4pt, boxrule=0.5pt, title={\\small\\bfseries LEGAL NOTICE \\& DISCLAIMER}]
+\\scriptsize\\color{textcolor!80}
+Pictor Services is registered with the Office of the Migration Agents Registration Authority (OMARA), MARN 0000000. The calculations and estimates provided in this report are for planning and guidance purposes only. Migration laws, policies, and visa fees are subject to change without notice. This document does not constitute formal legal immigration advice or a guarantee of visa approval or eligibility. For formal representation and advice, please consult with a registered migration agent.
+\\end{tcolorbox}
+
+\\end{document}`;
+
+        compileLaTeX(latex, "PR_Points_Report");
+      }
+
+      const printBtn = document.getElementById('btn-print-report');
+      if (printBtn) {
+        printBtn.addEventListener('click', printPointsLaTeXReport);
       }
 
       loadPointsConfig();
     });
-  </script>
+</script>
 </body>
 
 </html>
