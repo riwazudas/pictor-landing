@@ -7,6 +7,62 @@ import { animate } from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
 document.addEventListener('DOMContentLoaded', () => {
   
   // ==========================================================================
+  // 0. LOCATION BAR CONTROLLER (Local Dev Switcher Close & Prod Auto-Hide)
+  // ==========================================================================
+  const hostname = window.location.hostname;
+  const isLocalDev = hostname === 'localhost' ||
+                     hostname === '127.0.0.1' ||
+                     hostname === '' ||
+                     hostname.startsWith('192.168.') ||
+                     hostname.startsWith('10.') ||
+                     window.location.protocol === 'file:';
+
+  const topBar = document.querySelector('.top-bar');
+  if (topBar) {
+    if (!isLocalDev) {
+      topBar.style.display = 'none';
+      document.body.classList.add('top-bar-hidden');
+    } else {
+      if (localStorage.getItem('pictor_topbar_closed') === 'true') {
+        topBar.style.display = 'none';
+        document.body.classList.add('top-bar-hidden');
+      } else {
+        // Inject Close button
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'top-bar-close-btn';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.setAttribute('aria-label', 'Close location switcher');
+        closeBtn.style.cssText = `
+          background: none;
+          border: none;
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0 0 0 16px;
+          line-height: 1;
+          display: flex;
+          align-items: center;
+          transition: color 0.2s;
+        `;
+        closeBtn.addEventListener('mouseenter', () => closeBtn.style.color = '#fff');
+        closeBtn.addEventListener('mouseleave', () => closeBtn.style.color = 'rgba(255, 255, 255, 0.6)');
+        
+        const container = topBar.querySelector('.top-bar-container');
+        if (container) {
+          container.appendChild(closeBtn);
+        }
+        
+        closeBtn.addEventListener('click', () => {
+          topBar.style.display = 'none';
+          document.body.classList.add('top-bar-hidden');
+          localStorage.setItem('pictor_topbar_closed', 'true');
+        });
+      }
+    }
+  }
+
+  // ==========================================================================
   // 1. REGIONALIZATION & PORTAL ENGINE
   // ==========================================================================
   const btnAu = document.getElementById('btn-au');
