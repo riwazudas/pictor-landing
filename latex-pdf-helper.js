@@ -64,8 +64,8 @@ styleElement.textContent = `
   .latex-spinner {
     width: 56px;
     height: 56px;
-    border: 4px solid rgba(94, 51, 135, 0.1);
-    border-left-color: #5e3387;
+    border: 4px solid rgba(58, 28, 98, 0.1);
+    border-left-color: #3a1c62;
     border-radius: 50%;
     animation: latex-spin 1s linear infinite;
     margin: 0 auto 24px;
@@ -106,9 +106,9 @@ styleElement.textContent = `
     gap: 6px;
   }
   .latex-modal-btn-primary {
-    background: #5e3387;
+    background: #3a1c62;
     color: #faf8fd;
-    box-shadow: 0 4px 10px rgba(94, 51, 135, 0.2);
+    box-shadow: 0 4px 10px rgba(58, 28, 98, 0.2);
   }
   .latex-modal-btn-primary:hover {
     background: #4c2472;
