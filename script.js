@@ -1021,49 +1021,96 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. TIMELINE PROGRESS TRACKER
   // ==========================================================================
   const timelineSection = document.getElementById('process');
-  const progressFill = document.getElementById('timeline-progress-fill');
-  const timelineNodes = document.querySelectorAll('.timeline-node');
+  const timelineNodes = document.querySelectorAll('.v-timeline-node');
 
   function updateTimelineProgress() {
-    if (!timelineSection || !progressFill) return;
+    if (!timelineSection || timelineNodes.length === 0) return;
 
     const rect = timelineSection.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
 
     // Calculate how far into the viewport the timeline section is
-    // 0 = just entered bottom, 1 = section is fully scrolled past top
-    const totalHeight = rect.height + viewportHeight;
     const scrolledAmount = viewportHeight - rect.top;
     
     let ratio = Math.max(0, Math.min(scrolledAmount / rect.height, 1));
 
-    // Refined progress mapping for better visuals
     if (rect.top > viewportHeight) ratio = 0;
     if (rect.bottom < 0) ratio = 1;
-
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      progressFill.style.height = `${ratio * 100}%`;
-      progressFill.style.width = '100%';
-    } else {
-      progressFill.style.width = `${ratio * 100}%`;
-      progressFill.style.height = '100%';
-    }
 
     // Highlight node bullets step-by-step
     const numNodes = timelineNodes.length;
     timelineNodes.forEach((node, idx) => {
-      const threshold = (idx + 0.5) / numNodes;
+      const threshold = (idx) / numNodes;
       if (ratio >= threshold) {
         node.classList.add('active');
       } else {
         node.classList.remove('active');
       }
     });
+    // Ensure at least step 1 is active when section is in view
+    if (ratio > 0 && timelineNodes[0]) {
+      timelineNodes[0].classList.add('active');
+    }
   }
 
   window.addEventListener('scroll', updateTimelineProgress);
   window.addEventListener('resize', updateTimelineProgress);
+
+  // ==========================================================================
+  // 7b. TESTIMONIAL SLIDER ENGINE
+  // ==========================================================================
+  const slides = document.querySelectorAll('.testimonial-slide');
+  const dots = document.querySelectorAll('#testimonial-dots .slider-dot');
+  const prevBtn = document.getElementById('prev-testimonial-btn');
+  const nextBtn = document.getElementById('next-testimonial-btn');
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    if (slides.length === 0) return;
+    
+    // Boundary checks
+    if (index >= slides.length) currentSlide = 0;
+    else if (index < 0) currentSlide = slides.length - 1;
+    else currentSlide = index;
+
+    slides.forEach((slide, idx) => {
+      if (idx === currentSlide) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+
+    dots.forEach((dot, idx) => {
+      if (idx === currentSlide) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      showSlide(currentSlide - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      showSlide(currentSlide + 1);
+    });
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index'), 10);
+        showSlide(index);
+      });
+    });
+
+    // Auto rotate every 8 seconds
+    setInterval(() => {
+      showSlide(currentSlide + 1);
+    }, 8000);
+  }
 
 
   // ==========================================================================
