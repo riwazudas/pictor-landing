@@ -1300,6 +1300,8 @@
             <span>📍 Region: ${apt.region.toUpperCase()}</span>
             <span>🔖 Visa: ${apt.visaType}</span>
             <span>📅 Booking: ${apt.date} @ ${apt.time}</span>
+            ${apt.agentName ? `<span>🕵️ Agent: ${apt.agentName}</span>` : ''}
+            ${apt.paymentStatus ? `<span>💳 Payment: ${apt.paymentStatus}</span>` : ''}
           </div>
           <div class="notification-body"><strong>Consultation Notes:</strong><br>${apt.notes}</div>
           

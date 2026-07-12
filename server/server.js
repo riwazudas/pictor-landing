@@ -409,7 +409,7 @@ app.get('/api/available-slots', async (req, res) => {
  * Inserts a new calendar event and saves details locally for notifications dashboard
  */
 app.post('/api/book-appointment', async (req, res) => {
-  const { name, email, phone, visaType, notes, date, time, region } = req.body;
+  const { name, email, phone, visaType, notes, date, time, region, agentId, agentName, chargeAmount, paymentStatus } = req.body;
 
   if (!name || !email || !date || !time || !region) {
     return res.status(400).json({ error: 'Required fields: name, email, date, time, region' });
@@ -437,6 +437,10 @@ app.post('/api/book-appointment', async (req, res) => {
       region,
       meetLink,
       eventId,
+      agentId: agentId || null,
+      agentName: agentName || null,
+      chargeAmount: chargeAmount || null,
+      paymentStatus: paymentStatus || null,
       createdAt: new Date().toISOString(),
       replies: []
     };
@@ -472,7 +476,7 @@ Client Name: ${name}
 Client Email: ${email}
 Client Phone: ${phone || 'Not Provided'}
 Visa Pathway Interested: ${visaType || 'Not Specified'}
-
+${agentName ? `Assigned Agent: ${agentName}\n` : ''}${chargeAmount ? `Charge Amount: $${chargeAmount} AUD\n` : ''}${paymentStatus ? `Payment Status: ${paymentStatus}\n` : ''}
 Additional Notes:
 ${notes || 'None'}
     `.trim();
