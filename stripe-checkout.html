@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Checkout - Secure Payment</title>
+  <!-- Import Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --stripe-bg-left: #1a1f36;
+      --stripe-text-left: #ffffff;
+      --stripe-text-left-muted: #a3acbf;
+      --stripe-bg-right: #ffffff;
+      --stripe-text-right: #30313d;
+      --stripe-border: #e6ebf1;
+      --stripe-focus: #0070f3;
+      --stripe-button: #0048ff;
+      --stripe-button-hover: #0037c2;
+      --stripe-error: #df1b41;
+      
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--stripe-bg-right);
+      color: var(--stripe-text-right);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Split screen container */
+    .checkout-container {
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      background-color: var(--stripe-bg-left);
+      color: var(--stripe-text-left);
+      width: 42%;
+      padding: 64px 8% 48px 8%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--stripe-text-left-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+      margin-bottom: 48px;
+    }
+
+    .back-btn:hover {
+      color: var(--stripe-text-left);
+    }
+
+    .back-btn svg {
+      margin-right: 8px;
+      fill: currentColor;
+    }
+
+    .product-summary {
+      flex-grow: 1;
+    }
+
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--stripe-text-left-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .product-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .agent-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .agent-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      object-fit: cover;
+    }
+
+    .agent-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .agent-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--stripe-text-left);
+    }
+
+    .agent-role {
+      font-size: 0.8rem;
+      color: var(--stripe-text-left-muted);
+    }
+
+    .price-display {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .price-currency {
+      font-size: 1.2rem;
+      color: var(--stripe-text-left-muted);
+      font-weight: 600;
+    }
+
+    .session-details-table {
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .detail-label {
+      color: var(--stripe-text-left-muted);
+    }
+
+    .detail-value {
+      font-weight: 500;
+    }
+
+    .sidebar-footer {
+      font-size: 0.8rem;
+      color: var(--stripe-text-left-muted);
+      margin-top: 48px;
+    }
+
+    /* Right Main Panel */
+    .payment-panel {
+      width: 58%;
+      background-color: var(--stripe-bg-right);
+      padding: 64px 10% 48px 10%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .payment-form-container {
+      max-width: 480px;
+      width: 100%;
+      margin: 0 auto;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .checkout-header-mobile {
+      display: none;
+    }
+
+    .payment-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--stripe-text-right);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #4f5b76;
+    }
+
+    /* Inputs resembling stripe elements */
+    .stripe-element {
+      background: #ffffff;
+      border: 1px solid var(--stripe-border);
+      border-radius: 5px;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      color: var(--stripe-text-right);
+      width: 100%;
+      outline: none;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+      font-family: var(--font-family);
+    }
+
+    .stripe-element:focus {
+      border-color: #80bfff;
+      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.15);
+    }
+
+    .stripe-element::placeholder {
+      color: #a3acbf;
+    }
+
+    /* Unified card input styling */
+    .card-element-wrapper {
+      border: 1px solid var(--stripe-border);
+      border-radius: 5px;
+      overflow: hidden;
+      background: #ffffff;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card-element-wrapper:focus-within {
+      border-color: #80bfff;
+      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.15);
+    }
+
+    .card-element-row {
+      display: flex;
+      border-bottom: 1px solid var(--stripe-border);
+    }
+
+    .card-element-row:last-child {
+      border-bottom: none;
+    }
+
+    .card-element-input {
+      border: none;
+      background: transparent;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      color: var(--stripe-text-right);
+      outline: none;
+      width: 100%;
+      font-family: var(--font-family);
+    }
+
+    .card-element-input::placeholder {
+      color: #a3acbf;
+    }
+
+    .half-width {
+      width: 50%;
+    }
+
+    .half-width:first-child {
+      border-right: 1px solid var(--stripe-border);
+    }
+
+    .payment-error {
+      color: var(--stripe-error);
+      background-color: rgba(223, 27, 65, 0.05);
+      border: 1px solid rgba(223, 27, 65, 0.15);
+      padding: 12px 16px;
+      border-radius: 5px;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pay-button {
+      background-color: var(--stripe-button);
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .pay-button:hover {
+      background-color: var(--stripe-button-hover);
+    }
+
+    .pay-button:active {
+      transform: scale(0.98);
+    }
+
+    .pay-button:disabled {
+      background-color: #a3acbf;
+      cursor: not-allowed;
+    }
+
+    /* Spinner style for processing state */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .lock-icon {
+      fill: currentColor;
+    }
+
+    .payment-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #4f5b76;
+      margin-top: 48px;
+      border-top: 1px solid var(--stripe-border);
+      padding-top: 24px;
+    }
+
+    .powered-by {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #a3acbf;
+    }
+
+    .powered-by strong {
+      color: #4f5b76;
+      font-weight: 700;
+    }
+
+    .footer-links a {
+      color: #4f5b76;
+      text-decoration: none;
+      margin-left: 12px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .checkout-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        padding: 32px 24px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .back-btn {
+        margin-bottom: 24px;
+      }
+      .payment-panel {
+        width: 100%;
+        padding: 40px 24px;
+      }
+      .payment-form-container {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="checkout-container">
+    
+    <!-- Left Sidebar: Order Summary -->
+    <div class="sidebar">
+      <div>
+        <a href="index.html#booking" class="back-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back to Pictor Services
+        </a>
+        
+        <div class="product-summary">
+          <div class="brand-name">Pictor Services</div>
+          <h2 class="product-title" id="summary-title">Strategic Consultation</h2>
+          
+          <div class="agent-meta" id="agent-meta-box" style="display: none;">
+            <img src="agent_samantha.png" alt="Agent Avatar" class="agent-avatar" id="agent-photo">
+            <div class="agent-details">
+              <span class="agent-name" id="agent-name">Agent A</span>
+              <span class="agent-role" id="agent-role">OMARA Registered Specialist</span>
+            </div>
+          </div>
+          
+          <div class="price-display">
+            <span id="price-amount">$120.00</span>
+            <span class="price-currency">AUD</span>
+          </div>
+          
+          <div class="session-details-table">
+            <div class="detail-row">
+              <span class="detail-label">Service:</span>
+              <span class="detail-value">30-Min Strategy Consultation</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Date:</span>
+              <span class="detail-value" id="summary-date">Monday, June 15, 2026</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Time:</span>
+              <span class="detail-value" id="summary-time">10:00 AM (AEST)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        Powered by Stripe Sandbox Simulator. All data runs in test mode.
+      </div>
+    </div>
+    
+    <!-- Right Panel: Stripe Payment Form -->
+    <div class="payment-panel">
+      <div class="payment-form-container">
+        <h3 class="payment-title">Pay with credit card</h3>
+        
+        <div class="payment-error" id="payment-error-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          <span id="payment-error-msg"></span>
+        </div>
+        
+        <form id="stripe-checkout-form">
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" class="stripe-element" readonly disabled>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Card details</label>
+            <div class="card-element-wrapper">
+              <input type="text" id="card-number" class="card-element-input" placeholder="1234 5678 9101 1121" maxlength="19" required>
+              <div class="card-element-row">
+                <input type="text" id="card-expiry" class="card-element-input half-width" placeholder="MM / YY" maxlength="5" required>
+                <input type="text" id="card-cvc" class="card-element-input half-width" placeholder="CVC" maxlength="4" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="cardholder-name">Name on card</label>
+            <input type="text" id="cardholder-name" class="stripe-element" placeholder="Jane Doe" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="billing-country">Country or region</label>
+            <select id="billing-country" class="stripe-element" required>
+              <option value="AU">Australia</option>
+              <option value="NP">Nepal</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="NZ">New Zealand</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="pay-button" id="pay-button">
+            <span class="spinner" id="btn-spinner"></span>
+            <svg class="lock-icon" id="btn-lock" width="14" height="14" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            <span id="btn-text">Pay $120.00</span>
+          </button>
+        </form>
+      </div>
+      
+      <div class="payment-footer">
+        <span class="powered-by">
+          Powered by <strong>stripe</strong>
+        </span>
+        <div class="footer-links">
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Fetch pending booking details
+      const pendingBookingStr = sessionStorage.getItem('pending_booking');
+      if (!pendingBookingStr) {
+        // Redirect back to booking page if no pending session details are found
+        window.location.href = 'index.html#booking';
+        return;
+      }
+      
+      let payload = null;
+      try {
+        payload = JSON.parse(pendingBookingStr);
+      } catch (err) {
+        console.error('Error parsing pending booking payload:', err);
+        window.location.href = 'index.html#booking';
+        return;
+      }
+      
+      // 2. Prefill fields and display summaries
+      document.getElementById('email').value = payload.email;
+      
+      const summaryTitle = document.getElementById('summary-title');
+      const agentMetaBox = document.getElementById('agent-meta-box');
+      const agentPhoto = document.getElementById('agent-photo');
+      const agentName = document.getElementById('agent-name');
+      const agentRole = document.getElementById('agent-role');
+      const priceAmount = document.getElementById('price-amount');
+      const btnText = document.getElementById('btn-text');
+      
+      if (payload.agentName) {
+        summaryTitle.textContent = `Consultation with ${payload.agentName}`;
+        agentName.textContent = payload.agentName;
+        agentMetaBox.style.display = 'flex';
+        
+        // Match avatar photo filename
+        if (payload.agentId === 'samantha') {
+          agentPhoto.src = 'agent_samantha.png';
+          agentRole.textContent = 'GSM & Skills Assessment Specialist';
+        } else if (payload.agentId === 'marcus') {
+          agentPhoto.src = 'agent_marcus.png';
+          agentRole.textContent = 'Employer Sponsorship Specialist';
+        } else if (payload.agentId === 'elena') {
+          agentPhoto.src = 'agent_elena.png';
+          agentRole.textContent = 'Partner & Family Visa Specialist';
+        }
+      }
+      
+      const chargeFee = payload.chargeAmount || 120;
+      priceAmount.textContent = `$${chargeFee}.00`;
+      btnText.textContent = `Pay $${chargeFee}.00`;
+      
+      // Format display date
+      const summaryDate = document.getElementById('summary-date');
+      const summaryTime = document.getElementById('summary-time');
+      
+      const parts = payload.date.split('-');
+      const dObj = new Date(parts[0], parts[1] - 1, parts[2]);
+      const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+      summaryDate.textContent = dObj.toLocaleDateString('en-US', dateOptions);
+      
+      const tzSuffix = payload.region === 'au' ? 'AEST' : 'NPT';
+      summaryTime.textContent = `${payload.time} (${tzSuffix})`;
+      
+      // 3. Setup form input validations
+      const cardNum = document.getElementById('card-number');
+      const cardExp = document.getElementById('card-expiry');
+      const cardCvc = document.getElementById('card-cvc');
+      
+      // Card formatting helpers
+      cardNum.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        let formatted = '';
+        for (let i = 0; i < val.length; i++) {
+          if (i > 0 && i % 4 === 0) formatted += ' ';
+          formatted += val[i];
+        }
+        e.target.value = formatted;
+      });
+
+      cardExp.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (val.length >= 2) {
+          e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+        } else {
+          e.target.value = val;
+        }
+      });
+
+      cardCvc.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/gi, '');
+      });
+      
+      // 4. Form submission simulation
+      const form = document.getElementById('stripe-checkout-form');
+      const errorBox = document.getElementById('payment-error-box');
+      const errorMsg = document.getElementById('payment-error-msg');
+      const payButton = document.getElementById('pay-button');
+      const spinner = document.getElementById('btn-spinner');
+      const lockIcon = document.getElementById('btn-lock');
+      
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Hide previous errors
+        errorBox.style.display = 'none';
+        
+        // Client side validations
+        const numVal = cardNum.value.replace(/\s+/g, '');
+        const expVal = cardExp.value;
+        const cvcVal = cardCvc.value;
+        
+        if (numVal.length < 12) {
+          showError('Your card number is incomplete.');
+          return;
+        }
+        if (!/^\d{2}\/\d{2}$/.test(expVal)) {
+          showError('Your card expiry date is invalid. Use MM/YY format.');
+          return;
+        }
+        if (cvcVal.length < 3) {
+          showError('Your card security code is incomplete.');
+          return;
+        }
+        
+        // Enter loading state
+        payButton.disabled = true;
+        spinner.style.display = 'inline-block';
+        lockIcon.style.display = 'none';
+        btnText.textContent = 'Processing payment...';
+        
+        // Set paymentStatus details in the final payload
+        payload.paymentStatus = 'Paid (Stripe Secure Direct)';
+        
+        // Simulate API call to backend book-appointment
+        try {
+          const response = await fetch('/api/book-appointment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.error || 'Gateway validation failed');
+          }
+          
+          const result = await response.json();
+          
+          // Store response in sessionStorage to show in final step
+          sessionStorage.setItem('completed_booking', JSON.stringify({ ...payload, ...result }));
+          
+          // Keep loader for 1.5 seconds to make the UI transition feel realistic and secure
+          setTimeout(() => {
+            window.location.href = 'index.html?booking_success=true';
+          }, 1500);
+          
+        } catch (error) {
+          console.error(error);
+          showError(error.message || 'Payment processing failed. Please verify card details.');
+          payButton.disabled = false;
+          spinner.style.display = 'none';
+          lockIcon.style.display = 'inline-block';
+          btnText.textContent = `Pay $${chargeFee}.00`;
+        }
+      });
+      
+      function showError(msg) {
+        errorMsg.textContent = msg;
+        errorBox.style.display = 'flex';
+        // Scroll to error if mobile
+        errorBox.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>

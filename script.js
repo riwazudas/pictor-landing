@@ -146,6 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update active states on visualizers if applicable
       updateTimezoneLabels(region);
       
+      // Initialize/Reset Booking Wizard for the active region
+      if (typeof initWizardFlow === 'function') {
+        initWizardFlow(region);
+      }
+      
       // Update live Google Calendar if integrated
       if (typeof initGoogleCalendar === 'function') {
         initGoogleCalendar();
@@ -648,6 +653,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let chosenDate = null;
   let chosenTime = null;
+  let selectedAgent = null; // { id, name, fee }
+  let wizardFlow = []; // List of step element IDs
+  let currentStepIndex = 0;
   let currentMonth = new Date().getMonth();
   let currentYear = new Date().getFullYear();
 
@@ -656,19 +664,136 @@ document.addEventListener('DOMContentLoaded', () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
-  // Helper function to shift wizard tabs
-  function navigateWizard(stepNum) {
-    wizardSteps.forEach(step => step.classList.remove('active'));
-    document.getElementById(`wizard-step-${stepNum}`).classList.add('active');
+  // Helper function to set required attributes for Stripe card fields
+  function setCardFieldsRequired(isRequired) {
+    const cardNum = document.getElementById('card-number');
+    const cardExp = document.getElementById('card-expiry');
+    const cardCvc = document.getElementById('card-cvc');
+    if (cardNum && cardExp && cardCvc) {
+      if (isRequired) {
+        cardNum.setAttribute('required', 'required');
+        cardExp.setAttribute('required', 'required');
+        cardCvc.setAttribute('required', 'required');
+      } else {
+        cardNum.removeAttribute('required');
+        cardExp.removeAttribute('required');
+        cardCvc.removeAttribute('required');
+      }
+    }
+  }
 
-    // Update progress dots
-    wizardIndicators.forEach(ind => {
-      const idx = parseInt(ind.getAttribute('data-step'));
-      ind.classList.remove('active', 'completed');
-      if (idx === stepNum) {
+  // Helper function to shift wizard tabs dynamically using index in active wizardFlow
+  window.navigateWizardToIndex = function(index) {
+    if (index < 0 || index >= wizardFlow.length) return;
+    currentStepIndex = index;
+    
+    // Toggle active wizard-step class
+    const allStepEls = document.querySelectorAll('.wizard-step');
+    allStepEls.forEach(step => step.classList.remove('active'));
+    
+    const currentStepId = wizardFlow[currentStepIndex];
+    const currentStepEl = document.getElementById(currentStepId);
+    if (currentStepEl) {
+      currentStepEl.classList.add('active');
+    }
+    
+    // Render/update dynamic indicators
+    updateWizardIndicators();
+  }
+
+  // Update dynamic progress indicators
+  function updateWizardIndicators() {
+    const indicatorContainer = document.querySelector('.wizard-steps-indicator');
+    if (!indicatorContainer) return;
+    
+    indicatorContainer.innerHTML = '';
+    
+    const stepLabels = {
+      'wizard-step-agent': 'Agent',
+      'wizard-step-1': 'Date',
+      'wizard-step-2': 'Time',
+      'wizard-step-3': 'Details',
+      'wizard-step-4': 'Done'
+    };
+    
+    wizardFlow.forEach((stepId, idx) => {
+      const ind = document.createElement('div');
+      ind.className = 'step-indicator';
+      ind.setAttribute('data-step', (idx + 1).toString());
+      
+      const idxSpan = document.createTextNode((idx + 1).toString());
+      ind.appendChild(idxSpan);
+      
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'step-label';
+      labelSpan.textContent = stepLabels[stepId] || '';
+      ind.appendChild(labelSpan);
+      
+      if (idx === currentStepIndex) {
         ind.classList.add('active');
-      } else if (idx < stepNum) {
+      } else if (idx < currentStepIndex) {
         ind.classList.add('completed');
+      }
+      
+      indicatorContainer.appendChild(ind);
+      
+      // Add divider line if not the last indicator
+      if (idx < wizardFlow.length - 1) {
+        const line = document.createElement('div');
+        line.className = 'step-line';
+        indicatorContainer.appendChild(line);
+      }
+    });
+  }
+
+  // Select agent handler
+  const agentCards = document.querySelectorAll('.agent-card');
+  const btnGotoStep1 = document.getElementById('btn-goto-step-1');
+  
+  agentCards.forEach(card => {
+    card.addEventListener('click', () => {
+      agentCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      
+      selectedAgent = {
+        id: card.getAttribute('data-agent-id'),
+        name: card.getAttribute('data-agent-name'),
+        fee: card.getAttribute('data-agent-fee')
+      };
+      
+      if (btnGotoStep1) btnGotoStep1.removeAttribute('disabled');
+    });
+  });
+  
+  if (btnGotoStep1) {
+    btnGotoStep1.addEventListener('click', () => {
+      if (!selectedAgent) return;
+      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-1'));
+    });
+  }
+
+  // Auto-format card fields in payment block
+  const cardNumInput = document.getElementById('card-number');
+  if (cardNumInput) {
+    cardNumInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      let formatted = '';
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) formatted += ' ';
+        formatted += value[i];
+      }
+      e.target.value = formatted.slice(0, 19);
+    });
+  }
+
+  const cardExpInput = document.getElementById('card-expiry');
+  if (cardExpInput) {
+    cardExpInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+      } else {
+        e.target.value = value;
       }
     });
   }
@@ -676,8 +801,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Bind back buttons
   document.querySelectorAll('.btn-wizard-back').forEach(btn => {
     btn.addEventListener('click', () => {
-      const targetStep = parseInt(btn.getAttribute('data-goto'));
-      navigateWizard(targetStep);
+      window.navigateWizardToIndex(currentStepIndex - 1);
     });
   });
 
@@ -807,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnStep3.setAttribute('disabled', 'true');
       chosenTime = null;
       
-      navigateWizard(2);
+      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-2'));
     });
   }
 
@@ -902,7 +1026,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const tzSuffix = isAu ? 'AEST' : 'NPT';
       
       summaryDateTime.textContent = `${formattedDate} at ${chosenTime} (${tzSuffix})`;
-      navigateWizard(3);
+      
+      // Set submit button text appropriately
+      const submitBtn = document.getElementById('booking-submit-btn');
+      if (submitBtn) {
+        if (isAu && selectedAgent) {
+          submitBtn.textContent = 'Proceed to Secure Payment';
+        } else {
+          submitBtn.textContent = 'Book My Session';
+        }
+      }
+      
+      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-3'));
     });
   }
 
@@ -921,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const originalText = submitBtn ? submitBtn.textContent : 'Book My Session';
       
       if (submitBtn) {
-        submitBtn.textContent = 'Scheduling...';
+        submitBtn.textContent = 'Processing...';
         submitBtn.setAttribute('disabled', 'true');
       }
 
@@ -933,6 +1068,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const isAu = document.body.classList.contains('region-au');
       const region = isAu ? 'au' : 'np';
+
+      // Redirect to simulated Stripe Web checkout page if Australia
+      if (isAu && selectedAgent) {
+        const payload = {
+          name: clientName,
+          email: clientEmail,
+          phone: clientPhone,
+          notes: `Preferred Consultation Mode: ${clientModeText}`,
+          date: dateStr,
+          time: chosenTime,
+          region: region,
+          agentId: selectedAgent.id,
+          agentName: selectedAgent.name,
+          chargeAmount: selectedAgent.fee
+        };
+        sessionStorage.setItem('pending_booking', JSON.stringify(payload));
+        window.location.href = 'stripe-checkout.html';
+        return;
+      }
 
       const payload = {
         name: clientName,
@@ -987,6 +1141,15 @@ document.addEventListener('DOMContentLoaded', () => {
       receiptMode.textContent = clientModeText;
       confirmedEmail.textContent = clientEmail;
 
+      // Update Agent & Payment receipt details
+      const receiptAgentRow = document.getElementById('receipt-agent-row');
+      const receiptAgent = document.getElementById('receipt-agent');
+      const receiptPaymentRow = document.getElementById('receipt-payment-row');
+      const receiptPayment = document.getElementById('receipt-payment');
+      
+      if (receiptAgentRow) receiptAgentRow.style.display = 'none';
+      if (receiptPaymentRow) receiptPaymentRow.style.display = 'none';
+
       // Handle Google Meet Link display
       const meetRow = document.getElementById('receipt-meet-row');
       const meetAnchor = document.getElementById('receipt-meet-link');
@@ -997,7 +1160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         meetRow.style.display = 'none';
       }
 
-      navigateWizard(4);
+      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-4'));
     });
   }
 
@@ -1007,14 +1170,71 @@ document.addEventListener('DOMContentLoaded', () => {
     btnResetWizard.addEventListener('click', () => {
       chosenDate = null;
       chosenTime = null;
+      selectedAgent = null;
+      
+      // Clear agent selection UI
+      document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
+      if (btnGotoStep1) btnGotoStep1.setAttribute('disabled', 'true');
+      
+      // Clear payment inputs
+      const cardNum = document.getElementById('card-number');
+      const cardExp = document.getElementById('card-expiry');
+      const cardCvc = document.getElementById('card-cvc');
+      if (cardNum) cardNum.value = '';
+      if (cardExp) cardExp.value = '';
+      if (cardCvc) cardCvc.value = '';
+      
       bookingDetailsForm.reset();
       
       if (btnStep2) btnStep2.setAttribute('disabled', 'true');
       
       renderCalendar(currentMonth, currentYear);
-      navigateWizard(1);
+      window.navigateWizardToIndex(0);
     });
   }
+
+  // Initialize wizard flow based on active body class (or default AU)
+  window.initWizardFlow = function(region) {
+    // Determine flow based on region
+    if (region === 'au') {
+      wizardFlow = ['wizard-step-agent', 'wizard-step-1', 'wizard-step-2', 'wizard-step-3', 'wizard-step-4'];
+    } else {
+      wizardFlow = ['wizard-step-1', 'wizard-step-2', 'wizard-step-3', 'wizard-step-4'];
+    }
+    
+    // Clear and reset values
+    chosenDate = null;
+    chosenTime = null;
+    selectedAgent = null;
+    
+    // Reset inputs
+    const btnGotoStep1 = document.getElementById('btn-goto-step-1');
+    if (btnGotoStep1) btnGotoStep1.setAttribute('disabled', 'true');
+    if (btnStep2) btnStep2.setAttribute('disabled', 'true');
+    if (btnStep3) btnStep3.setAttribute('disabled', 'true');
+    
+    // Reset selected cards
+    document.querySelectorAll('.agent-card').forEach(card => card.classList.remove('selected'));
+    
+    // Reset payment inputs
+    const cardNum = document.getElementById('card-number');
+    const cardExp = document.getElementById('card-expiry');
+    const cardCvc = document.getElementById('card-cvc');
+    if (cardNum) cardNum.value = '';
+    if (cardExp) cardExp.value = '';
+    if (cardCvc) cardCvc.value = '';
+    
+    // Reset required attributes
+    setCardFieldsRequired(false);
+    
+    // Reset form
+    if (bookingDetailsForm) bookingDetailsForm.reset();
+    
+    // Navigate to first step of new flow
+    window.navigateWizardToIndex(0);
+  }
+
+  window.initWizardFlow(document.body.classList.contains('region-np') ? 'np' : 'au');
 
 
   // ==========================================================================
@@ -1304,6 +1524,88 @@ document.addEventListener('DOMContentLoaded', () => {
         backToTopBtn.style.pointerEvents = 'none';
       }
     });
+  }
+
+  // Check for checkout page success redirect
+  if (window.location.search.includes('booking_success=true')) {
+    const completedBookingStr = sessionStorage.getItem('completed_booking');
+    if (completedBookingStr) {
+      try {
+        const apt = JSON.parse(completedBookingStr);
+        
+        // Force Australia region if it was Australia
+        if (apt.region === 'au') {
+          if (typeof window.switchPortal === 'function') {
+            window.switchPortal('au', false);
+          }
+        }
+        
+        // Populate receipt elements
+        const receiptDate = document.getElementById('receipt-date');
+        const receiptTime = document.getElementById('receipt-time');
+        const receiptMode = document.getElementById('receipt-mode');
+        const confirmedEmail = document.getElementById('confirmed-email');
+        
+        if (receiptDate) {
+          const parts = apt.date.split('-');
+          const dObj = new Date(parts[0], parts[1] - 1, parts[2]);
+          const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+          receiptDate.textContent = dObj.toLocaleDateString('en-US', dateOptions);
+        }
+        
+        const tzSuffix = apt.region === 'au' ? 'AEST' : 'NPT';
+        if (receiptTime) receiptTime.textContent = `${apt.time} (${tzSuffix})`;
+        
+        let modeText = 'Video Meeting (Google Meet)';
+        if (apt.notes && apt.notes.includes('Preferred Consultation Mode:')) {
+          modeText = apt.notes.replace('Preferred Consultation Mode:', '').trim();
+        }
+        if (receiptMode) receiptMode.textContent = modeText;
+        if (confirmedEmail) confirmedEmail.textContent = apt.email;
+        
+        const receiptAgentRow = document.getElementById('receipt-agent-row');
+        const receiptAgent = document.getElementById('receipt-agent');
+        const receiptPaymentRow = document.getElementById('receipt-payment-row');
+        const receiptPayment = document.getElementById('receipt-payment');
+        
+        if (apt.agentName) {
+          if (receiptAgent && receiptAgentRow) {
+            receiptAgent.textContent = apt.agentName;
+            receiptAgentRow.style.display = 'flex';
+          }
+          if (receiptPayment && receiptPaymentRow) {
+            receiptPayment.textContent = `$${apt.chargeAmount}.00 AUD — Paid (Stripe Secure)`;
+            receiptPaymentRow.style.display = 'flex';
+          }
+        }
+        
+        const meetRow = document.getElementById('receipt-meet-row');
+        const meetAnchor = document.getElementById('receipt-meet-link');
+        if (apt.meetLink && meetRow && meetAnchor) {
+          meetAnchor.href = apt.meetLink;
+          meetRow.style.display = 'flex';
+        }
+        
+        // Open manual scheduler and navigate directly to confirmation (Step 4)
+        window.toggleBookingMethod('manual');
+        window.navigateWizardToIndex(4);
+        
+        // Scroll smoothly to booking card
+        setTimeout(() => {
+          const bookingSection = document.getElementById('booking');
+          if (bookingSection) {
+            bookingSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 300);
+        
+        // Clean URL query parameters
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '#booking';
+        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+        
+      } catch (err) {
+        console.error('Error handling redirect receipt display:', err);
+      }
+    }
   }
 
 });
