@@ -918,26 +918,85 @@
           <!-- Wizard Body -->
           <div class="wizard-body">
             
+            <!-- Step 0: Select Migration Agent (Australia Only) -->
+            <div class="wizard-step" id="wizard-step-agent">
+              <h3 class="wizard-step-title">Select Migration Agent</h3>
+              <p class="wizard-step-desc">Choose a registered migration agent for your 30-minute strategic consultation.</p>
+              
+              <div class="wizard-step-content">
+                <div class="agents-grid" id="agents-grid">
+                  <!-- Samantha Green Placeholder -->
+                  <div class="agent-card glass-panel card-lift" data-agent-id="samantha" data-agent-name="Agent A" data-agent-fee="120">
+                    <div class="agent-avatar-container">
+                      <img src="agent_samantha.png" alt="Agent A" class="agent-photo">
+                    </div>
+                    <div class="agent-info-card">
+                      <div class="agent-name-row">
+                        <h4 class="agent-name">Agent A</h4>
+                        <span class="agent-badge">OMARA Reg</span>
+                      </div>
+                      <p class="agent-title">GSM & Skills Assessment Specialist</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Marcus Vance Placeholder -->
+                  <div class="agent-card glass-panel card-lift" data-agent-id="marcus" data-agent-name="Agent B" data-agent-fee="150">
+                    <div class="agent-avatar-container">
+                      <img src="agent_marcus.png" alt="Agent B" class="agent-photo">
+                    </div>
+                    <div class="agent-info-card">
+                      <div class="agent-name-row">
+                        <h4 class="agent-name">Agent B</h4>
+                        <span class="agent-badge">OMARA Reg</span>
+                      </div>
+                      <p class="agent-title">Employer Sponsorship & Corporate Specialist</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Elena Rostova Placeholder -->
+                  <div class="agent-card glass-panel card-lift" data-agent-id="elena" data-agent-name="Agent C" data-agent-fee="130">
+                    <div class="agent-avatar-container">
+                      <img src="agent_elena.png" alt="Agent C" class="agent-photo">
+                    </div>
+                    <div class="agent-info-card">
+                      <div class="agent-name-row">
+                        <h4 class="agent-name">Agent C</h4>
+                        <span class="agent-badge">OMARA Reg</span>
+                      </div>
+                      <p class="agent-title">Partner & Family Visa Specialist</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="wizard-actions">
+                <button type="button" class="btn btn-primary btn-wizard-next" id="btn-goto-step-1" disabled>Choose Date</button>
+              </div>
+            </div>
+
             <!-- Step 1: Select Date -->
             <div class="wizard-step active" id="wizard-step-1">
               <h3 class="wizard-step-title">Select Consultation Date</h3>
               <p class="wizard-step-desc">Pick an available day for your 30-minute virtual or in-person consultation.</p>
               
-              <div class="calendar-wrapper">
-                <div class="calendar-header">
-                  <button type="button" class="calendar-nav-btn" id="prev-month" aria-label="Previous Month">&lt;</button>
-                  <span class="calendar-month-year" id="calendar-month-year">June 2026</span>
-                  <button type="button" class="calendar-nav-btn" id="next-month" aria-label="Next Month">&gt;</button>
-                </div>
-                <div class="calendar-weekdays">
-                  <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
-                </div>
-                <div class="calendar-days" id="calendar-days">
-                  <!-- JS generated -->
+              <div class="wizard-step-content">
+                <div class="calendar-wrapper">
+                  <div class="calendar-header">
+                    <button type="button" class="calendar-nav-btn" id="prev-month" aria-label="Previous Month">&lt;</button>
+                    <span class="calendar-month-year" id="calendar-month-year">June 2026</span>
+                    <button type="button" class="calendar-nav-btn" id="next-month" aria-label="Next Month">&gt;</button>
+                  </div>
+                  <div class="calendar-weekdays">
+                    <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                  </div>
+                  <div class="calendar-days" id="calendar-days">
+                    <!-- JS generated -->
+                  </div>
                 </div>
               </div>
               
-              <div class="wizard-actions">
+              <div class="wizard-actions split-buttons">
+                <button type="button" class="btn btn-secondary btn-wizard-back">Back</button>
                 <button type="button" class="btn btn-primary btn-wizard-next" id="btn-goto-step-2" disabled>Choose Time Slot</button>
               </div>
             </div>
@@ -947,13 +1006,15 @@
               <h3 class="wizard-step-title">Select Time Slot</h3>
               <p class="wizard-step-desc">Showing available appointments for <span id="selected-date-str" class="text-highlight"></span>.</p>
               
-              <div class="timezone-display">
-                <span>Timezone:</span>
-                <span class="timezone-tag regional-text" data-au="Australia / Melbourne (AEST)" data-np="Nepal / Kathmandu (NPT)">Australia / Melbourne (AEST)</span>
-              </div>
-              
-              <div class="timeslots-grid" id="timeslots-grid">
-                <!-- JS generated slots -->
+              <div class="wizard-step-content">
+                <div class="timezone-display">
+                  <span>Timezone:</span>
+                  <span class="timezone-tag regional-text" data-au="Australia / Melbourne (AEST)" data-np="Nepal / Kathmandu (NPT)">Australia / Melbourne (AEST)</span>
+                </div>
+                
+                <div class="timeslots-grid" id="timeslots-grid">
+                  <!-- JS generated slots -->
+                </div>
               </div>
               
               <div class="wizard-actions split-buttons">
@@ -967,72 +1028,74 @@
               <h3 class="wizard-step-title">Confirm & Enter Details</h3>
               <p class="wizard-step-desc">Your 30-min strategy session is set for <strong id="summary-date-time" class="text-highlight"></strong>.</p>
               
-              <form class="wizard-form" id="booking-details-form">
-                <div class="form-row">
-                  <div class="form-group floating-label-group">
-                    <input type="text" id="booking-name" class="form-control" placeholder=" " required>
-                    <label for="booking-name">Full Name</label>
+              <form class="wizard-form" id="booking-details-form" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; margin: 0;">
+                <div class="wizard-step-content">
+                  <div class="form-row">
+                    <div class="form-group floating-label-group">
+                      <input type="text" id="booking-name" class="form-control" placeholder=" " required>
+                      <label for="booking-name">Full Name</label>
+                    </div>
                   </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group floating-label-group">
-                    <input type="email" id="booking-email" class="form-control" placeholder=" " required>
-                    <label for="booking-email">Email Address</label>
+                  <div class="form-row">
+                    <div class="form-group floating-label-group">
+                      <input type="email" id="booking-email" class="form-control" placeholder=" " required>
+                      <label for="booking-email">Email Address</label>
+                    </div>
                   </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group floating-label-group">
-                    <input type="tel" id="booking-phone" class="form-control" placeholder=" " required>
-                    <label for="booking-phone">Phone Number</label>
+                  <div class="form-row">
+                    <div class="form-group floating-label-group">
+                      <input type="tel" id="booking-phone" class="form-control" placeholder=" " required>
+                      <label for="booking-phone">Phone Number</label>
+                    </div>
                   </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="dropdown-helper-label">Preferred Session Mode</label>
-                    <select id="booking-mode" class="form-control" required>
-                      <option value="video">💻 Video Meeting (Google Meet/Zoom)</option>
-                      <option value="phone">📞 Phone Call</option>
-                      <option value="office" class="regional-text" data-au="🏢 Melbourne Office Appointment" data-np="🏢 Kathmandu Office Appointment">🏢 Melbourne Office Appointment</option>
-                    </select>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="dropdown-helper-label">Preferred Session Mode</label>
+                      <select id="booking-mode" class="form-control" required>
+                        <option value="video">💻 Video Meeting (Google Meet/Zoom)</option>
+                        <option value="phone">📞 Phone Call</option>
+                        <option value="office" class="regional-text" data-au="🏢 Melbourne Office Appointment" data-np="🏢 Kathmandu Office Appointment">🏢 Melbourne Office Appointment</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 
                 <div class="wizard-actions split-buttons">
-                  <button type="button" class="btn btn-secondary btn-wizard-back" data-goto="2">Back</button>
-                  <button type="submit" class="btn btn-primary">Book My Session</button>
+                  <button type="button" class="btn btn-secondary btn-wizard-back">Back</button>
+                  <button type="submit" class="btn btn-primary" id="booking-submit-btn">Book My Session</button>
                 </div>
               </form>
             </div>
 
             <!-- Step 4: Confirmation Screen -->
             <div class="wizard-step" id="wizard-step-4">
-              <div class="success-screen-wrapper">
-                <div class="success-checkmark-circle">
-                  <svg class="success-svg" viewBox="0 0 52 52">
-                    <circle class="success-circle" cx="26" cy="26" r="25" fill="none"/>
-                    <path class="success-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                  </svg>
+              <div class="wizard-step-content">
+                <div class="success-screen-wrapper">
+                  <div class="success-checkmark-circle">
+                    <svg class="success-svg" viewBox="0 0 52 52">
+                      <circle class="success-circle" cx="26" cy="26" r="25" fill="none"/>
+                      <path class="success-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                  </div>
+                  <h3 class="wizard-step-title text-center">Consultation Reserved!</h3>
+                  <p class="success-desc text-center">
+                    A confirmation email with calendar invitation links has been sent to <span id="confirmed-email" class="text-highlight">your email</span>.
+                  </p>
+                  <div class="booking-receipt-box">
+                    <div class="receipt-row" id="receipt-agent-row" style="display: none;"><span>Consultant:</span><strong id="receipt-agent"></strong></div>
+                    <div class="receipt-row" id="receipt-payment-row" style="display: none;"><span>Payment Status:</span><strong id="receipt-payment"></strong></div>
+                    <div class="receipt-row"><span>Date:</span><strong id="receipt-date"></strong></div>
+                    <div class="receipt-row"><span>Time:</span><strong id="receipt-time"></strong></div>
+                    <div class="receipt-row"><span>Method:</span><strong id="receipt-mode"></strong></div>
+                    <div class="receipt-row" id="receipt-meet-row" style="display: none;"><span>Meeting Link:</span><strong><a href="#" id="receipt-meet-link" target="_blank" style="color: var(--color-primary); text-decoration: underline; word-break: break-all;">Join Google Meet</a></strong></div>
+                  </div>
+                  <p class="comment-notification text-center">
+                    Our system will email you reminders 24 hours prior to the session.
+                  </p>
                 </div>
-                <h3 class="wizard-step-title text-center">Consultation Reserved!</h3>
-                <p class="success-desc text-center">
-                  A confirmation email with calendar invitation links has been sent to <span id="confirmed-email" class="text-highlight">your email</span>.
-                </p>
-                <div class="booking-receipt-box">
-                  <div class="receipt-row"><span>Date:</span><strong id="receipt-date"></strong></div>
-                  <div class="receipt-row"><span>Time:</span><strong id="receipt-time"></strong></div>
-                  <div class="receipt-row"><span>Method:</span><strong id="receipt-mode"></strong></div>
-                  <div class="receipt-row" id="receipt-meet-row" style="display: none;"><span>Meeting Link:</span><strong><a href="#" id="receipt-meet-link" target="_blank" style="color: var(--color-primary); text-decoration: underline; word-break: break-all;">Join Google Meet</a></strong></div>
-                </div>
-                <p class="comment-notification text-center">
-                  <!-- PRODUCTION NOTICE: Integration engineers may swap this native wizard with the Calendly embed code below:
-                  <div class="calendly-inline-widget" data-url="https://calendly.com/pictorservices" style="min-width:320px;height:700px;"></div>
-                  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-                  -->
-                  Our system will email you reminders 24 hours prior to the session.
-                </p>
-                <div class="wizard-actions text-center">
-                  <button type="button" class="btn btn-secondary btn-reset-wizard">Schedule Another Session</button>
-                </div>
+              </div>
+              <div class="wizard-actions text-center">
+                <button type="button" class="btn btn-secondary btn-reset-wizard">Schedule Another Session</button>
               </div>
             </div>
 
