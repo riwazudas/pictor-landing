@@ -77,6 +77,7 @@
                 <polyline points="6 9 12 15 18 9" />
               </svg></a>
             <ul class="dropdown-menu">
+              <li><a href="visa-options.html" class="">Available Visas</a></li>
               <li><a href="calculator.html" class="active">Visa Cost Estimator</a></li>
               <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
               <li><a href="processing-times.html" class="">Visa Processing Times</a></li>
@@ -109,6 +110,7 @@
         <li><a href="services.html" class="mobile-nav-link">Services</a></li>
         <li><a href="about.html" class="mobile-nav-link">About</a></li>
         <li><a href="resources.html" class="mobile-nav-link active">Resources</a></li>
+        <li><a href="visa-options.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Available Visas</a></li>
         <li><a href="calculator.html" class="mobile-nav-link active"
             style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
         <li><a href="points-calculator.html" class="mobile-nav-link"
@@ -495,6 +497,26 @@
       function initCalculator() {
         populateSubclasses();
         setupCalculationListeners();
+        
+        // Pre-select subclass from URL query parameter if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlSubclass = urlParams.get('subclass');
+        const select = document.getElementById('calc-subclass');
+        if (urlSubclass && costConfig.subclasses[urlSubclass] && select) {
+          select.value = urlSubclass;
+          
+          // Toggle skills assessment checkbox visibility based on the pre-selected visa subclass
+          const details = costConfig.subclasses[urlSubclass];
+          const skillsLabel = document.getElementById('label-skills');
+          if (details && details.skillsAssessmentEst === 0) {
+            if (skillsLabel) skillsLabel.style.display = 'none';
+            const chk = document.getElementById('calc-skills');
+            if (chk) chk.checked = false;
+          } else {
+            if (skillsLabel) skillsLabel.style.display = 'flex';
+          }
+        }
+        
         calculateCosts();
       }
 

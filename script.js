@@ -161,6 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTimelineProgress();
       }
 
+      // Update secondary Hero button href if present
+      const heroSecondaryBtn = document.querySelector('.btn-hero-secondary');
+      if (heroSecondaryBtn) {
+        if (region === 'au') {
+          heroSecondaryBtn.setAttribute('href', 'visa-options.html');
+        } else {
+          heroSecondaryBtn.setAttribute('href', 'services.html#education');
+        }
+      }
+
       // Save preference if flag set
       if (savePreference) {
         localStorage.setItem('pictor_preferred_portal', region);
