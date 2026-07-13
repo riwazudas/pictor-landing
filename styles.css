@@ -2,6 +2,8 @@
    PICTOR SERVICES PREMIUM LANDING PAGE STYLING SYSTEM
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 /* 1. CSS VARIABLES & THEMING SYSTEM */
 :root {
   /* Premium Deep Purple & Gold palette */
@@ -22,8 +24,8 @@
   --border-color-white: rgba(255, 255, 255, 0.15);
   
   /* Fonts */
-  --font-headings: 'Outfit', 'Inter', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-headings: 'Bebas Neue', sans-serif;
+  --font-body: 'Merriweather', serif;
   
   /* Shadows and Transitions */
   --shadow-sm: 0 2px 8px rgba(34, 9, 58, 0.04);
@@ -215,7 +217,7 @@ img {
   color: var(--color-text-white);
   border-color: var(--color-highlight);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(58, 28, 98, 0.35);
+  box-shadow: none;
 }
 
 .btn-primary:active {
@@ -1479,6 +1481,16 @@ img {
   transition: border-color var(--transition-fast);
 }
 
+.custom-select option {
+  background-color: var(--bg-dark);
+  color: var(--color-text-white);
+}
+
+select option {
+  background-color: #ffffff;
+  color: var(--color-text);
+}
+
 .custom-select:hover {
   border-color: var(--color-highlight);
 }
@@ -1675,14 +1687,14 @@ img {
 .wizard-card {
   width: 100%;
   max-width: 480px;
-  padding: 32px;
+  padding: 20px 32px;
 }
 
 .wizard-steps-indicator {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   position: relative;
 }
 
@@ -1763,14 +1775,14 @@ img {
 .wizard-step-desc {
   font-size: 0.85rem;
   color: var(--color-text-light);
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 /* Calendar styling */
 .calendar-wrapper {
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 16px;
+  padding: 10px 12px;
   background-color: var(--bg-primary);
 }
 
@@ -1778,7 +1790,7 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .calendar-month-year {
@@ -1931,6 +1943,13 @@ img {
 .form-group {
   display: flex;
   flex-direction: column;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+.form-row:last-child {
+  margin-bottom: 0;
 }
 
 .form-control {
@@ -4498,7 +4517,7 @@ body.portal-switching .office-box {
 
 /* Enforce consistent booking card height & layout */
 .wizard-card {
-  height: 680px !important;
+  height: 760px !important;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -4522,7 +4541,7 @@ body.portal-switching .office-box {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .wizard-step {
@@ -4571,12 +4590,12 @@ body.portal-switching .office-box {
 .agents-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin: 12px 0;
+  gap: 8px;
+  margin: 4px 0;
 }
 
 .agent-card {
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 12px;
   cursor: pointer;
   border: 2px solid transparent;
@@ -4594,13 +4613,13 @@ body.portal-switching .office-box {
   border-color: rgba(58, 28, 98, 0.2);
   background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: none;
 }
 
 .agent-card.selected {
   border-color: var(--color-primary);
   background: #ffffff;
-  box-shadow: var(--shadow-md), 0 0 0 1px var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
 }
 
 .agent-avatar-container {
@@ -4781,3 +4800,177 @@ body.portal-switching .office-box {
   font-size: 1.05rem;
   font-weight: 800;
 }
+
+/* ==========================================================================
+   AGENT CONSULTATION FEE & VISA OPTIONS PAGE STYLES
+   ========================================================================== */
+
+/* Agent Fee Display inside Booking Wizard */
+.agent-fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  border-top: 1px dashed rgba(58, 28, 98, 0.08);
+  padding-top: 6px;
+}
+
+.agent-fee-label {
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.agent-fee-val {
+  color: var(--color-primary);
+  font-weight: 700;
+  background: rgba(58, 28, 98, 0.06);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+.agent-card.selected .agent-fee-val {
+  background: var(--color-highlight);
+  color: var(--bg-dark);
+}
+
+/* Global Regional Portal Visibility Overrides */
+body.region-np .show-au,
+body.region-au .show-np {
+  display: none !important;
+}
+
+/* Visa Options Page Layout & Cards */
+.visa-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.visa-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 32px;
+  border-radius: 24px;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.visa-card-badge {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  background: rgba(58, 28, 98, 0.08);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.visa-card-title {
+  font-family: var(--font-headings);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--bg-dark);
+  margin: 0 0 12px 0;
+  line-height: 1.25;
+}
+
+.visa-card-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-light);
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.visa-card-pricing-box {
+  background: rgba(58, 28, 98, 0.03);
+  border: 1px solid rgba(58, 28, 98, 0.06);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pricing-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.pricing-label {
+  color: var(--color-text-light);
+}
+
+.pricing-value {
+  font-weight: 700;
+  color: var(--bg-dark);
+}
+
+.pricing-value.highlighted {
+  color: var(--color-primary);
+  font-size: 0.95rem;
+}
+
+.visa-card-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.visa-card-highlights li {
+  font-size: 0.88rem;
+  color: var(--color-text);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.visa-card-highlights li::before {
+  content: '✓';
+  color: var(--color-highlight);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.visa-card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.visa-card-actions .btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (min-width: 769px) {
+  .wizard-step-content {
+    overflow-y: hidden !important;
+  }
+  .wizard-step-content::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+  .wizard-step-content::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+  .wizard-step-content::-webkit-scrollbar-thumb {
+    background: transparent !important;
+  }
+}
+
