@@ -5028,4 +5028,15 @@ body.region-au .show-np {
   }
 }
 
+.footer-admin-link {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-admin-link:hover {
+  color: var(--color-highlight);
+  text-decoration: underline;
+}
+
 
