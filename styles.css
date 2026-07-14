@@ -4928,7 +4928,7 @@ body.region-au .show-np {
   border-radius: 16px;
   padding: 16px 20px;
   margin-bottom: 24px;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 8px;
 }
