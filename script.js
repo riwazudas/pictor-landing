@@ -390,11 +390,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const easeProgress = progress * (2 - progress);
       const currentVal = Math.floor(easeProgress * target);
       
-      // Special formatter for large metrics
+      // Special formatter for large metrics (e.g. 5k+ instead of 5.0k+)
       if (target >= 1000) {
-        el.textContent = (currentVal / 1000).toFixed(1) + 'k' + suffix;
+        const val = currentVal / 1000;
+        const formattedVal = val % 1 === 0 ? val.toFixed(0) : val.toFixed(1);
+        el.textContent = formattedVal + 'k' + suffix;
         if (progress === 1) {
-          el.textContent = (target / 1000).toFixed(1) + 'k' + suffix;
+          const finalVal = target / 1000;
+          const formattedFinal = finalVal % 1 === 0 ? finalVal.toFixed(0) : finalVal.toFixed(1);
+          el.textContent = formattedFinal + 'k' + suffix;
         }
       } else {
         el.textContent = currentVal + suffix;
