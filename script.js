@@ -71,6 +71,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const regionalBlocks = document.querySelectorAll('.regional-block');
   const leadVisaSelect = document.getElementById('lead-visa-type');
   
+  // Random Hero Headings Selection (randomized on page load)
+  const chosenHeroHeadingIndex = Math.floor(Math.random() * 4);
+  const heroHeadings = {
+    au: [
+      "Your Journey.<br><span class='text-primary'>Our Expertise.</span>",
+      "Navigate Your Path<br>to <span class='text-primary'>Australia.</span>",
+      "Your Trusted Partner<br>for <span class='text-primary'>Australian Migration.</span>",
+      "Achieve Your Dream of<br>Living in <span class='text-primary'>Australia.</span>"
+    ],
+    np: [
+      "Your Future.<br><span class='text-primary'>Our Guidance.</span>",
+      "Study Abroad with<br><span class='text-primary'>Confidence.</span>",
+      "Your Gateway to<br>Global <span class='text-primary'>Education.</span>",
+      "Empowering Your<br>Educational <span class='text-primary'>Journey.</span>"
+    ]
+  };
+
   // Target visa pathway lists for each region
   const visaOptions = {
     au: [
@@ -127,6 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       });
+
+      // Update hero heading text dynamically with randomized option
+      const headingElement = document.querySelector('.hero-heading');
+      if (headingElement) {
+        headingElement.innerHTML = heroHeadings[region][chosenHeroHeadingIndex];
+      }
 
       // Update regional blocks
       regionalBlocks.forEach(block => {
