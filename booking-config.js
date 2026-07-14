@@ -20,7 +20,7 @@ const GOOGLE_CALENDAR_CONFIG = {
   },
 
   // Color theme for the Google Calendar elements (HEX format)
-  themeColor: "#3a1c62", // Matches Pictor's primary brand color
+  themeColor: "#512c82", // Matches Pictor's primary brand color
 
   // Default booking method to show: 'live' (Google Calendar) or 'manual' (Local form)
   defaultMethod: 'live'

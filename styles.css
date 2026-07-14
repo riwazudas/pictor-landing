@@ -12,15 +12,15 @@
   --bg-dark: #22093a;         /* Midnight purple */
   --bg-dark-accent: #170428;  /* Deep purple-black */
   
-  --color-primary: #3a1c62;   /* Premium Deep Purple */
-  --color-primary-hover: #2e1250;
-  --color-highlight: #ffd000; /* Vibrant Gold */
+  --color-primary: #512c82;   /* Premium Deep Purple */
+  --color-primary-hover: #3d1e66;
+  --color-highlight: #fbee43; /* Vibrant Gold */
   --color-text: #1a0a2a;      /* Deep purple-black */
   --color-text-light: #5e4d70;/* Muted purple-gray body text */
   --color-text-white: #fbf9fe;
   --color-success: #3c7a3c;   /* Green success */
   
-  --border-color: rgba(58, 28, 98, 0.08);
+  --border-color: rgba(81, 44, 130, 0.08);
   --border-color-white: rgba(255, 255, 255, 0.15);
   
   /* Fonts */
@@ -147,17 +147,17 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--color-primary);
-  background-color: rgba(58, 28, 98, 0.08);
+  background-color: rgba(81, 44, 130, 0.08);
   padding: 6px 16px;
   border-radius: 50px;
-  border: 1px solid rgba(58, 28, 98, 0.15);
+  border: 1px solid rgba(81, 44, 130, 0.15);
   margin-bottom: 16px;
 }
 
 .section-tag.text-light {
   color: var(--color-highlight);
-  background-color: rgba(255, 208, 0, 0.12);
-  border-color: rgba(255, 208, 0, 0.3);
+  background-color: rgba(251, 238, 67, 0.12);
+  border-color: rgba(251, 238, 67, 0.3);
 }
 
 .section-heading {
@@ -209,7 +209,7 @@ img {
   background-color: var(--color-highlight);
   color: var(--color-primary);
   border: 1px solid var(--color-highlight);
-  box-shadow: 0 4px 14px rgba(255, 208, 0, 0.25);
+  box-shadow: 0 4px 14px rgba(251, 238, 67, 0.25);
 }
 
 .btn-primary:hover {
@@ -227,11 +227,11 @@ img {
 .btn-secondary {
   background-color: transparent;
   color: var(--color-text);
-  border-color: rgba(58, 28, 98, 0.2);
+  border-color: rgba(81, 44, 130, 0.2);
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 208, 0, 0.1);
+  background-color: rgba(251, 238, 67, 0.1);
   border-color: var(--color-highlight);
   color: var(--color-primary);
   transform: translateY(-2px);
@@ -350,7 +350,7 @@ img {
 .portal-toggle-btn.active {
   background-color: var(--color-primary);
   color: var(--color-text-white);
-  box-shadow: 0 2px 8px rgba(58, 28, 98, 0.3);
+  box-shadow: 0 2px 8px rgba(81, 44, 130, 0.3);
 }
 
 .calc-tab-btn {
@@ -372,7 +372,7 @@ img {
 .calc-tab-btn.active {
   background-color: var(--color-primary);
   color: var(--color-text-white) !important;
-  box-shadow: 0 4px 12px rgba(58, 28, 98, 0.2);
+  box-shadow: 0 4px 12px rgba(81, 44, 130, 0.2);
 }
 
 /* 6. STICKY NAVIGATION HEADER */
@@ -622,26 +622,28 @@ img {
 /* 8. HERO SECTION & BACKGROUND VISUALIZER */
 .hero-section {
   position: relative;
-  padding: 80px 0 100px;
-  background: linear-gradient(135deg, rgba(243, 238, 249, 0.4) 0%, rgba(250, 248, 253, 0) 100%);
+  padding: 120px 0 100px;
+  background-color: var(--bg-primary);
   overflow: hidden;
 }
 
 .hero-container {
-  display: grid;
-  grid-template-columns: 55% 45%;
-  gap: 40px;
+  display: flex;
   align-items: center;
   position: relative;
   z-index: 2;
+  min-height: 520px;
 }
 
 .hero-content {
-  max-width: 100%;
+  width: 100%;
+  max-width: 620px;
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+  z-index: 3;
 }
 
 .hero-heading {
@@ -677,7 +679,7 @@ img {
   background-color: var(--color-highlight);
   color: var(--color-primary);
   border: 1px solid var(--color-highlight);
-  box-shadow: 0 4px 14px rgba(255, 208, 0, 0.25);
+  box-shadow: 0 4px 14px rgba(251, 238, 67, 0.25);
 }
 
 .btn-hero-primary:hover {
@@ -685,17 +687,17 @@ img {
   color: var(--color-text-white);
   border-color: var(--color-highlight);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(58, 28, 98, 0.35);
+  box-shadow: 0 6px 20px rgba(81, 44, 130, 0.35);
 }
 
 .btn-hero-secondary {
   background-color: transparent;
   color: var(--color-primary);
-  border-color: rgba(58, 28, 98, 0.25);
+  border-color: rgba(81, 44, 130, 0.25);
 }
 
 .btn-hero-secondary:hover {
-  background-color: rgba(255, 208, 0, 0.1);
+  background-color: rgba(251, 238, 67, 0.1);
   border-color: var(--color-highlight);
   color: var(--color-primary);
   transform: translateY(-2px);
@@ -705,7 +707,7 @@ img {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: rgba(255, 208, 0, 0.12);
+  background-color: rgba(251, 238, 67, 0.12);
   border: 1.5px solid var(--color-highlight);
   padding: 8px 16px;
   border-radius: 50px;
@@ -718,22 +720,49 @@ img {
   color: var(--color-primary);
 }
 
-.hero-image-wrapper {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Full-bleed background hero image container */
+.hero-bg-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 55%;
+  background-image: url('hero_consultant.png');
+  background-size: cover;
+  background-position: center left;
+  z-index: 1;
+  pointer-events: none;
 }
 
-.hero-image-main {
-  width: 100%;
-  height: auto;
-  max-width: 500px;
-  border-radius: 24px;
-  box-shadow: var(--shadow-lg);
-  object-fit: cover;
-  border: 4px solid #ffffff;
+/* Seamless blend overlays using var(--bg-primary) */
+.hero-bg-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1px;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, 
+    var(--bg-primary) 0%, 
+    rgba(251, 249, 254, 0.95) 20%, 
+    rgba(251, 249, 254, 0.6) 50%, 
+    rgba(251, 249, 254, 0) 100%
+  );
+  z-index: 2;
+}
+
+.hero-bg-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, 
+    rgba(251, 249, 254, 0) 80%, 
+    var(--bg-primary) 100%
+  );
+  z-index: 3;
 }
 
 .dashboard-card {
@@ -891,7 +920,7 @@ img {
 }
 
 .fb-icon {
-  background-color: rgba(58, 28, 98, 0.1);
+  background-color: rgba(81, 44, 130, 0.1);
   color: var(--color-primary);
   width: 36px;
   height: 36px;
@@ -1028,7 +1057,7 @@ img {
   align-items: center;
   gap: 16px;
   background-color: var(--color-primary);
-  border: 1px solid rgba(255, 208, 0, 0.35);
+  border: 1px solid rgba(251, 238, 67, 0.35);
   padding: 14px 24px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -1204,7 +1233,7 @@ img {
 }
 
 .services-tab-btn .tab-btn-icon-wrapper {
-  background-color: rgba(58, 28, 98, 0.05);
+  background-color: rgba(81, 44, 130, 0.05);
   color: var(--color-text-light);
   width: 36px;
   height: 36px;
@@ -1231,7 +1260,7 @@ img {
 .services-tab-btn:hover {
   background: rgba(255, 255, 255, 0.85);
   transform: translateX(4px);
-  border-color: rgba(58, 28, 98, 0.15);
+  border-color: rgba(81, 44, 130, 0.15);
 }
 
 .services-tab-btn.active {
@@ -1276,7 +1305,7 @@ img {
 }
 
 .service-detail-card .service-icon-wrapper {
-  background-color: rgba(58, 28, 98, 0.08);
+  background-color: rgba(81, 44, 130, 0.08);
   color: var(--color-primary);
   width: 60px;
   height: 60px;
@@ -1360,7 +1389,7 @@ img {
 }
 
 .service-icon-wrapper {
-  background-color: rgba(58, 28, 98, 0.08);
+  background-color: rgba(81, 44, 130, 0.08);
   color: var(--color-primary);
   width: 48px;
   height: 48px;
@@ -1539,7 +1568,7 @@ select option {
 
 .pathway-tag {
   display: inline-block;
-  background-color: rgba(58, 28, 98, 0.2);
+  background-color: rgba(81, 44, 130, 0.2);
   color: var(--color-highlight);
   font-size: 0.75rem;
   font-weight: 700;
@@ -1645,7 +1674,7 @@ select option {
 }
 
 .benefit-icon {
-  background-color: rgba(58, 28, 98, 0.08);
+  background-color: rgba(81, 44, 130, 0.08);
   color: var(--color-primary);
   width: 40px;
   height: 40px;
@@ -1719,7 +1748,7 @@ select option {
   background-color: var(--color-primary);
   color: var(--color-highlight);
   border-color: var(--color-highlight);
-  box-shadow: 0 4px 10px rgba(58, 28, 98, 0.25);
+  box-shadow: 0 4px 10px rgba(81, 44, 130, 0.25);
 }
 
 .step-indicator.completed {
@@ -1918,7 +1947,7 @@ select option {
 .timeslot-btn:hover:not(:disabled) {
   border-color: var(--color-highlight);
   color: var(--color-primary);
-  background-color: rgba(255, 208, 0, 0.08);
+  background-color: rgba(251, 238, 67, 0.08);
 }
 
 .timeslot-btn.selected {
@@ -1965,7 +1994,7 @@ select option {
 
 .form-control:focus {
   border-color: var(--color-highlight);
-  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.25);
+  box-shadow: 0 0 0 3px rgba(251, 238, 67, 0.25);
 }
 
 .dropdown-helper-label {
@@ -2155,7 +2184,7 @@ select option {
   background-color: var(--color-primary);
   border-color: var(--color-highlight);
   color: var(--color-highlight); /* Gold text on deep purple bullet */
-  box-shadow: 0 0 8px rgba(255, 208, 0, 0.4);
+  box-shadow: 0 0 8px rgba(251, 238, 67, 0.4);
 }
 
 .v-node-content {
@@ -2199,11 +2228,11 @@ select option {
 .tool-card:hover {
   border-color: var(--color-highlight);
   background-color: #ffffff;
-  box-shadow: 0 10px 30px rgba(58, 28, 98, 0.08);
+  box-shadow: 0 10px 30px rgba(81, 44, 130, 0.08);
 }
 
 .tool-icon-wrapper {
-  background-color: rgba(58, 28, 98, 0.05);
+  background-color: rgba(81, 44, 130, 0.05);
   color: var(--color-primary);
   width: 48px;
   height: 48px;
@@ -2312,7 +2341,7 @@ select option {
 
 .comparison-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(58, 28, 98, 0.2);
+  border-color: rgba(81, 44, 130, 0.2);
   box-shadow: var(--shadow-md);
 }
 
@@ -2325,7 +2354,7 @@ select option {
 
 .comp-feature-icon {
   font-size: 1.8rem;
-  background-color: rgba(58, 28, 98, 0.06);
+  background-color: rgba(81, 44, 130, 0.06);
   width: 52px;
   height: 52px;
   border-radius: 14px;
@@ -2337,7 +2366,7 @@ select option {
 }
 
 .comparison-card:hover .comp-feature-icon {
-  background-color: rgba(58, 28, 98, 0.12);
+  background-color: rgba(81, 44, 130, 0.12);
 }
 
 .comp-feature-info h3 {
@@ -2475,7 +2504,7 @@ select option {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: rgba(58, 28, 98, 0.05);
+  background-color: rgba(81, 44, 130, 0.05);
   font-size: 1.5rem;
   display: flex;
   align-items: center;
@@ -2638,7 +2667,7 @@ select option {
 /* Active FAQ rotations */
 .faq-item.active {
   border-color: var(--color-highlight);
-  box-shadow: 0 4px 12px rgba(58, 28, 98, 0.05);
+  box-shadow: 0 4px 12px rgba(81, 44, 130, 0.05);
 }
 
 .faq-item.active .faq-question {
@@ -2745,7 +2774,7 @@ select option {
 
 .form-step-dot.active {
   background-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(58, 28, 98, 0.15);
+  box-shadow: 0 0 0 4px rgba(81, 44, 130, 0.15);
 }
 
 .form-step-line {
@@ -2986,7 +3015,7 @@ body.portal-switching .office-box {
   gap: 16px;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.65);
-  border-top: 1px dashed rgba(255, 208, 0, 0.2);
+  border-top: 1px dashed rgba(251, 238, 67, 0.2);
 }
 
 .footer-offices-row strong {
@@ -3287,8 +3316,8 @@ body.portal-switching .office-box {
   }
   
   .comp-pictor {
-    background: rgba(58, 28, 98, 0.03);
-    border: 1px solid rgba(58, 28, 98, 0.15);
+    background: rgba(81, 44, 130, 0.03);
+    border: 1px solid rgba(81, 44, 130, 0.15);
   }
   
   .comp-label.mobile-only {
@@ -3576,13 +3605,13 @@ body.portal-switching .office-box {
 
 .method-tab-btn:hover {
   color: var(--color-primary);
-  background: rgba(58, 28, 98, 0.05);
+  background: rgba(81, 44, 130, 0.05);
 }
 
 .method-tab-btn.active {
   background: var(--color-primary);
   color: var(--color-text-white) !important;
-  box-shadow: 0 4px 12px rgba(58, 28, 98, 0.2);
+  box-shadow: 0 4px 12px rgba(81, 44, 130, 0.2);
 }
 
 .google-calendar-container {
@@ -3613,7 +3642,7 @@ body.portal-switching .office-box {
 .spinner-ring {
   width: 44px;
   height: 44px;
-  border: 3px solid rgba(58, 28, 98, 0.1);
+  border: 3px solid rgba(81, 44, 130, 0.1);
   border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -3654,11 +3683,11 @@ body.portal-switching .office-box {
   background: rgba(254, 253, 251, 0.4);
   border-radius: 20px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 32px rgba(58, 28, 98, 0.03);
+  box-shadow: 0 8px 32px rgba(81, 44, 130, 0.03);
 }
 
 .popup-card-icon {
-  background: rgba(58, 28, 98, 0.08);
+  background: rgba(81, 44, 130, 0.08);
   border-radius: 50%;
   width: 88px;
   height: 88px;
@@ -4198,7 +4227,7 @@ body.portal-switching .office-box {
 
 .calc-section:focus-within,
 .calc-section:hover {
-  border-color: rgba(58, 28, 98, 0.25);
+  border-color: rgba(81, 44, 130, 0.25);
   box-shadow: var(--shadow-md);
 }
 
@@ -4271,7 +4300,7 @@ body.portal-switching .office-box {
 
 .option-card:hover {
   background-color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(58, 28, 98, 0.2);
+  border-color: rgba(81, 44, 130, 0.2);
   transform: translateY(-1px);
 }
 
@@ -4424,7 +4453,7 @@ body.portal-switching .office-box {
 
 .breakdown-item:hover {
   background-color: #fff;
-  border-color: rgba(58, 28, 98, 0.25);
+  border-color: rgba(81, 44, 130, 0.25);
   transform: translateY(-1px);
 }
 
@@ -4568,21 +4597,21 @@ body.portal-switching .office-box {
   width: 6px;
 }
 .wizard-step-content::-webkit-scrollbar-track {
-  background: rgba(58, 28, 98, 0.02);
+  background: rgba(81, 44, 130, 0.02);
   border-radius: 10px;
 }
 .wizard-step-content::-webkit-scrollbar-thumb {
-  background: rgba(58, 28, 98, 0.15);
+  background: rgba(81, 44, 130, 0.15);
   border-radius: 10px;
 }
 .wizard-step-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(58, 28, 98, 0.3);
+  background: rgba(81, 44, 130, 0.3);
 }
 
 .wizard-actions {
   margin-top: auto; /* Pin buttons to the bottom of the card */
   padding-top: 12px;
-  border-top: 1px solid rgba(58, 28, 98, 0.05);
+  border-top: 1px solid rgba(81, 44, 130, 0.05);
   flex-shrink: 0;
 }
 
@@ -4610,7 +4639,7 @@ body.portal-switching .office-box {
 }
 
 .agent-card:hover {
-  border-color: rgba(58, 28, 98, 0.2);
+  border-color: rgba(81, 44, 130, 0.2);
   background: #ffffff;
   transform: translateY(-2px);
   box-shadow: none;
@@ -4695,8 +4724,8 @@ body.portal-switching .office-box {
 }
 
 .booking-payment-section {
-  background: rgba(58, 28, 98, 0.03);
-  border: 1px solid rgba(58, 28, 98, 0.08);
+  background: rgba(81, 44, 130, 0.03);
+  border: 1px solid rgba(81, 44, 130, 0.08);
   border-radius: 12px;
   padding: 20px;
   margin-top: 24px;
@@ -4737,7 +4766,7 @@ body.portal-switching .office-box {
 
 .stripe-card-input-wrapper:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(58, 28, 98, 0.1);
+  box-shadow: 0 0 0 2px rgba(81, 44, 130, 0.1);
 }
 
 .card-icon-prefix {
@@ -4784,11 +4813,11 @@ body.portal-switching .office-box {
 .stripe-stub-badge {
   color: var(--color-primary);
   font-weight: 600;
-  background: rgba(58, 28, 98, 0.08);
+  background: rgba(81, 44, 130, 0.08);
   padding: 3px 10px;
   border-radius: 4px;
   font-size: 0.75rem;
-  border: 1px solid rgba(58, 28, 98, 0.15);
+  border: 1px solid rgba(81, 44, 130, 0.15);
 }
 
 .payment-total-amount {
@@ -4812,7 +4841,7 @@ body.portal-switching .office-box {
   align-items: center;
   margin-top: 6px;
   font-size: 0.8rem;
-  border-top: 1px dashed rgba(58, 28, 98, 0.08);
+  border-top: 1px dashed rgba(81, 44, 130, 0.08);
   padding-top: 6px;
 }
 
@@ -4824,7 +4853,7 @@ body.portal-switching .office-box {
 .agent-fee-val {
   color: var(--color-primary);
   font-weight: 700;
-  background: rgba(58, 28, 98, 0.06);
+  background: rgba(81, 44, 130, 0.06);
   padding: 1px 6px;
   border-radius: 4px;
   font-size: 0.78rem;
@@ -4866,7 +4895,7 @@ body.region-au .show-np {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-primary);
-  background: rgba(58, 28, 98, 0.08);
+  background: rgba(81, 44, 130, 0.08);
   padding: 4px 12px;
   border-radius: 20px;
   margin-bottom: 16px;
@@ -4889,8 +4918,8 @@ body.region-au .show-np {
 }
 
 .visa-card-pricing-box {
-  background: rgba(58, 28, 98, 0.03);
-  border: 1px solid rgba(58, 28, 98, 0.06);
+  background: rgba(81, 44, 130, 0.03);
+  border: 1px solid rgba(81, 44, 130, 0.06);
   border-radius: 16px;
   padding: 16px 20px;
   margin-bottom: 24px;
@@ -4973,4 +5002,25 @@ body.region-au .show-np {
     background: transparent !important;
   }
 }
+
+@media (max-width: 991px) {
+  .hero-bg-image {
+    width: 100%;
+    opacity: 0.18;
+    background-position: center;
+  }
+  
+  .hero-bg-image::before {
+    background: linear-gradient(to bottom, 
+      var(--bg-primary) 0%, 
+      rgba(251, 249, 254, 0.4) 50%, 
+      var(--bg-primary) 100%
+    );
+  }
+  
+  .hero-bg-image::after {
+    display: none;
+  }
+}
+
 
