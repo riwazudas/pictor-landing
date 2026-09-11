@@ -1,0 +1,37 @@
+[
+  {
+    "id": "faq_1",
+    "question": "What is OMARA and why is it important?",
+    "answer": "OMARA (Office of the Migration Agents Registration Authority) regulates migration agents in Australia. Using a registered agent guarantees they have the required legal knowledge and adhere to a strict Code of Conduct.",
+    "category": "Migration",
+    "region": "au"
+  },
+  {
+    "id": "faq_2",
+    "question": "How long does a student visa (Subclass 500) processing take?",
+    "answer": "Student visa processing times vary depending on the sector. Higher education sector visas generally take 2-4 weeks, while vocational education can take longer. It depends heavily on document completeness.",
+    "category": "Education",
+    "region": "both"
+  },
+  {
+    "id": "faq_3",
+    "question": "What is the NAATI CCL test?",
+    "answer": "The NAATI CCL (Credentialed Community Language) test is an exam that assesses your community language translation abilities. Passing it awards 5 bonus points toward your Australian GSM (PR) visa application.",
+    "category": "General",
+    "region": "au"
+  },
+  {
+    "id": "faq_4",
+    "question": "Do you offer university admission assistance in Nepal?",
+    "answer": "Yes, our Kathmandu office is staffed with QEAC certified counselors who provide free university placement, admissions, scholarship assistance, and visa documentation support.",
+    "category": "Education",
+    "region": "np"
+  },
+  {
+    "id": "faq_5",
+    "question": "What is the visa cost estimation tool?",
+    "answer": "Our visa cost estimation tool helps you estimate the fees including base charges, secondary applicants, and assessments across Subclass 189, 190, 491, 500, 482, and 485.",
+    "category": "Visa Cost",
+    "region": "both"
+  }
+]
