@@ -108,114 +108,106 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Switch Portal function with snappier opacity transitions
-  function switchPortal(region, savePreference = true) {
+  function switchPortal(region, savePreference = true, immediate = false) {
     if (region !== 'au' && region !== 'np') return;
     
-    // Add switching transition class
-    document.body.classList.add('portal-switching');
-    
-    setTimeout(() => {
-      // Toggle body region classes
-      if (region === 'au') {
-        document.body.classList.remove('region-np');
-        document.body.classList.add('region-au');
-        btnAu.classList.add('active');
-        btnNp.classList.remove('active');
-      } else {
-        document.body.classList.remove('region-au');
-        document.body.classList.add('region-np');
-        btnNp.classList.add('active');
-        btnAu.classList.remove('active');
-      }
-      
-      // Update data-attributes on all regionalized texts
-      regionalTexts.forEach(el => {
-        const textVal = el.getAttribute(`data-${region}`);
-        if (textVal) {
-          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            el.placeholder = textVal;
-          } else {
-            // Check if HTML is needed (e.g. for br tags)
-            if (textVal.includes('<br>') || textVal.includes('</span>') || textVal.includes('</div>')) {
-              el.innerHTML = textVal;
+    const applyPortalState = () => {
+      try {
+        // Toggle body region classes
+        if (region === 'au') {
+          document.body.classList.remove('region-np');
+          document.body.classList.add('region-au');
+          if (btnAu) btnAu.classList.add('active');
+          if (btnNp) btnNp.classList.remove('active');
+        } else {
+          document.body.classList.remove('region-au');
+          document.body.classList.add('region-np');
+          if (btnNp) btnNp.classList.add('active');
+          if (btnAu) btnAu.classList.remove('active');
+        }
+        
+        // Update data-attributes on all regionalized texts
+        regionalTexts.forEach(el => {
+          const textVal = el.getAttribute(`data-${region}`);
+          if (textVal) {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+              el.placeholder = textVal;
             } else {
-              el.textContent = textVal;
+              // Check if HTML is needed (e.g. for br tags)
+              if (textVal.includes('<br>') || textVal.includes('</span>') || textVal.includes('</div>')) {
+                el.innerHTML = textVal;
+              } else {
+                el.textContent = textVal;
+              }
             }
           }
+        });
+
+        // Update hero heading text dynamically with randomized option
+        const headingElement = document.querySelector('.hero-heading');
+        if (headingElement && heroHeadings[region]) {
+          headingElement.innerHTML = heroHeadings[region][chosenHeroHeadingIndex];
         }
-      });
 
-      // Update hero heading text dynamically with randomized option
-      const headingElement = document.querySelector('.hero-heading');
-      if (headingElement) {
-        headingElement.innerHTML = heroHeadings[region][chosenHeroHeadingIndex];
-      }
-
-      // Update regional blocks
-      regionalBlocks.forEach(block => {
-        if (block.getAttribute('data-region') === region) {
-          block.style.display = '';
-        } else {
-          block.style.display = 'none';
+        // Update regional blocks
+        regionalBlocks.forEach(block => {
+          if (block.getAttribute('data-region') === region) {
+            block.style.display = '';
+          } else {
+            block.style.display = 'none';
+          }
+        });
+        
+        // Initialize/Reset services tabs for the active region
+        if (typeof initServicesTabs === 'function') {
+          initServicesTabs(region);
         }
-      });
-      
-      // Initialize/Reset services tabs for the active region
-      initServicesTabs(region);
-      
-      // Update the Lead capture form target pathways dropdown
-      populateVisaOptions(region);
-      
-      // Update active states on visualizers if applicable
-      updateTimezoneLabels(region);
-      
-      // Initialize/Reset Booking Wizard for the active region
-      if (typeof initWizardFlow === 'function') {
-        initWizardFlow(region);
-      }
-      
-      // Update live Google Calendar if integrated
-      if (typeof initGoogleCalendar === 'function') {
-        initGoogleCalendar();
-      }
-      
-      // Re-trigger timeline calculations for new content
-      if (typeof updateTimelineProgress === 'function') {
-        updateTimelineProgress();
-      }
-
-      // Update secondary Hero button href if present
-      const heroSecondaryBtn = document.querySelector('.btn-hero-secondary');
-      if (heroSecondaryBtn) {
-        if (region === 'au') {
-          heroSecondaryBtn.setAttribute('href', 'visa-options.html');
-        } else {
-          heroSecondaryBtn.setAttribute('href', 'services.html#education');
+        
+        // Update active states on visualizers if applicable
+        updateTimezoneLabels(region);
+        
+        // Re-trigger timeline calculations for new content
+        try {
+          if (typeof updateTimelineProgress === 'function') {
+            updateTimelineProgress();
+          }
+        } catch (timelineErr) {
+          console.warn('Timeline tracker deferred:', timelineErr);
         }
-      }
 
-      // Save preference if flag set
-      if (savePreference) {
-        localStorage.setItem('pictor_preferred_portal', region);
+        // Update secondary Hero button href if present
+        const heroSecondaryBtn = document.querySelector('.btn-hero-secondary');
+        if (heroSecondaryBtn) {
+          if (region === 'au') {
+            heroSecondaryBtn.setAttribute('href', 'visa-options.html');
+          } else {
+            heroSecondaryBtn.setAttribute('href', 'services.html#education');
+          }
+        }
+
+        // Save preference if flag set
+        if (savePreference) {
+          localStorage.setItem('pictor_preferred_portal', region);
+        }
+        
+        // Dispatch custom event for pages or components listening for portal switch
+        document.dispatchEvent(new CustomEvent('portalSwitched', { detail: { region } }));
+      } finally {
+        // Always remove switching transition
+        document.body.classList.remove('portal-switching');
       }
-      
-      // Remove switching transition
-      document.body.classList.remove('portal-switching');
-    }, 250);
+    };
+
+    if (immediate) {
+      applyPortalState();
+    } else {
+      // Add switching transition class
+      document.body.classList.add('portal-switching');
+      setTimeout(applyPortalState, 250);
+    }
   }
 
-  // Populate dynamic Lead Capture Visa dropdown
-  function populateVisaOptions(region) {
-    if (!leadVisaSelect) return;
-    leadVisaSelect.innerHTML = '';
-    const options = visaOptions[region];
-    options.forEach(opt => {
-      const optionEl = document.createElement('option');
-      optionEl.value = opt.value;
-      optionEl.textContent = opt.text;
-      leadVisaSelect.appendChild(optionEl);
-    });
-  }
+
 
   // Update calendar/booking wizard timezone tags
   function updateTimezoneLabels(region) {
@@ -229,30 +221,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Auto Detect timezone
+  // Auto Detect timezone & location
+  // Requirement: if the location is not Australian then always default to the Nepal website
   function autoDetectRegion() {
-    // Check local storage first
+    // Check local storage first (explicit user choice)
     const preferred = localStorage.getItem('pictor_preferred_portal');
     if (preferred === 'au' || preferred === 'np') {
-      switchPortal(preferred, false);
+      switchPortal(preferred, false, true);
       return;
     }
     
     // Fallback to timezone check
     try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const auZones = ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Hobart', 'Darwin', 'Canberra', 'Australia'];
+      const tz = (Intl && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone || '' : '';
+      const auZones = [
+        'Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Hobart',
+        'Darwin', 'Canberra', 'Lord_Howe', 'Broken_Hill', 'Currie', 'Eucla',
+        'Lindeman', 'Australia'
+      ];
       
-      const isAu = auZones.some(zone => tz.includes(zone));
-      const isNp = tz.includes('Kathmandu') || tz.includes('Asia/Katmandu');
+      const isAu = tz.startsWith('Australia/') || auZones.some(zone => tz.includes(zone));
       
-      if (isNp) {
-        switchPortal('np', false);
+      if (isAu) {
+        switchPortal('au', false, true);
       } else {
-        switchPortal('au', false); // Default to Australia Portal
+        // If not Australian, always default to Nepal website
+        switchPortal('np', false, true);
       }
     } catch (e) {
-      switchPortal('au', false); // Default if timezone API fails
+      // Default to Nepal website if timezone API fails
+      switchPortal('np', false, true);
     }
   }
 
@@ -537,750 +535,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ==========================================================================
-  // 6. CUSTOM CONSULTATION WIZARD SCHEDULER
-  // ==========================================================================
-  const wizardIndicators = document.querySelectorAll('.step-indicator');
-  const wizardSteps = document.querySelectorAll('.wizard-step');
-  const calendarMonthYear = document.getElementById('calendar-month-year');
-  const calendarDays = document.getElementById('calendar-days');
-  const timeslotsGrid = document.getElementById('timeslots-grid');
-  const selectedDateStr = document.getElementById('selected-date-str');
-  const summaryDateTime = document.getElementById('summary-date-time');
-  const confirmedEmail = document.getElementById('confirmed-email');
-  
-  const receiptDate = document.getElementById('receipt-date');
-  const receiptTime = document.getElementById('receipt-time');
-  const receiptMode = document.getElementById('receipt-mode');
-
-  const btnStep2 = document.getElementById('btn-goto-step-2');
-  const btnStep3 = document.getElementById('btn-goto-step-3');
-  const bookingDetailsForm = document.getElementById('booking-details-form');
-
-  // Google Calendar Integration State & Logic
-  let googleScriptLoaded = false;
-  
-  window.initGoogleCalendar = function() {
-    const config = window.GOOGLE_CALENDAR_CONFIG;
-    if (!config || !config.enabled) {
-      const selector = document.getElementById('booking-method-selector');
-      if (selector) selector.style.display = 'none';
-      window.toggleBookingMethod('manual');
-      return;
-    }
-    
-    // Determine active region
-    const isAu = document.body.classList.contains('region-au');
-    const region = isAu ? 'au' : 'np';
-    const scheduleUrl = config.schedules[region];
-    
-    const iframe = document.getElementById('google-calendar-iframe');
-    const directLink = document.getElementById('google-calendar-direct-link');
-    const loader = document.getElementById('calendar-loader');
-    const fallback = document.getElementById('calendar-fallback');
-    const popupCard = document.getElementById('calendar-popup-card');
-    const popupTarget = document.getElementById('google-calendar-popup-target');
-    
-    if (directLink) {
-      directLink.href = scheduleUrl;
-    }
-    
-    if (config.displayMode === 'inline') {
-      if (popupCard) popupCard.style.display = 'none';
-      if (iframe && loader) {
-        loader.style.display = 'flex';
-        iframe.style.display = 'none';
-        if (fallback) fallback.style.display = 'none';
-        
-        // Load the iframe
-        iframe.src = scheduleUrl;
-        
-        // Handle iframe onload
-        iframe.onload = () => {
-          loader.style.display = 'none';
-          iframe.style.display = 'block';
-        };
-        
-        // Fallback timeout: If iframe doesn't load in 8 seconds, show fallback link
-        setTimeout(() => {
-          if (loader.style.display === 'flex') {
-            loader.style.display = 'none';
-            if (fallback) fallback.style.display = 'block';
-          }
-        }, 8000);
-      }
-    } else if (config.displayMode === 'popup') {
-      if (iframe) iframe.style.display = 'none';
-      if (loader) loader.style.display = 'none';
-      if (fallback) fallback.style.display = 'none';
-      if (popupCard) popupCard.style.display = 'flex';
-      
-      // Load Google Calendar JS/CSS if not already loaded
-      if (!googleScriptLoaded) {
-        // Load CSS
-        const cssLink = document.createElement('link');
-        cssLink.rel = 'stylesheet';
-        cssLink.href = 'https://calendar.google.com/calendar/scheduling-button-script.css';
-        document.head.appendChild(cssLink);
-        
-        // Load JS
-        const jsScript = document.createElement('script');
-        jsScript.src = 'https://calendar.google.com/calendar/scheduling-button-script.js';
-        jsScript.async = true;
-        jsScript.onload = () => {
-          googleScriptLoaded = true;
-          renderGooglePopupButton(scheduleUrl, config.themeColor, popupTarget);
-        };
-        document.head.appendChild(jsScript);
-      } else {
-        renderGooglePopupButton(scheduleUrl, config.themeColor, popupTarget);
-      }
-    }
-  }
-
-  function renderGooglePopupButton(url, color, targetEl) {
-    if (!targetEl) return;
-    if (window.calendar && window.calendar.schedulingButton) {
-      // Clear previous button contents
-      targetEl.innerHTML = '';
-      window.calendar.schedulingButton.load({
-        url: url,
-        color: color,
-        label: 'Book consultation session',
-        target: targetEl
-      });
-    } else {
-      // Retry after a short delay if script is not fully parsed yet
-      setTimeout(() => renderGooglePopupButton(url, color, targetEl), 100);
-    }
-  }
-
-  window.toggleBookingMethod = function(method) {
-    const liveBtn = document.getElementById('method-btn-live');
-    const manualBtn = document.getElementById('method-btn-manual');
-    const googleContainer = document.getElementById('google-calendar-container');
-    const wizardIndicator = document.querySelector('.wizard-steps-indicator');
-    const wizardBody = document.querySelector('.wizard-body');
-    
-    if (!googleContainer || !wizardIndicator || !wizardBody) return;
-    
-    if (method === 'live') {
-      if (liveBtn) liveBtn.classList.add('active');
-      if (manualBtn) manualBtn.classList.remove('active');
-      googleContainer.style.display = 'block';
-      wizardIndicator.style.display = 'none';
-      wizardBody.style.display = 'none';
-      
-      // Initialize/load active region schedule
-      window.initGoogleCalendar();
-    } else {
-      if (manualBtn) manualBtn.classList.add('active');
-      if (liveBtn) liveBtn.classList.remove('active');
-      googleContainer.style.display = 'none';
-      wizardIndicator.style.display = 'flex';
-      wizardBody.style.display = 'block';
-    }
-  }
-
-  // Bind tab click events
-  const liveBtn = document.getElementById('method-btn-live');
-  const manualBtn = document.getElementById('method-btn-manual');
-  if (liveBtn) liveBtn.addEventListener('click', () => window.toggleBookingMethod('live'));
-  if (manualBtn) manualBtn.addEventListener('click', () => window.toggleBookingMethod('manual'));
-
-  let chosenDate = null;
-  let chosenTime = null;
-  let selectedAgent = null; // { id, name, fee }
-  let wizardFlow = []; // List of step element IDs
-  let currentStepIndex = 0;
-  let currentMonth = new Date().getMonth();
-  let currentYear = new Date().getFullYear();
-
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-  // Helper function to set required attributes for Stripe card fields
-  function setCardFieldsRequired(isRequired) {
-    const cardNum = document.getElementById('card-number');
-    const cardExp = document.getElementById('card-expiry');
-    const cardCvc = document.getElementById('card-cvc');
-    if (cardNum && cardExp && cardCvc) {
-      if (isRequired) {
-        cardNum.setAttribute('required', 'required');
-        cardExp.setAttribute('required', 'required');
-        cardCvc.setAttribute('required', 'required');
-      } else {
-        cardNum.removeAttribute('required');
-        cardExp.removeAttribute('required');
-        cardCvc.removeAttribute('required');
-      }
-    }
-  }
-
-  // Helper function to shift wizard tabs dynamically using index in active wizardFlow
-  window.navigateWizardToIndex = function(index) {
-    if (index < 0 || index >= wizardFlow.length) return;
-    currentStepIndex = index;
-    
-    // Toggle active wizard-step class
-    const allStepEls = document.querySelectorAll('.wizard-step');
-    allStepEls.forEach(step => step.classList.remove('active'));
-    
-    const currentStepId = wizardFlow[currentStepIndex];
-    const currentStepEl = document.getElementById(currentStepId);
-    if (currentStepEl) {
-      currentStepEl.classList.add('active');
-    }
-    
-    // Render/update dynamic indicators
-    updateWizardIndicators();
-  }
-
-  // Update dynamic progress indicators
-  function updateWizardIndicators() {
-    const indicatorContainer = document.querySelector('.wizard-steps-indicator');
-    if (!indicatorContainer) return;
-    
-    indicatorContainer.innerHTML = '';
-    
-    const stepLabels = {
-      'wizard-step-agent': 'Agent',
-      'wizard-step-1': 'Date',
-      'wizard-step-2': 'Time',
-      'wizard-step-3': 'Details',
-      'wizard-step-4': 'Done'
-    };
-    
-    wizardFlow.forEach((stepId, idx) => {
-      const ind = document.createElement('div');
-      ind.className = 'step-indicator';
-      ind.setAttribute('data-step', (idx + 1).toString());
-      
-      const idxSpan = document.createTextNode((idx + 1).toString());
-      ind.appendChild(idxSpan);
-      
-      const labelSpan = document.createElement('span');
-      labelSpan.className = 'step-label';
-      labelSpan.textContent = stepLabels[stepId] || '';
-      ind.appendChild(labelSpan);
-      
-      if (idx === currentStepIndex) {
-        ind.classList.add('active');
-      } else if (idx < currentStepIndex) {
-        ind.classList.add('completed');
-      }
-      
-      indicatorContainer.appendChild(ind);
-      
-      // Add divider line if not the last indicator
-      if (idx < wizardFlow.length - 1) {
-        const line = document.createElement('div');
-        line.className = 'step-line';
-        indicatorContainer.appendChild(line);
-      }
-    });
-  }
-
-  // Select agent handler
-  const agentCards = document.querySelectorAll('.agent-card');
-  const btnGotoStep1 = document.getElementById('btn-goto-step-1');
-  
-  agentCards.forEach(card => {
-    card.addEventListener('click', () => {
-      agentCards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      
-      selectedAgent = {
-        id: card.getAttribute('data-agent-id'),
-        name: card.getAttribute('data-agent-name'),
-        fee: card.getAttribute('data-agent-fee')
-      };
-      
-      if (btnGotoStep1) btnGotoStep1.removeAttribute('disabled');
-    });
-  });
-  
-  if (btnGotoStep1) {
-    btnGotoStep1.addEventListener('click', () => {
-      if (!selectedAgent) return;
-      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-1'));
-    });
-  }
-
-  // Auto-format card fields in payment block
-  const cardNumInput = document.getElementById('card-number');
-  if (cardNumInput) {
-    cardNumInput.addEventListener('input', (e) => {
-      let value = e.target.value.replace(/\D/g, '');
-      let formatted = '';
-      for (let i = 0; i < value.length; i++) {
-        if (i > 0 && i % 4 === 0) formatted += ' ';
-        formatted += value[i];
-      }
-      e.target.value = formatted.slice(0, 19);
-    });
-  }
-
-  const cardExpInput = document.getElementById('card-expiry');
-  if (cardExpInput) {
-    cardExpInput.addEventListener('input', (e) => {
-      let value = e.target.value.replace(/\D/g, '');
-      if (value.length >= 2) {
-        e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
-      } else {
-        e.target.value = value;
-      }
-    });
-  }
-
-  // Bind back buttons
-  document.querySelectorAll('.btn-wizard-back').forEach(btn => {
-    btn.addEventListener('click', () => {
-      window.navigateWizardToIndex(currentStepIndex - 1);
-    });
-  });
-
-  // Calendar builder
-  function renderCalendar(month, year) {
-    if (!calendarDays) return;
-    calendarDays.innerHTML = '';
-    
-    calendarMonthYear.textContent = `${monthNames[month]} ${year}`;
-
-    const firstDayIndex = new Date(year, month, 1).getDay();
-    const lastDay = new Date(year, month + 1, 0).getDate();
-    const prevLastDay = new Date(year, month, 0).getDate();
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Padding from previous month
-    for (let i = firstDayIndex; i > 0; i--) {
-      const btn = document.createElement('button');
-      btn.className = 'calendar-day-btn';
-      btn.disabled = true;
-      btn.textContent = prevLastDay - i + 1;
-      calendarDays.appendChild(btn);
-    }
-
-    // Days in current month
-    for (let day = 1; day <= lastDay; day++) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'calendar-day-btn';
-      btn.textContent = day;
-      
-      const evalDate = new Date(year, month, day);
-      evalDate.setHours(0,0,0,0);
-
-      // Disable weekends and past dates
-      const dayOfWeek = evalDate.getDay();
-      if (evalDate < today || dayOfWeek === 0 || dayOfWeek === 6) {
-        btn.disabled = true;
-      }
-
-      // Check if matches today
-      if (evalDate.getTime() === today.getTime()) {
-        btn.classList.add('today');
-      }
-
-      // Check if selected
-      if (chosenDate && evalDate.getTime() === chosenDate.getTime()) {
-        btn.classList.add('selected');
-      }
-
-      btn.addEventListener('click', () => {
-        // Clear active selections
-        document.querySelectorAll('.calendar-day-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        
-        chosenDate = new Date(year, month, day);
-        
-        // Unlock next step button
-        btnStep2.removeAttribute('disabled');
-      });
-
-      calendarDays.appendChild(btn);
-    }
-  }
-
-  // Month navigation
-  const prevMonthBtn = document.getElementById('prev-month');
-  const nextMonthBtn = document.getElementById('next-month');
-
-  if (prevMonthBtn && nextMonthBtn) {
-    prevMonthBtn.addEventListener('click', () => {
-      currentMonth--;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      }
-      renderCalendar(currentMonth, currentYear);
-    });
-
-    nextMonthBtn.addEventListener('click', () => {
-      currentMonth++;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
-      renderCalendar(currentMonth, currentYear);
-    });
-  }
-
-  // Load calendar on start
-  renderCalendar(currentMonth, currentYear);
-
-  // Initialize booking method based on config
-  const calConfig = window.GOOGLE_CALENDAR_CONFIG;
-  let initialMethod = 'manual';
-  if (calConfig && calConfig.enabled) {
-    if (calConfig.displayMode === 'api') {
-      const selector = document.getElementById('booking-method-selector');
-      if (selector) selector.style.display = 'none';
-      initialMethod = 'manual';
-    } else {
-      const selector = document.getElementById('booking-method-selector');
-      if (selector) selector.style.display = 'flex';
-      initialMethod = calConfig.defaultMethod || 'live';
-    }
-  } else {
-    const selector = document.getElementById('booking-method-selector');
-    if (selector) selector.style.display = 'none';
-  }
-  window.toggleBookingMethod(initialMethod);
-
-  // Next steps triggers
-  if (btnStep2) {
-    btnStep2.addEventListener('click', () => {
-      if (!chosenDate) return;
-      
-      // Update selected date text
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      selectedDateStr.textContent = chosenDate.toLocaleDateString('en-US', options);
-      
-      // Render timeslots
-      renderTimeslots();
-      
-      // Disable next steps until slot clicked
-      btnStep3.setAttribute('disabled', 'true');
-      chosenTime = null;
-      
-      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-2'));
-    });
-  }
-
-  // Fetch available slots from backend
-  async function fetchAvailableSlots(dateStr, region) {
-    const config = window.GOOGLE_CALENDAR_CONFIG;
-    if (!config || !config.enabled || config.displayMode !== 'api') {
-      return ["09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM"];
-    }
-
-    try {
-      const url = `${config.apiUrl}/available-slots?date=${dateStr}&region=${region}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('API server returned error');
-      const data = await response.json();
-      return data.slots || [];
-    } catch (e) {
-      console.warn('Could not fetch slots from backend. Falling back to default slots.', e);
-      return ["09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM"];
-    }
-  }
-
-  // Timeslots generator
-  async function renderTimeslots() {
-    if (!timeslotsGrid) return;
-    timeslotsGrid.innerHTML = '';
-
-    // Show loading state
-    const loaderContainer = document.createElement('div');
-    loaderContainer.className = 'timeslots-loader';
-    loaderContainer.innerHTML = '<div class="spinner-ring small-spinner"></div><p style="font-size:0.85rem; color:var(--color-text-light);">Loading slots...</p>';
-    timeslotsGrid.appendChild(loaderContainer);
-
-    // Disable step 3 button while loading
-    if (btnStep3) btnStep3.setAttribute('disabled', 'true');
-
-    // Get active region and formatted date
-    const isAu = document.body.classList.contains('region-au');
-    const region = isAu ? 'au' : 'np';
-
-    const year = chosenDate.getFullYear();
-    const month = String(chosenDate.getMonth() + 1).padStart(2, '0');
-    const day = String(chosenDate.getDate()).padStart(2, '0');
-    const dateStr = `${year}-${month}-${day}`;
-
-    const slots = await fetchAvailableSlots(dateStr, region);
-
-    timeslotsGrid.innerHTML = '';
-
-    if (slots.length === 0) {
-      const emptyMsg = document.createElement('p');
-      emptyMsg.className = 'no-slots-msg';
-      emptyMsg.textContent = 'No available consultation slots for this date. Please select another day.';
-      emptyMsg.style.cssText = 'grid-column: 1 / -1; text-align: center; font-size: 0.9rem; color: var(--color-text-light); padding: 20px 0;';
-      timeslotsGrid.appendChild(emptyMsg);
-      return;
-    }
-
-    slots.forEach(slot => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'timeslot-btn';
-      btn.textContent = slot;
-
-      if (chosenTime === slot) {
-        btn.classList.add('selected');
-        if (btnStep3) btnStep3.removeAttribute('disabled');
-      }
-
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.timeslot-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        chosenTime = slot;
-        
-        // Enable next step button
-        if (btnStep3) btnStep3.removeAttribute('disabled');
-      });
-
-      timeslotsGrid.appendChild(btn);
-    });
-  }
-
-  if (btnStep3) {
-    btnStep3.addEventListener('click', () => {
-      if (!chosenDate || !chosenTime) return;
-
-      const dateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
-      const formattedDate = chosenDate.toLocaleDateString('en-US', dateOptions);
-      
-      // Determine active timezone
-      const isAu = document.body.classList.contains('region-au');
-      const tzSuffix = isAu ? 'AEST' : 'NPT';
-      
-      summaryDateTime.textContent = `${formattedDate} at ${chosenTime} (${tzSuffix})`;
-      
-      // Set submit button text appropriately
-      const submitBtn = document.getElementById('booking-submit-btn');
-      if (submitBtn) {
-        if (isAu && selectedAgent) {
-          submitBtn.textContent = 'Proceed to Secure Payment';
-        } else {
-          submitBtn.textContent = 'Book My Session';
-        }
-      }
-      
-      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-3'));
-    });
-  }
-
-  // Details form submission
-  if (bookingDetailsForm) {
-    bookingDetailsForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const clientName = document.getElementById('booking-name').value;
-      const clientEmail = document.getElementById('booking-email').value;
-      const clientPhone = document.getElementById('booking-phone').value;
-      const clientMode = document.getElementById('booking-mode');
-      const clientModeText = clientMode.options[clientMode.selectedIndex].text;
-
-      const submitBtn = bookingDetailsForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn ? submitBtn.textContent : 'Book My Session';
-      
-      if (submitBtn) {
-        submitBtn.textContent = 'Processing...';
-        submitBtn.setAttribute('disabled', 'true');
-      }
-
-      // Format selected date
-      const year = chosenDate.getFullYear();
-      const month = String(chosenDate.getMonth() + 1).padStart(2, '0');
-      const day = String(chosenDate.getDate()).padStart(2, '0');
-      const dateStr = `${year}-${month}-${day}`;
-
-      const isAu = document.body.classList.contains('region-au');
-      const region = isAu ? 'au' : 'np';
-
-      // Redirect to simulated Stripe Web checkout page if Australia
-      if (isAu && selectedAgent) {
-        const payload = {
-          name: clientName,
-          email: clientEmail,
-          phone: clientPhone,
-          notes: `Preferred Consultation Mode: ${clientModeText}`,
-          date: dateStr,
-          time: chosenTime,
-          region: region,
-          agentId: selectedAgent.id,
-          agentName: selectedAgent.name,
-          chargeAmount: selectedAgent.fee
-        };
-        sessionStorage.setItem('pending_booking', JSON.stringify(payload));
-        window.location.href = 'stripe-checkout.html';
-        return;
-      }
-
-      const payload = {
-        name: clientName,
-        email: clientEmail,
-        phone: clientPhone,
-        notes: `Preferred Consultation Mode: ${clientModeText}`,
-        date: dateStr,
-        time: chosenTime,
-        region: region
-      };
-
-      const config = window.GOOGLE_CALENDAR_CONFIG;
-      let meetLink = '';
-      
-      if (config && config.enabled && config.displayMode === 'api') {
-        try {
-          const response = await fetch(`${config.apiUrl}/book-appointment`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          
-          if (!response.ok) {
-            const errData = await response.json();
-            throw new Error(errData.error || 'Failed to submit booking');
-          }
-          
-          const result = await response.json();
-          meetLink = result.meetLink;
-        } catch (error) {
-          alert(`Booking Error: ${error.message}. Please try again.`);
-          if (submitBtn) {
-            submitBtn.textContent = originalText;
-            submitBtn.removeAttribute('disabled');
-          }
-          return;
-        }
-      }
-
-      // Restore submit button state
-      if (submitBtn) {
-        submitBtn.textContent = originalText;
-        submitBtn.removeAttribute('disabled');
-      }
-
-      // Update receipts
-      const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-      receiptDate.textContent = chosenDate.toLocaleDateString('en-US', dateOptions);
-      
-      const tzSuffix = isAu ? 'AEST' : 'NPT';
-      receiptTime.textContent = `${chosenTime} (${tzSuffix})`;
-      receiptMode.textContent = clientModeText;
-      confirmedEmail.textContent = clientEmail;
-
-      // Update Agent & Payment receipt details
-      const receiptAgentRow = document.getElementById('receipt-agent-row');
-      const receiptAgent = document.getElementById('receipt-agent');
-      const receiptPaymentRow = document.getElementById('receipt-payment-row');
-      const receiptPayment = document.getElementById('receipt-payment');
-      
-      if (receiptAgentRow) receiptAgentRow.style.display = 'none';
-      if (receiptPaymentRow) receiptPaymentRow.style.display = 'none';
-
-      // Handle Google Meet Link display
-      const meetRow = document.getElementById('receipt-meet-row');
-      const meetAnchor = document.getElementById('receipt-meet-link');
-      if (meetLink && meetRow && meetAnchor) {
-        meetAnchor.href = meetLink;
-        meetRow.style.display = 'flex';
-      } else if (meetRow) {
-        meetRow.style.display = 'none';
-      }
-
-      window.navigateWizardToIndex(wizardFlow.indexOf('wizard-step-4'));
-    });
-  }
-
-  // Reset booking wizard helper
-  const btnResetWizard = document.querySelector('.btn-reset-wizard');
-  if (btnResetWizard) {
-    btnResetWizard.addEventListener('click', () => {
-      chosenDate = null;
-      chosenTime = null;
-      selectedAgent = null;
-      
-      // Clear agent selection UI
-      document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
-      if (btnGotoStep1) btnGotoStep1.setAttribute('disabled', 'true');
-      
-      // Clear payment inputs
-      const cardNum = document.getElementById('card-number');
-      const cardExp = document.getElementById('card-expiry');
-      const cardCvc = document.getElementById('card-cvc');
-      if (cardNum) cardNum.value = '';
-      if (cardExp) cardExp.value = '';
-      if (cardCvc) cardCvc.value = '';
-      
-      bookingDetailsForm.reset();
-      
-      if (btnStep2) btnStep2.setAttribute('disabled', 'true');
-      
-      renderCalendar(currentMonth, currentYear);
-      window.navigateWizardToIndex(0);
-    });
-  }
-
-  // Initialize wizard flow based on active body class (or default AU)
-  window.initWizardFlow = function(region) {
-    // Determine flow based on region
-    if (region === 'au') {
-      wizardFlow = ['wizard-step-agent', 'wizard-step-1', 'wizard-step-2', 'wizard-step-3', 'wizard-step-4'];
-    } else {
-      wizardFlow = ['wizard-step-1', 'wizard-step-2', 'wizard-step-3', 'wizard-step-4'];
-    }
-    
-    // Clear and reset values
-    chosenDate = null;
-    chosenTime = null;
-    selectedAgent = null;
-    
-    // Reset inputs
-    const btnGotoStep1 = document.getElementById('btn-goto-step-1');
-    if (btnGotoStep1) btnGotoStep1.setAttribute('disabled', 'true');
-    if (btnStep2) btnStep2.setAttribute('disabled', 'true');
-    if (btnStep3) btnStep3.setAttribute('disabled', 'true');
-    
-    // Reset selected cards
-    document.querySelectorAll('.agent-card').forEach(card => card.classList.remove('selected'));
-    
-    // Reset payment inputs
-    const cardNum = document.getElementById('card-number');
-    const cardExp = document.getElementById('card-expiry');
-    const cardCvc = document.getElementById('card-cvc');
-    if (cardNum) cardNum.value = '';
-    if (cardExp) cardExp.value = '';
-    if (cardCvc) cardCvc.value = '';
-    
-    // Reset required attributes
-    setCardFieldsRequired(false);
-    
-    // Reset form
-    if (bookingDetailsForm) bookingDetailsForm.reset();
-    
-    // Navigate to first step of new flow
-    window.navigateWizardToIndex(0);
-  }
-
-  window.initWizardFlow(document.body.classList.contains('region-np') ? 'np' : 'au');
-
 
   // ==========================================================================
   // 7. TIMELINE PROGRESS TRACKER
   // ==========================================================================
-  const timelineSection = document.getElementById('process');
-  const timelineNodes = document.querySelectorAll('.v-timeline-node');
-
   function updateTimelineProgress() {
+    const timelineSection = document.getElementById('process');
+    const timelineNodes = document.querySelectorAll('.v-timeline-node');
     if (!timelineSection || timelineNodes.length === 0) return;
 
     const rect = timelineSection.getBoundingClientRect();
@@ -1398,134 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // ==========================================================================
-  // 9. LEAD CAPTURE MULTI-STEP FORM
-  // ==========================================================================
-  const leadForm = document.getElementById('lead-capture-form');
-  const formStep1 = document.getElementById('form-step-1-el');
-  const formStep2 = document.getElementById('form-step-2-el');
-  const formSuccess = document.getElementById('form-step-success');
-  const formDot1 = document.getElementById('form-step-dot-1');
-  const formDot2 = document.getElementById('form-step-dot-2');
 
-  const btnNextForm = document.getElementById('btn-next-form-step');
-  const btnPrevForm = document.getElementById('btn-prev-form-step');
-
-  const inputName = document.getElementById('lead-name');
-  const inputEmail = document.getElementById('lead-email');
-  const inputPhone = document.getElementById('lead-phone');
-  const inputCountry = document.getElementById('lead-country');
-  const inputVisa = document.getElementById('lead-visa-type');
-  const inputMessage = document.getElementById('lead-message');
-
-  const summaryName = document.getElementById('summary-lead-name');
-  const summaryPathway = document.getElementById('summary-lead-pathway');
-  const summaryRef = document.getElementById('summary-lead-ref');
-
-  if (btnNextForm) {
-    btnNextForm.addEventListener('click', () => {
-      // Validate step 1 fields before moving next
-      if (inputName.checkValidity() && inputEmail.checkValidity() && inputPhone.checkValidity() && inputCountry.checkValidity()) {
-        formStep1.classList.remove('active');
-        formStep2.classList.add('active');
-        formDot1.classList.remove('active');
-        formDot2.classList.add('active');
-      } else {
-        // Trigger default browser form validation visual cues
-        inputName.reportValidity() || inputEmail.reportValidity() || inputPhone.reportValidity() || inputCountry.reportValidity();
-      }
-    });
-  }
-
-  if (btnPrevForm) {
-    btnPrevForm.addEventListener('click', () => {
-      formStep2.classList.remove('active');
-      formStep1.classList.add('active');
-      formDot2.classList.remove('active');
-      formDot1.classList.add('active');
-    });
-  }
-
-  if (leadForm) {
-    leadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const nameVal = inputName.value;
-      const visaText = inputVisa.options[inputVisa.selectedIndex].text;
-      
-      const submitBtn = leadForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn ? submitBtn.textContent : 'Submit Request';
-      
-      if (submitBtn) {
-        submitBtn.textContent = 'Sending...';
-        submitBtn.setAttribute('disabled', 'true');
-      }
-
-      const payload = {
-        name: nameVal,
-        email: inputEmail.value,
-        phone: inputPhone.value,
-        country: inputCountry.value,
-        visaType: visaText,
-        message: inputMessage.value
-      };
-
-      const config = window.GOOGLE_CALENDAR_CONFIG;
-      const apiUrl = (config && config.apiUrl) ? config.apiUrl.replace('/api', '') : 'http://localhost:3000';
-      
-      let refCode = 'PCT-' + Math.floor(1000 + Math.random() * 9000);
-
-      try {
-        const response = await fetch(`${apiUrl}/api/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          if (result.refCode) {
-            refCode = result.refCode;
-          }
-        }
-      } catch (err) {
-        console.warn('Failed to register lead on the backend. Falling back to local offline code generation.', err);
-      } finally {
-        if (submitBtn) {
-          submitBtn.textContent = originalText;
-          submitBtn.removeAttribute('disabled');
-        }
-      }
-
-      // Populate success screens receipts
-      summaryName.textContent = nameVal;
-      summaryPathway.textContent = visaText;
-      summaryRef.textContent = refCode;
-
-      formStep2.classList.remove('active');
-      formSuccess.classList.add('active');
-      
-      // Hide step dots indicator row
-      const progressHeader = document.querySelector('.form-progress-indicator');
-      if (progressHeader) progressHeader.style.display = 'none';
-    });
-  }
-
-  // Reset contact lead form handler
-  const btnResetForm = document.getElementById('btn-reset-form');
-  if (btnResetForm) {
-    btnResetForm.addEventListener('click', () => {
-      leadForm.reset();
-      
-      formSuccess.classList.remove('active');
-      formStep1.classList.add('active');
-      formDot1.classList.add('active');
-      formDot2.classList.remove('active');
-
-      const progressHeader = document.querySelector('.form-progress-indicator');
-      if (progressHeader) progressHeader.style.display = 'flex';
-    });
-  }
 
 
   // ==========================================================================
@@ -1563,86 +697,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Check for checkout page success redirect
-  if (window.location.search.includes('booking_success=true')) {
-    const completedBookingStr = sessionStorage.getItem('completed_booking');
-    if (completedBookingStr) {
-      try {
-        const apt = JSON.parse(completedBookingStr);
-        
-        // Force Australia region if it was Australia
-        if (apt.region === 'au') {
-          if (typeof window.switchPortal === 'function') {
-            window.switchPortal('au', false);
-          }
-        }
-        
-        // Populate receipt elements
-        const receiptDate = document.getElementById('receipt-date');
-        const receiptTime = document.getElementById('receipt-time');
-        const receiptMode = document.getElementById('receipt-mode');
-        const confirmedEmail = document.getElementById('confirmed-email');
-        
-        if (receiptDate) {
-          const parts = apt.date.split('-');
-          const dObj = new Date(parts[0], parts[1] - 1, parts[2]);
-          const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-          receiptDate.textContent = dObj.toLocaleDateString('en-US', dateOptions);
-        }
-        
-        const tzSuffix = apt.region === 'au' ? 'AEST' : 'NPT';
-        if (receiptTime) receiptTime.textContent = `${apt.time} (${tzSuffix})`;
-        
-        let modeText = 'Video Meeting (Google Meet)';
-        if (apt.notes && apt.notes.includes('Preferred Consultation Mode:')) {
-          modeText = apt.notes.replace('Preferred Consultation Mode:', '').trim();
-        }
-        if (receiptMode) receiptMode.textContent = modeText;
-        if (confirmedEmail) confirmedEmail.textContent = apt.email;
-        
-        const receiptAgentRow = document.getElementById('receipt-agent-row');
-        const receiptAgent = document.getElementById('receipt-agent');
-        const receiptPaymentRow = document.getElementById('receipt-payment-row');
-        const receiptPayment = document.getElementById('receipt-payment');
-        
-        if (apt.agentName) {
-          if (receiptAgent && receiptAgentRow) {
-            receiptAgent.textContent = apt.agentName;
-            receiptAgentRow.style.display = 'flex';
-          }
-          if (receiptPayment && receiptPaymentRow) {
-            receiptPayment.textContent = `$${apt.chargeAmount}.00 AUD — Paid (Stripe Secure)`;
-            receiptPaymentRow.style.display = 'flex';
-          }
-        }
-        
-        const meetRow = document.getElementById('receipt-meet-row');
-        const meetAnchor = document.getElementById('receipt-meet-link');
-        if (apt.meetLink && meetRow && meetAnchor) {
-          meetAnchor.href = apt.meetLink;
-          meetRow.style.display = 'flex';
-        }
-        
-        // Open manual scheduler and navigate directly to confirmation (Step 4)
-        window.toggleBookingMethod('manual');
-        window.navigateWizardToIndex(4);
-        
-        // Scroll smoothly to booking card
-        setTimeout(() => {
-          const bookingSection = document.getElementById('booking');
-          if (bookingSection) {
-            bookingSection.scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 300);
-        
-        // Clean URL query parameters
-        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '#booking';
-        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
-        
-      } catch (err) {
-        console.error('Error handling redirect receipt display:', err);
-      }
-    }
-  }
+
 
 });

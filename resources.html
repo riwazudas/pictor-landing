@@ -15,6 +15,10 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css?v=11">
 
+  <!-- Favicon / Brand Icon -->
+  <link rel="icon" type="image/png" href="icon_pictor.png">
+  <link rel="apple-touch-icon" href="icon_pictor.png">
+
   <!-- Canonical URL -->
   <link rel="canonical" href="https://www.pictorservices.com/resources.html">
 
@@ -58,7 +62,7 @@
   <header class="main-header" id="header">
     <div class="container header-container">
       <a href="index.html" class="logo-container" aria-label="Pictor Services Home">
-        <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+        <img src="Logo_-_Golden-1-removebg-preview.png" alt="Pictor Services Logo" class="logo-image-file">
       </a>
 
             <!-- Desktop Nav Menu -->
@@ -71,21 +75,17 @@
             <a href="resources.html" class="nav-link active">Resources <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
             <ul class="dropdown-menu">
               <li><a href="visa-options.html" class="">Available Visas</a></li>
-              <li><a href="calculator.html" class="">Visa Cost Estimator</a></li>
-              <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
-              <li><a href="processing-times.html" class="">Visa Processing Times</a></li>
               <li><a href="skilled-occupation-list.html" class="">Skilled Occupation List</a></li>
               <li><a href="resources.html" class="active">Guides & Checklists</a></li>
             </ul>
           </li>
-          <li><a href="blog.html" class="nav-link">Blog</a></li>
           <li><a href="index.html#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
 
       <!-- Nav CTA & Mobile Toggle -->
       <div class="nav-actions">
-        <a href="index.html#booking" class="btn btn-primary btn-nav-cta">Book Consultation</a>
+        <a href="index.html#contact" class="btn btn-primary btn-nav-cta">Contact Us</a>
         <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
           <span class="hamburger-bar"></span>
           <span class="hamburger-bar"></span>
@@ -98,19 +98,15 @@
   <!-- MOBILE NAV OVERLAY -->
   <div class="mobile-nav-overlay" id="mobile-nav-overlay">
     <nav class="mobile-nav-menu">
-            <ul class="mobile-nav-list">
+      <ul class="mobile-nav-list">
         <li><a href="index.html" class="mobile-nav-link">Home</a></li>
         <li><a href="services.html" class="mobile-nav-link">Services</a></li>
         <li><a href="about.html" class="mobile-nav-link">About</a></li>
         <li><a href="resources.html" class="mobile-nav-link active">Resources</a></li>
         <li><a href="visa-options.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Available Visas</a></li>
-        <li><a href="calculator.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
-        <li><a href="points-calculator.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— PR Points Calculator</a></li>
-        <li><a href="processing-times.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Processing Times</a></li>
         <li><a href="skilled-occupation-list.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Skilled Occupation List</a></li>
-        <li><a href="blog.html" class="mobile-nav-link">Blog</a></li>
         <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
-        <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book Consultation</a></li>
+        <li class="mobile-cta-li"><a href="index.html#contact" class="btn btn-primary btn-mobile-cta">Contact Us</a></li>
       </ul>
     </nav>
   </div>
@@ -143,18 +139,18 @@
       </div>
 
       <!-- Filter controls -->
-      <div style="text-align: center;">
-        <div class="filter-group" style="display: inline-flex; gap: 12px; background-color: var(--bg-secondary); padding: 6px; border-radius: 40px; border: 1px solid var(--border-color);">
-          <button class="filter-btn active" data-filter="all" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">All Resources</button>
-          <button class="filter-btn" data-filter="migration" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Migration Guides</button>
-          <button class="filter-btn" data-filter="student" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Student Checklists</button>
-          <button class="filter-btn" data-filter="english" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">English & Testing</button>
-          <button class="filter-btn" data-filter="quick-links" style="padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Quick Links</button>
+      <div class="filter-group-wrapper" style="text-align: center;">
+        <div class="filter-group" style="display: inline-flex; gap: 8px; background-color: var(--bg-secondary); padding: 6px; border-radius: 40px; border: 1px solid var(--border-color);">
+          <button class="filter-btn active" data-filter="all" style="padding: 8px 18px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">All Resources</button>
+          <button class="filter-btn" data-filter="migration" style="padding: 8px 18px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Migration Guides</button>
+          <button class="filter-btn" data-filter="student" style="padding: 8px 18px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Student Checklists</button>
+          <button class="filter-btn" data-filter="english" style="padding: 8px 18px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">English & Testing</button>
+          <button class="filter-btn" data-filter="quick-links" style="padding: 8px 18px; border-radius: 30px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light);">Quick Links</button>
         </div>
       </div>
       
       <!-- Resource Cards Grid -->
-      <div class="resources-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;">
+      <div class="resources-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px;">
         
         <!-- Resource 1: OMARA Guide -->
         <div class="resource-card glass-panel" data-category="migration quick-links" style="padding: 32px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between;">
@@ -376,7 +372,7 @@
       <!-- Footer Brand Info -->
       <div class="footer-brand-col">
         <div class="footer-logo">
-          <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+          <img src="Logo_-_Golden-1-removebg-preview.png" alt="Pictor Services Logo" class="logo-image-file">
         </div>
         <p class="footer-desc">
           Professional and trustworthy migration and education consulting services. We facilitate global mobility with absolute legal compliance.
@@ -390,15 +386,15 @@
         
         <div class="footer-accreditation-badges regional-block" data-region="au" style="margin-top: 20px;">
           <div class="mara-badge-statement" style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
-            <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">Registered Migration Agent</div>
-            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN: 0000000 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
+            <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">Registered Migration Agents</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN 0962330 & MARN 1909751 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
           </div>
         </div>
         
         <div class="footer-accreditation-badges regional-block" data-region="np" style="margin-top: 20px;">
           <div class="ecan-badge-statement" style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
             <div style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">ECAN Member & QEAC Certified</div>
-            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">Qualified Education Agent Counsellors (QEAC Q000, T000, A000, B000) for direct placement in Elite Institutions.</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">Qualified Education Agent Counsellors (QEAC Q128 & QEAC Q133) for direct placement in Elite Institutions.</div>
           </div>
         </div>
       </div>
@@ -409,10 +405,8 @@
         <ul class="footer-links-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="services.html">Services</a></li>
-          <li><a href="about.html">About Founder</a></li>
-          <li><a href="calculator.html">Visa Cost Estimator</a></li>
-          <li><a href="points-calculator.html">PR Points Calculator</a></li>
-          <li><a href="processing-times.html">Visa Processing Times</a></li>
+          <li><a href="about.html">About & Team</a></li>
+          <li><a href="visa-options.html">Available Visas</a></li>
           <li><a href="skilled-occupation-list.html">Skilled Occupation List</a></li>
           <li><a href="resources.html">Resources</a></li>
         </ul>
@@ -428,17 +422,17 @@
           <li class="regional-text-li show-np"><a href="services.html#education">University Placement</a></li>
           <li class="regional-text-li show-np"><a href="services.html#migration">Student Visa Services</a></li>
           <li class="regional-text-li show-np"><a href="services.html#pte-naati">IELTS & PTE Training</a></li>
-          <li><a href="index.html#booking">Roadmap Consultation</a></li>
+          <li><a href="index.html#contact">Contact & Inquiries</a></li>
         </ul>
       </div>
     </div>
 
     <!-- Offices list footer row -->
     <div class="container footer-offices-row">
-      <div class="footer-office-item">
+      <div class="footer-office-item show-au">
         <strong>🇦🇺 Melbourne Office:</strong> Suite 314, Level 4, 365 Little Collins Street, Melbourne VIC 3000 | 03 9973 2117 | info@pictorservices.com
       </div>
-      <div class="footer-office-item">
+      <div class="footer-office-item show-np">
         <strong>🇳🇵 Kathmandu Office:</strong> D&D Tower, Level 5, Mid Baneshwor, Kathmandu, Nepal | +977 01 4464969 | hello@pictorservices.com
       </div>
     </div>
@@ -446,7 +440,7 @@
     <!-- Copyright and compliance legal statement -->
     <div class="container footer-bottom">
       <p class="copyright-text">
-        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration #0000000. The material on this website is for informational purposes and does not constitute formal legal immigration advice. | <a href="admin.html" class="footer-admin-link">admin login</a>
+        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration MARN 0962330 & MARN 1909751. The material on this website is for informational purposes and does not constitute formal legal immigration advice.
       </p>
       <a href="index.html" class="back-to-top-btn" id="back-to-top" aria-label="Back to Top">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
@@ -487,30 +481,57 @@
   <!-- FAQ Engine JS -->
   <script>
     (function() {
-      let allFaqs = [];
+      const DEFAULT_FAQS = [
+        {
+          "id": "faq_1",
+          "question": "What is OMARA and why is it important?",
+          "answer": "OMARA (Office of the Migration Agents Registration Authority) regulates migration agents in Australia. Using a registered agent guarantees they have the required legal knowledge and adhere to a strict Code of Conduct.",
+          "category": "Migration",
+          "region": "au"
+        },
+        {
+          "id": "faq_2",
+          "question": "How long does a student visa (Subclass 500) processing take?",
+          "answer": "Student visa processing times vary depending on the sector. Higher education sector visas generally take 2-4 weeks, while vocational education can take longer. It depends heavily on document completeness.",
+          "category": "Education",
+          "region": "both"
+        },
+        {
+          "id": "faq_3",
+          "question": "What is the NAATI CCL test?",
+          "answer": "The NAATI CCL (Credentialed Community Language) test is an exam that assesses your community language translation abilities. Passing it awards 5 bonus points toward your Australian GSM (PR) visa application.",
+          "category": "General",
+          "region": "au"
+        },
+        {
+          "id": "faq_4",
+          "question": "Do you offer university admission assistance in Nepal?",
+          "answer": "Yes, our Kathmandu office is staffed with QEAC certified counselors who provide free university placement, admissions, scholarship assistance, and visa documentation support.",
+          "category": "Education",
+          "region": "np"
+        },
+        {
+          "id": "faq_5",
+          "question": "What is the visa cost estimation tool?",
+          "answer": "Our visa cost estimation tool helps you estimate the fees including base charges, secondary applicants, and assessments across Subclass 189, 190, 491, 500, 482, and 485.",
+          "category": "Visa Cost",
+          "region": "both"
+        }
+      ];
+
+      let allFaqs = DEFAULT_FAQS;
       let currentCategory = 'all';
 
       async function fetchFaqs() {
         try {
-          const res = await fetch('/api/faqs');
+          const res = await fetch('faqs.json');
           if (res.ok) {
             allFaqs = await res.json();
-            renderFaqs();
-          } else {
-            document.getElementById('faq-accordion-container').innerHTML = `
-              <div style="text-align: center; color: var(--color-text-light); padding: 40px;">
-                Failed to load FAQs.
-              </div>
-            `;
           }
         } catch (err) {
-          console.error('Error fetching FAQs:', err);
-          document.getElementById('faq-accordion-container').innerHTML = `
-            <div style="text-align: center; color: var(--color-text-light); padding: 40px;">
-              Error connecting to server.
-            </div>
-          `;
+          console.warn('Using embedded static FAQs:', err);
         }
+        renderFaqs();
       }
 
       function renderFaqs() {

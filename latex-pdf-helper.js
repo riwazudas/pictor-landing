@@ -1,10 +1,8 @@
 /* ==========================================================================
-   PICTOR SERVICES LATEX PDF GENERATOR & COMPILER HELPER
+   PICTOR SERVICES STATIC REPORT & PDF GENERATOR HELPER (100% Client-Side)
    ========================================================================== */
 
-const LOGO_BASE64 = "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......"
-
-// Escape special LaTeX characters
+// Escape special LaTeX characters for report templating
 export function escapeLaTeX(text) {
   if (!text) return '';
   return text
@@ -23,14 +21,13 @@ export function escapeLaTeX(text) {
 // Inject Modal Styles Dynamically
 const styleElement = document.createElement('style');
 styleElement.textContent = `
-  /* LaTeX Progress Modal */
   .latex-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(26, 21, 32, 0.7);
+    background: rgba(26, 21, 32, 0.75);
     backdrop-filter: blur(8px);
     z-index: 99999;
     display: flex;
@@ -46,259 +43,253 @@ styleElement.textContent = `
     pointer-events: auto;
   }
   .latex-modal-card {
-    background: #faf8fd;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 20px 50px rgba(26, 21, 32, 0.15);
-    width: 90%;
-    max-width: 480px;
-    padding: 36px;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(81, 44, 130, 0.15);
+    box-shadow: 0 25px 50px -12px rgba(26, 21, 32, 0.25);
+    width: 92%;
+    max-width: 540px;
+    padding: 32px;
     text-align: center;
     position: relative;
-    transform: translateY(30px);
+    transform: translateY(20px);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .latex-modal-overlay.active .latex-modal-card {
     transform: translateY(0);
   }
-  .latex-spinner {
+  .latex-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: #f4f0fa;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #512c82;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .latex-modal-close:hover {
+    background: #e9e1f5;
+    transform: scale(1.05);
+  }
+  .latex-modal-header-icon {
     width: 56px;
     height: 56px;
-    border: 4px solid rgba(81, 44, 130, 0.1);
-    border-left-color: #512c82;
-    border-radius: 50%;
-    animation: latex-spin 1s linear infinite;
-    margin: 0 auto 24px;
-  }
-  @keyframes latex-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(81, 44, 130, 0.1) 0%, rgba(184, 138, 47, 0.15) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    color: #512c82;
   }
   .latex-modal-title {
-    font-size: 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.45rem;
     font-weight: 700;
     color: #1a1520;
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
+    margin: 0 0 8px 0;
   }
   .latex-modal-desc {
-    font-size: 0.9rem;
-    color: #58505e;
-    margin-bottom: 28px;
-    line-height: 1.5;
+    font-size: 0.92rem;
+    color: #635b6c;
+    line-height: 1.55;
+    margin: 0 0 24px 0;
   }
-  .latex-btn-group {
+  .latex-modal-actions {
     display: flex;
+    flex-direction: column;
     gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
+    margin-bottom: 20px;
   }
   .latex-modal-btn {
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-decoration: none;
   }
   .latex-modal-btn-primary {
-    background: #512c82;
-    color: #faf8fd;
-    box-shadow: 0 4px 10px rgba(81, 44, 130, 0.2);
+    background: linear-gradient(135deg, #512c82 0%, #3a1d63 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(81, 44, 130, 0.3);
   }
   .latex-modal-btn-primary:hover {
-    background: #6538a3;
+    box-shadow: 0 6px 20px rgba(81, 44, 130, 0.4);
     transform: translateY(-1px);
   }
   .latex-modal-btn-secondary {
-    background: transparent;
-    color: #251e2b;
-    border-color: rgba(37, 30, 43, 0.15);
+    background: #f8f6fc;
+    color: #512c82;
+    border: 1px solid rgba(81, 44, 130, 0.2);
   }
   .latex-modal-btn-secondary:hover {
-    background: rgba(37, 30, 43, 0.04);
-    border-color: #251e2b;
+    background: #eee8f8;
+  }
+  .latex-code-box {
+    text-align: left;
+    background: #1a1520;
+    color: #e5def0;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: monospace;
+    font-size: 0.78rem;
+    max-height: 140px;
+    overflow-y: auto;
+    border: 1px solid rgba(81, 44, 130, 0.3);
   }
 `;
 document.head.appendChild(styleElement);
 
-// Create modal dynamically and return controller
-function createProgressModal(latexCode, documentTitle) {
-  // Check if modal already exists
-  let modalOverlay = document.getElementById('latex-progress-modal');
-  if (modalOverlay) {
-    modalOverlay.remove();
-  }
+// Client-side report dialog
+export function compileLaTeX(latexCode, documentTitle) {
+  const title = documentTitle || 'Migration_Assessment_Report';
+  const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_');
 
-  modalOverlay = document.createElement('div');
-  modalOverlay.id = 'latex-progress-modal';
-  modalOverlay.className = 'latex-modal-overlay';
+  let modalOverlay = document.getElementById('static-report-modal');
+  if (!modalOverlay) {
+    modalOverlay = document.createElement('div');
+    modalOverlay.id = 'static-report-modal';
+    modalOverlay.className = 'latex-modal-overlay';
+    document.body.appendChild(modalOverlay);
+  }
 
   modalOverlay.innerHTML = `
     <div class="latex-modal-card">
-      <div class="latex-spinner" id="latex-modal-spinner"></div>
-      <div class="latex-modal-title" id="latex-modal-title">Generating PDF Report</div>
-      <div class="latex-modal-desc" id="latex-modal-desc">
-        Your document is being compiled using a secure, free online LaTeX compiler. 
-        It will open in a new tab shortly as a premium PDF.
+      <button class="latex-modal-close" id="btn-close-report-modal" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="latex-modal-header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 28px; height: 28px;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
       </div>
-      <div class="latex-btn-group">
-        <button type="button" class="latex-modal-btn latex-modal-btn-secondary" id="latex-btn-copy">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+
+      <h3 class="latex-modal-title">Assessment Report Ready</h3>
+      <p class="latex-modal-desc">
+        Your tailored Australian migration and points assessment summary has been generated. You can print or save it as a PDF directly in your browser or download the full document.
+      </p>
+
+      <div class="latex-modal-actions">
+        <button class="latex-modal-btn latex-modal-btn-primary" id="btn-print-report-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
           </svg>
-          Copy LaTeX Code
+          Print / Save as PDF
         </button>
-        <button type="button" class="latex-modal-btn latex-modal-btn-secondary" id="latex-btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;">
+
+        <button class="latex-modal-btn latex-modal-btn-secondary" id="btn-download-tex-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          Download .tex
+          Download Document Source (.tex)
         </button>
-        <button type="button" class="latex-modal-btn latex-modal-btn-primary" id="latex-btn-close" style="display: none;">
-          Done
+
+        <button class="latex-modal-btn latex-modal-btn-secondary" id="btn-copy-code-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="copy-btn-text">Copy Source Code</span>
         </button>
+      </div>
+
+      <div class="latex-code-box" title="LaTeX Source Preview">
+        <pre style="margin: 0; white-space: pre-wrap; word-break: break-all;">${escapeHtml(latexCode.substring(0, 350))}...</pre>
       </div>
     </div>
   `;
 
-  document.body.appendChild(modalOverlay);
+  // Helper escape
+  function escapeHtml(str) {
+    return (str || '')
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
-  // Bind Buttons
-  const copyBtn = modalOverlay.querySelector('#latex-btn-copy');
-  const downloadBtn = modalOverlay.querySelector('#latex-btn-download');
-  const closeBtn = modalOverlay.querySelector('#latex-btn-close');
-
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(latexCode).then(() => {
-      const origText = copyBtn.innerHTML;
-      copyBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        Copied!
-      `;
-      setTimeout(() => {
-        copyBtn.innerHTML = origText;
-      }, 2000);
+  // Bind close
+  const closeBtn = document.getElementById('btn-close-report-modal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
     });
-  });
+  }
 
-  downloadBtn.addEventListener('click', () => {
-    const blob = new Blob([latexCode], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${documentTitle.toLowerCase().replace(/[^a-z0-9]+/g, '_')}_report.tex`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
-
-  closeBtn.addEventListener('click', () => {
-    modalOverlay.classList.remove('active');
-  });
-
-  // Show
-  setTimeout(() => {
-    modalOverlay.classList.add('active');
-  }, 10);
-
-  return {
-    showFinished: (pdfUrl) => {
-      document.getElementById('latex-modal-spinner').style.display = 'none';
-      document.getElementById('latex-modal-title').textContent = 'PDF Generated Successfully';
-      document.getElementById('latex-modal-desc').innerHTML = `
-        The PDF report has been generated and downloaded successfully. If the download did not start automatically, please click the button below to download it:
-        <br/><br/>
-        <div style="margin: 15px 0;">
-          <a href="${pdfUrl}" download="${documentTitle || 'document'}.pdf" class="latex-modal-btn latex-modal-btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; min-width: 160px; padding: 12px 24px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px; margin-right: 8px;">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Download PDF Report
-          </a>
-        </div>
-      `;
-      closeBtn.style.display = 'inline-flex';
-    },
-    showError: (errText) => {
-      document.getElementById('latex-modal-spinner').style.display = 'none';
-      document.getElementById('latex-modal-title').textContent = 'Compilation Error';
-      
-      const esc = (txt) => {
-        if (!txt) return '';
-        return String(txt)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      };
-
-      document.getElementById('latex-modal-desc').innerHTML = `
-        The compiler service returned an error. Below are the details/logs:
-        <pre style="text-align: left; background: #1a1520; color: #f7a3a3; padding: 12px; border-radius: 8px; max-height: 180px; overflow-y: auto; font-size: 0.8rem; font-family: monospace; margin: 12px 0; border: 1px solid #ff000033;">${esc(errText)}</pre>
-        <em>You can also download the formatted LaTeX source code or copy it below to compile in any local editor or online compiler (e.g. Overleaf).</em>
-      `;
-      closeBtn.style.display = 'inline-flex';
-    },
-    close: () => {
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
       modalOverlay.classList.remove('active');
     }
-  };
-}
+  });
 
-// Compile LaTeX via POST to local backend proxy which compiles via latexonline.cc
-export function compileLaTeX(latexCode, documentTitle) {
-  const modal = createProgressModal(latexCode, documentTitle);
+  // Print button
+  const printBtn = document.getElementById('btn-print-report-action');
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+      setTimeout(() => {
+        window.print();
+      }, 200);
+    });
+  }
 
-  fetch('/api/compile', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      latex: latexCode,
-      documentTitle: documentTitle
-    })
-  })
-  .then(async (response) => {
-    if (response.ok) {
-      const blob = await response.blob();
-      const pdfBlob = new Blob([blob], { type: 'application/pdf' });
-      const url = URL.createObjectURL(pdfBlob);
-      
-      // Trigger immediate download in-place without opening a new tab
+  // Download .tex
+  const downloadBtn = document.getElementById('btn-download-tex-action');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      const blob = new Blob([latexCode], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = (documentTitle || 'document') + '.pdf';
+      a.download = `${cleanTitle}.tex`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      
-      // Update modal with download link
-      modal.showFinished(url);
-    } else {
-      const errText = await response.text();
-      console.error('LaTeX compilation proxy returned error:', errText);
-      modal.showError(errText);
-    }
-  })
-  .catch((error) => {
-    console.error('LaTeX compilation request failed:', error);
-    modal.showError(error.message || String(error));
-  });
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Copy code
+  const copyBtn = document.getElementById('btn-copy-code-action');
+  const copyText = document.getElementById('copy-btn-text');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(latexCode).then(() => {
+        if (copyText) copyText.textContent = 'Copied to Clipboard!';
+        setTimeout(() => {
+          if (copyText) copyText.textContent = 'Copy Source Code';
+        }, 2000);
+      });
+    });
+  }
+
+  // Trigger modal display
+  setTimeout(() => {
+    modalOverlay.classList.add('active');
+  }, 10);
 }
 
 // Expose on window for direct HTML/script integration

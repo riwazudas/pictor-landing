@@ -16,6 +16,10 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css?v=11">
 
+  <!-- Favicon / Brand Icon -->
+  <link rel="icon" type="image/png" href="icon_pictor.png">
+  <link rel="apple-touch-icon" href="icon_pictor.png">
+
   <!-- Canonical URL -->
   <link rel="canonical" href="https://www.pictorservices.com/processing-times.html">
 
@@ -62,7 +66,7 @@
   <header class="main-header" id="header">
     <div class="container header-container">
       <a href="index.html" class="logo-container" aria-label="Pictor Services Home">
-        <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+        <img src="Logo_-_Golden-1-removebg-preview.png" alt="Pictor Services Logo" class="logo-image-file">
       </a>
 
       <!-- Desktop Nav Menu -->
@@ -78,21 +82,18 @@
               </svg></a>
             <ul class="dropdown-menu">
               <li><a href="visa-options.html" class="">Available Visas</a></li>
-              <li><a href="calculator.html" class="">Visa Cost Estimator</a></li>
-              <li><a href="points-calculator.html" class="">PR Points Calculator</a></li>
               <li><a href="processing-times.html" class="active">Visa Processing Times</a></li>
               <li><a href="skilled-occupation-list.html" class="">Skilled Occupation List</a></li>
               <li><a href="resources.html" class="">Guides & Checklists</a></li>
             </ul>
           </li>
-          <li><a href="blog.html" class="nav-link">Blog</a></li>
           <li><a href="index.html#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
 
       <!-- Nav CTA & Mobile Toggle -->
       <div class="nav-actions">
-        <a href="index.html#booking" class="btn btn-primary btn-nav-cta">Book Consultation</a>
+        <a href="index.html#contact" class="btn btn-primary btn-nav-cta">Contact Us</a>
         <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
           <span class="hamburger-bar"></span>
           <span class="hamburger-bar"></span>
@@ -111,18 +112,12 @@
         <li><a href="about.html" class="mobile-nav-link">About</a></li>
         <li><a href="resources.html" class="mobile-nav-link active">Resources</a></li>
         <li><a href="visa-options.html" class="mobile-nav-link" style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Available Visas</a></li>
-        <li><a href="calculator.html" class="mobile-nav-link"
-            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Cost Estimator</a></li>
-        <li><a href="points-calculator.html" class="mobile-nav-link"
-            style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— PR Points Calculator</a></li>
         <li><a href="processing-times.html" class="mobile-nav-link active"
             style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Visa Processing Times</a></li>
         <li><a href="skilled-occupation-list.html" class="mobile-nav-link"
             style="padding-left: 20px; font-size: 1.25rem; opacity: 0.85;">— Skilled Occupation List</a></li>
-        <li><a href="blog.html" class="mobile-nav-link">Blog</a></li>
         <li><a href="index.html#contact" class="mobile-nav-link">Contact</a></li>
-        <li class="mobile-cta-li"><a href="index.html#booking" class="btn btn-primary btn-mobile-cta">Book
-            Consultation</a></li>
+        <li class="mobile-cta-li"><a href="index.html#contact" class="btn btn-primary btn-mobile-cta">Contact Us</a></li>
       </ul>
     </nav>
   </div>
@@ -144,10 +139,10 @@
     <div class="container">
 
       <!-- Standalone Layout: Processing Times Tracker Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; align-items: stretch;">
+      <div class="calculator-grid">
         
         <!-- Left Column: Inputs Form -->
-        <div class="calculator-inputs-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
+        <div class="calculator-inputs-card glass-panel">
           <h2 style="font-family: var(--font-headings); font-size: 1.8rem; margin-bottom: 8px; color: var(--bg-dark);">Select Your Pathway</h2>
           <p style="color: var(--color-text-light); margin-bottom: 32px; font-size: 0.95rem;">Select your visa subclass to view the latest processing timeframe statistics published by the Department of Home Affairs.</p>
           
@@ -187,7 +182,7 @@
         </div>
 
         <!-- Right Column: Timeframe Panel -->
-        <div class="calculator-results-card glass-panel" style="padding: 40px; border-radius: 24px; display: flex; flex-direction: column; height: 100%;">
+        <div class="calculator-results-card glass-panel">
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
             <h2 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--bg-dark);">Processing Statistics</h2>
             <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-primary); letter-spacing: 0.5px;">DHA Performance</span>
@@ -196,7 +191,7 @@
           <!-- Timeframe Display -->
           <div style="background-color: var(--bg-secondary); padding: 32px 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; border: 1px solid rgba(58, 28, 98, 0.08);">
             <div style="font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: var(--color-text-light); margin-bottom: 8px; letter-spacing: 0.5px;">90% of applications processed in</div>
-            <div id="live-processing-time" style="font-family: var(--font-headings); font-size: 3.5rem; font-weight: 700; color: var(--color-primary); line-height: 1.1;">6 Months</div>
+            <div id="live-processing-time" class="processing-time-display">6 Months</div>
             <div id="proc-status-modifier" style="font-size: 0.9rem; font-weight: 600; color: #4cae4c; margin-top: 10px;">✓ Optimal (Decision-Ready Pathway)</div>
           </div>
 
@@ -204,21 +199,21 @@
           <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; font-size: 0.9rem;">
             <h4 style="font-weight: 700; color: var(--bg-dark); margin-bottom: 4px;">Milestone Breakdown</h4>
             <div style="display: flex; align-items: start; gap: 12px;">
-              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px;">1</div>
+              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px; flex-shrink: 0;">1</div>
               <div>
                 <strong style="color: var(--bg-dark); display: block;">Lodge EOI & State Nomination</strong>
                 <span style="color: var(--color-text-light); font-size: 0.85rem;">Timeline varies by occupation and points pool.</span>
               </div>
             </div>
             <div style="display: flex; align-items: start; gap: 12px;">
-              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px;">2</div>
+              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px; flex-shrink: 0;">2</div>
               <div>
                 <strong style="color: var(--bg-dark); display: block;">Visa Application Lodgement</strong>
                 <span style="color: var(--color-text-light); font-size: 0.85rem;">Submit application fees and all basic checklists.</span>
               </div>
             </div>
             <div style="display: flex; align-items: start; gap: 12px;">
-              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px;">3</div>
+              <div style="width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin-top: 2px; flex-shrink: 0;">3</div>
               <div>
                 <strong style="color: var(--bg-dark); display: block;">DHA Case Officer Review</strong>
                 <span style="color: var(--color-text-light); font-size: 0.85rem;">Primary verification of documents, biometrics, and checks.</span>
@@ -235,7 +230,7 @@
 
           <!-- Call to Action Buttons -->
           <div style="display: flex; flex-direction: column; gap: 12px; margin-top: auto;">
-            <a href="index.html#booking" class="btn btn-primary btn-full-width" style="padding: 16px 28px;">Speed Up Application Now</a>
+            <a href="index.html#contact" class="btn btn-primary btn-full-width" style="padding: 16px 28px;">Speed Up Application Now</a>
           </div>
         </div>
       </div>
@@ -281,7 +276,7 @@
       <!-- Footer Brand Info -->
       <div class="footer-brand-col">
         <div class="footer-logo">
-          <img src="logo.png" alt="Pictor Services Logo" class="logo-image-file">
+          <img src="Logo_-_Golden-1-removebg-preview.png" alt="Pictor Services Logo" class="logo-image-file">
         </div>
         <p class="footer-desc">
           Professional and trustworthy migration and education consulting services. We facilitate global mobility with
@@ -303,9 +298,8 @@
             style="padding: 12px; border: 1px solid rgba(254, 253, 251, 0.1); border-radius: 8px; background: rgba(254, 253, 251, 0.03);">
             <div
               style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">
-              Registered Migration Agent</div>
-            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN:
-              0000000 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
+              Registered Migration Agents</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">MARN 0962330 & MARN 1909751 | Office of the Migration Agents Registration Authority (OMARA) Regulated</div>
           </div>
         </div>
 
@@ -316,7 +310,7 @@
               style="font-size: 0.75rem; font-weight: bold; color: var(--color-primary); letter-spacing: 0.5px; text-transform: uppercase;">
               ECAN Member & QEAC Certified</div>
             <div style="font-size: 0.72rem; color: var(--color-text-light); margin-top: 2px; line-height: 1.3;">
-              Qualified Education Agent Counsellors (QEAC Q000, T000, A000, B000) for direct placement in Elite
+              Qualified Education Agent Counsellors (QEAC Q128 & QEAC Q133) for direct placement in Elite
               Institutions.</div>
           </div>
         </div>
@@ -328,9 +322,7 @@
         <ul class="footer-links-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="services.html">Services</a></li>
-          <li><a href="about.html">About Founder</a></li>
-          <li><a href="calculator.html">Visa Cost Estimator</a></li>
-          <li><a href="points-calculator.html">PR Points Calculator</a></li>
+          <li><a href="about.html">About & Team</a></li>
           <li><a href="processing-times.html">Visa Processing Times</a></li>
           <li><a href="skilled-occupation-list.html">Skilled Occupation List</a></li>
           <li><a href="resources.html">Resources</a></li>
@@ -347,18 +339,18 @@
           <li class="regional-text-li show-np"><a href="services.html#education">University Placement</a></li>
           <li class="regional-text-li show-np"><a href="services.html#migration">Student Visa Services</a></li>
           <li class="regional-text-li show-np"><a href="services.html#pte-naati">IELTS & PTE Training</a></li>
-          <li><a href="index.html#booking">Roadmap Consultation</a></li>
+          <li><a href="index.html#contact">Contact & Inquiries</a></li>
         </ul>
       </div>
     </div>
 
     <!-- Offices list footer row -->
     <div class="container footer-offices-row">
-      <div class="footer-office-item">
+      <div class="footer-office-item show-au">
         <strong>🇦🇺 Melbourne Office:</strong> Suite 314, Level 4, 365 Little Collins Street, Melbourne VIC 3000 | 03
         9973 2117 | info@pictorservices.com
       </div>
-      <div class="footer-office-item">
+      <div class="footer-office-item show-np">
         <strong>🇳🇵 Kathmandu Office:</strong> D&D Tower, Level 5, Mid Baneshwor, Kathmandu, Nepal | +977 01 4464969 |
         hello@pictorservices.com
       </div>
@@ -367,7 +359,7 @@
     <!-- Copyright and compliance legal statement -->
     <div class="container footer-bottom">
       <p class="copyright-text">
-        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration #0000000. The material on this website is for informational purposes and does not constitute formal legal immigration advice. | <a href="admin.html" class="footer-admin-link">admin login</a>
+        &copy; 2026 Pictor Services. All Rights Reserved. Legal representation under OMARA registration MARN 0962330 & MARN 1909751. The material on this website is for informational purposes and does not constitute formal legal immigration advice.
       </p>
       <a href="index.html" class="back-to-top-btn" id="back-to-top" aria-label="Back to Top">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
