@@ -17,7 +17,7 @@ const VISA_COSTS_CONFIG = {
       "skillsAssessmentEst": 1050
     },
     "482": {
-      "name": "Temporary Skill Shortage (Subclass 482 - Medium Term)",
+      "name": "Skills in Demand visa (Subclass 482)",
       "baseFee": 3115,
       "secondaryApplicant18Plus": 3115,
       "secondaryApplicantUnder18": 780,

@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { value: '189', text: 'Skilled Independent (Subclass 189)' },
       { value: '190', text: 'Skilled Nominated (Subclass 190)' },
       { value: '491', text: 'Skilled Work Regional (Subclass 491)' },
-      { value: '482', text: 'Employer Sponsorship (Subclass 482)' },
+      { value: '482', text: 'Skills in Demand visa (Subclass 482)' },
       { value: '186', text: 'Employer Nomination (Subclass 186)' },
       { value: 'py', text: 'Professional Year Program' }
     ],
@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     employer: {
-      tag: 'TSS Subclass 482 & ENS 186',
+      tag: 'Skills in Demand Subclass 482 & ENS 186',
       title: 'Corporate Sponsored Placement',
       desc: 'Allows employers to address local labor shortages by bringing in genuinely skilled workers. Provides paths to Permanent Residency through 186 ENS.',
       time: '2 - 4 Months',
