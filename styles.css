@@ -2,7 +2,7 @@
    PICTOR SERVICES PREMIUM LANDING PAGE STYLING SYSTEM
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Oswald:wght@300;400;500;600&display=swap');
 
 /* 1. CSS VARIABLES & THEMING SYSTEM */
 :root {
@@ -53,6 +53,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-padding-top: calc(var(--header-height) + 20px);
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 body {
@@ -61,6 +64,8 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -449,10 +454,11 @@ img {
 }
 
 .nav-link {
-  font-family: var(--font-headings);
-  font-size: 1.2rem;
+  font-family: 'Oswald', var(--font-headings), sans-serif;
+  font-size: 1.25rem;
   letter-spacing: 0.05em;
-  font-weight: 500;
+  font-weight: 300;
+  text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
   position: relative;
   padding: 6px 0;
@@ -612,8 +618,10 @@ img {
 
 .mobile-nav-link {
   font-size: 1.5rem;
-  font-family: var(--font-headings);
-  font-weight: 600;
+  font-family: 'Oswald', var(--font-headings), sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
   display: block;
 }
@@ -1126,6 +1134,14 @@ body.region-np .hero-section::before {
   border-bottom: 2px solid var(--color-highlight);
   background-color: var(--bg-dark);
   overflow: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+.trust-bar-section .container {
+  overflow: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 .trust-bar-title {
@@ -1142,6 +1158,7 @@ body.region-np .hero-section::before {
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
+  max-width: 100%;
   position: relative;
 }
 
@@ -3346,10 +3363,21 @@ body.portal-switching .office-box {
   .hero-graphics {
     display: none !important;
   }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+  }
+
+  .footer-brand-col {
+    grid-column: span 1 !important;
+  }
   
   /* Trust Bar Touch Scroll */
   .scrolling-track-container {
     overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 12px;
   }
@@ -3389,7 +3417,7 @@ body.portal-switching .office-box {
   }
   
   .achievement-floating-card {
-    right: -12px;
+    right: 0 !important;
     bottom: 16px;
     padding: 10px 14px;
     max-width: 150px;
@@ -5755,18 +5783,11 @@ body.region-au .show-np {
   }
 }
 
-@media (max-width: 767px) and (min-width: 500px) {
-  .team-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-}
-
-@media (max-width: 499px) {
+@media (max-width: 767px) {
   .team-grid {
     grid-template-columns: 1fr;
     max-width: 320px;
-    margin: 48px auto 0 auto;
+    margin: 40px auto 0 auto;
   }
 }
 
