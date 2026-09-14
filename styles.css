@@ -270,55 +270,7 @@ img {
   box-shadow: var(--shadow-lg);
 }
 
-/* 5. TOP NOTIFICATION BAR */
-.top-bar {
-  background-color: var(--bg-dark);
-  color: var(--color-text-white);
-  font-size: 0.85rem;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  position: relative;
-  z-index: 101;
-}
-
-.top-bar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.top-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pulse-indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--color-highlight);
-  position: relative;
-}
-
-.pulse-indicator::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 50%;
-  border: 1px solid var(--color-highlight);
-  animation: pulse-ring 2s infinite ease-out;
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(3.5); opacity: 0; }
-}
-
-.top-bar-text {
-  font-weight: 500;
-  opacity: 0.9;
-}
+/* 5. PORTAL SWITCHER & UI CONTROLS */
 
 /* Portal Switcher toggle */
 .portal-toggle-container {
@@ -3392,24 +3344,13 @@ body.portal-switching .office-box {
 }
 
 @media (max-width: 768px) {
-  /* Navigation & Top Bar */
+  /* Navigation */
   .nav-menu, .btn-nav-cta {
     display: none;
   }
   
   .menu-toggle {
     display: flex;
-  }
-  
-  .top-bar-container {
-    flex-direction: column;
-    gap: 12px;
-    padding: 8px 16px;
-  }
-  
-  .top-bar-left {
-    justify-content: center;
-    text-align: center;
   }
   
   .portal-toggle-container {
