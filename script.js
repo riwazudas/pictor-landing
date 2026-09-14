@@ -65,8 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // 1. REGIONALIZATION & PORTAL ENGINE
   // ==========================================================================
-  const btnAu = document.getElementById('btn-au');
-  const btnNp = document.getElementById('btn-np');
   const regionalTexts = document.querySelectorAll('.regional-text');
   const regionalBlocks = document.querySelectorAll('.regional-block');
   const leadVisaSelect = document.getElementById('lead-visa-type');
@@ -113,17 +111,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const applyPortalState = () => {
       try {
-        // Toggle body region classes
+        const btnsAu = document.querySelectorAll('.btn-portal-au, #btn-au, [data-portal-switch="au"]');
+        const btnsNp = document.querySelectorAll('.btn-portal-np, #btn-np, [data-portal-switch="np"]');
+
+        // Toggle body region classes and button states
         if (region === 'au') {
           document.body.classList.remove('region-np');
           document.body.classList.add('region-au');
-          if (btnAu) btnAu.classList.add('active');
-          if (btnNp) btnNp.classList.remove('active');
+          btnsAu.forEach(btn => btn.classList.add('active'));
+          btnsNp.forEach(btn => btn.classList.remove('active'));
         } else {
           document.body.classList.remove('region-au');
           document.body.classList.add('region-np');
-          if (btnNp) btnNp.classList.add('active');
-          if (btnAu) btnAu.classList.remove('active');
+          btnsNp.forEach(btn => btn.classList.add('active'));
+          btnsAu.forEach(btn => btn.classList.remove('active'));
         }
         
         // Update data-attributes on all regionalized texts
@@ -254,9 +255,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Bind Toggle button clicks
-  if (btnAu) btnAu.addEventListener('click', () => switchPortal('au'));
-  if (btnNp) btnNp.addEventListener('click', () => switchPortal('np'));
+  // Bind Toggle button clicks across the page
+  document.querySelectorAll('.btn-portal-au, #btn-au, [data-portal-switch="au"]').forEach(btn => {
+    btn.addEventListener('click', () => switchPortal('au'));
+  });
+  document.querySelectorAll('.btn-portal-np, #btn-np, [data-portal-switch="np"]').forEach(btn => {
+    btn.addEventListener('click', () => switchPortal('np'));
+  });
+
+  // Delegated click listener for dynamic or footer portal switchers
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('[data-portal-switch]');
+    if (target) {
+      const targetRegion = target.getAttribute('data-portal-switch');
+      if (targetRegion === 'au' || targetRegion === 'np') {
+        switchPortal(targetRegion);
+      }
+    }
+  });
 
   // Init regional content
   autoDetectRegion();
