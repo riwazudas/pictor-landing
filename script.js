@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
     worker: {
       tag: 'Skilled Independent Subclass 189',
       title: 'Independent Professional Pathway',
-      desc: 'Points-tested visa subclass for skilled professionals without state or employer sponsorship. Allows permanent residence and full legal work rights anywhere.',
+      desc: 'Points-tested visa subclass for skilled professionals without state or employer sponsorship. Allows permanent residence and unrestricted work rights anywhere in Australia.',
       time: '8 - 12 Months',
       req: '65 Points Minimum',
       steps: [
