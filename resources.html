@@ -309,7 +309,6 @@
             <button class="filter-btn" data-faq-cat="General" style="padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light); transition: all var(--transition-fast);">General</button>
             <button class="filter-btn" data-faq-cat="Migration" style="padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light); transition: all var(--transition-fast);">Migration</button>
             <button class="filter-btn" data-faq-cat="Education" style="padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light); transition: all var(--transition-fast);">Education</button>
-            <button class="filter-btn" data-faq-cat="Visa Cost" style="padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; background: transparent; color: var(--color-text-light); transition: all var(--transition-fast);">Visa Cost</button>
           </div>
         </div>
 
@@ -506,13 +505,6 @@
           "answer": "Yes, our Kathmandu office is staffed with QEAC certified counselors who provide free university placement, admissions, scholarship assistance, and visa documentation support.",
           "category": "Education",
           "region": "np"
-        },
-        {
-          "id": "faq_5",
-          "question": "What is the visa cost estimation tool?",
-          "answer": "Our visa cost estimation tool helps you estimate the fees including base charges, secondary applicants, and assessments across Subclass 189, 190, 491, 500, 482, and 485.",
-          "category": "Visa Cost",
-          "region": "both"
         }
       ];
 
@@ -521,7 +513,7 @@
 
       async function fetchFaqs() {
         try {
-          const res = await fetch('faqs.json');
+          const res = await fetch('faqs.json', { cache: 'no-store' });
           if (res.ok) {
             allFaqs = await res.json();
           }
