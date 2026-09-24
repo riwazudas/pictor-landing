@@ -1,8 +1,7 @@
 /* ==========================================================================
    PICTOR SERVICES PREMIUM LANDING PAGE STYLING SYSTEM
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Oswald:wght@200;300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded via preconnect in HTML <head> to eliminate render-blocking @import waterfall */
 
 /* 1. CSS VARIABLES & THEMING SYSTEM */
 :root {
@@ -601,7 +600,10 @@ img {
   position: relative;
   padding: 130px 0 110px;
   background-color: var(--bg-dark);
-  background-image: url('australia_landmarks_hero.jpg');
+  background-image: image-set(
+    url('australia_landmarks_hero.webp') type('image/webp'),
+    url('australia_landmarks_hero.jpg') type('image/jpeg')
+  );
   background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
@@ -610,12 +612,18 @@ img {
 }
 
 body.region-au .hero-section {
-  background-image: url('australia_landmarks_hero.jpg');
+  background-image: image-set(
+    url('australia_landmarks_hero.webp') type('image/webp'),
+    url('australia_landmarks_hero.jpg') type('image/jpeg')
+  );
   background-position: center right;
 }
 
 body.region-np .hero-section {
-  background-image: url('nepal_global_pathways_hero.jpg');
+  background-image: image-set(
+    url('nepal_global_pathways_hero.webp') type('image/webp'),
+    url('nepal_global_pathways_hero.jpg') type('image/jpeg')
+  );
   background-position: center center;
 }
 
