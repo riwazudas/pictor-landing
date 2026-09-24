@@ -1,0 +1,233 @@
+{
+  "business": {
+    "name": "Pictor Services",
+    "location": "Melbourne VIC, Australia",
+    "address": "Suite 407, Level 4/365 Little Collins St, Melbourne VIC 3000",
+    "rating": 4.8,
+    "total_reviews": 20,
+    "source": "Google Reviews",
+    "google_maps_url": "https://maps.google.com/?cid=10860555360980277353"
+  },
+  "reviews": [
+    {
+      "id": "rev-1",
+      "author": "Megha Paudel",
+      "rating": 5,
+      "relative_time": "a month ago",
+      "user_badge": "Verified Client",
+      "service_type": "PR Pathway & Migration",
+      "text": "I had a great experience with Pictor Services. The team was professional, supportive, and guided me through every step of my PR process. They were always responsive and made everything smooth and stress-free. Highly recommend them for anyone looking for reliable migration services!",
+      "initials": "MP",
+      "avatar_color": "#512c82"
+    },
+    {
+      "id": "rev-2",
+      "author": "Santosh Pandey",
+      "rating": 5,
+      "relative_time": "6 months ago",
+      "user_badge": "Verified Client",
+      "service_type": "Visa & Education",
+      "text": "Pictor Services offers highly professional, reliable, and supportive guidance, making the entire visa and education process smooth and stress-free. Highly recommended!",
+      "initials": "SP",
+      "avatar_color": "#1a73e8"
+    },
+    {
+      "id": "rev-3",
+      "author": "nonameofmine",
+      "rating": 5,
+      "relative_time": "3 months ago",
+      "user_badge": "Local Guide • 22 reviews",
+      "service_type": "Visa Grant in 42 Days",
+      "text": "The guidance, effort, and professionalism were beyond my expectations. They helped us at every step and made the visa process smooth and stress-free and got the visa within 42 days ❤️❤️❤️",
+      "initials": "NO",
+      "avatar_color": "#ea4335"
+    },
+    {
+      "id": "rev-4",
+      "author": "Anish Tamang",
+      "rating": 5,
+      "relative_time": "a year ago",
+      "user_badge": "Verified Student",
+      "service_type": "Student Combine Subclass 500",
+      "text": "I am extremely grateful to Pictor Services for helping me secure my Student Combine Subclass 500 visa for Australia. Special thanks to Iraku Lama Sir, Suyok Neupane Sir, and Saroj Khanal Sir for their invaluable guidance, encouragement, and support throughout the process.\n\nFrom handling paperwork to offering prompt advice, they made everything smooth and stress-free. Their professionalism and positive energy kept me motivated at every step. Highly recommend Pictor Services!",
+      "initials": "AT",
+      "avatar_color": "#34a853"
+    },
+    {
+      "id": "rev-5",
+      "author": "SID GHALE",
+      "rating": 5,
+      "relative_time": "11 months ago",
+      "user_badge": "Local Guide • 34 reviews",
+      "service_type": "Migration Consultation",
+      "text": "Efficiency and punctuality are hallmarks of their service. Genuine information, every possible options, and decisive move. Thank you so much Pictor for helping and supporting us. Highly recommended for consultation.",
+      "initials": "SG",
+      "avatar_color": "#fbbc05"
+    },
+    {
+      "id": "rev-6",
+      "author": "Sushma Kathayat",
+      "rating": 5,
+      "relative_time": "2 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Partner & Dependency Visa",
+      "text": "Iraku Lama Dai given us great service and timely responses at Pictor Services. We appreciate all the hard work he put in our file for rare and genuine covid visa dependency on my partner which helped my entry from overseas and together in Australia. I would recommend this consultancy for their migration and education needs.",
+      "initials": "SK",
+      "avatar_color": "#9334ea"
+    },
+    {
+      "id": "rev-7",
+      "author": "Durga Magar",
+      "rating": 5,
+      "relative_time": "a year ago",
+      "user_badge": "Verified Client",
+      "service_type": "Australian Visa Guidance",
+      "text": "A wonderful experience was all the help I got from the team especially from Saroj dai, Iraku lama sir and Suyok sir. Their guidance was unmatched throughout my process of visa which made everything easier for me.",
+      "initials": "DM",
+      "avatar_color": "#0d9488"
+    },
+    {
+      "id": "rev-8",
+      "author": "Nisha Khadka",
+      "rating": 5,
+      "relative_time": "4 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Subclass 485 Graduate Visa",
+      "text": "I’m extremely happy with the service and help throughout my visa journey. Special thanks to Mr. Iraku Lama who always motivated and guided me toward the right path. Thank you Pictor team.",
+      "initials": "NK",
+      "avatar_color": "#e11d48"
+    },
+    {
+      "id": "rev-9",
+      "author": "Bivek Thapa",
+      "rating": 5,
+      "relative_time": "5 years ago",
+      "user_badge": "Verified Student • Nepal",
+      "service_type": "PTE Academic & Career Counseling",
+      "text": "Hi, I am Bivek Thapa all the way from Nepal. I took online PTE coaching classes from Sonia Sabir at Pictor Services, which was really interactive, engaging and resourceful. The way she delivered tips, strategies and regular feedback were really commendable. Besides this, Mr. Iraku Lama gave me transparent, genuine and well informed counselling regarding my career and further study in Australia. Highly recommend!",
+      "initials": "BT",
+      "avatar_color": "#2563eb"
+    },
+    {
+      "id": "rev-10",
+      "author": "Puri Richa",
+      "rating": 5,
+      "relative_time": "5 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Student Visa & Exemption Approval",
+      "text": "Excellent service and very friendly staff. Highly recommended for all immigration process including student visa, exemption approval, career counselling and change of course.",
+      "initials": "PR",
+      "avatar_color": "#059669"
+    },
+    {
+      "id": "rev-11",
+      "author": "Saraswati Rana",
+      "rating": 5,
+      "relative_time": "a year ago",
+      "user_badge": "Verified Client • Launceston",
+      "service_type": "Regional Migration Support",
+      "text": "Thank you Pictor Services, Launceston Saroj sir for great service, the team was very supportive and professional.",
+      "initials": "SR",
+      "avatar_color": "#d97706"
+    },
+    {
+      "id": "rev-12",
+      "author": "Akash Sunar",
+      "rating": 5,
+      "relative_time": "2 years ago",
+      "user_badge": "Verified Client • Tasmania",
+      "service_type": "Visa Services",
+      "text": "One of the best services at Launceston! Saroj dai helps in every step with any sort of visa.",
+      "initials": "AS",
+      "avatar_color": "#4f46e5"
+    },
+    {
+      "id": "rev-13",
+      "author": "Sanjeev Adhikari",
+      "rating": 5,
+      "relative_time": "4 years ago",
+      "user_badge": "Local Guide • 15 reviews",
+      "service_type": "Abroad Studies",
+      "text": "Excellent service. Very positive attitude and does the best job in town. Would recommend Pictor Services to apply for abroad studies.",
+      "initials": "SA",
+      "avatar_color": "#0284c7"
+    },
+    {
+      "id": "rev-14",
+      "author": "Bijeta Chaudhary",
+      "rating": 5,
+      "relative_time": "2 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "PR Visa Pathway",
+      "text": "Thank you so much for the appropriate guidance throughout my visa process to get PR, highly recommended. Thank you once again :)",
+      "initials": "BC",
+      "avatar_color": "#c026d3"
+    },
+    {
+      "id": "rev-15",
+      "author": "Amir Ojha",
+      "rating": 5,
+      "relative_time": "4 years ago",
+      "user_badge": "Verified Student",
+      "service_type": "College Admission & Visa Grant",
+      "text": "Best service all the staff are very helpful and supportive. They guided me on choosing the right college to a successfully granted visa.",
+      "initials": "AO",
+      "avatar_color": "#16a34a"
+    },
+    {
+      "id": "rev-16",
+      "author": "Meen Raj Bhatt",
+      "rating": 5,
+      "relative_time": "4 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Subclass 485 Temporary Graduate",
+      "text": "Excellent service with on-time response. Thanks to whole team for help and support.",
+      "initials": "MB",
+      "avatar_color": "#7c3aed"
+    },
+    {
+      "id": "rev-17",
+      "author": "Sabina GC",
+      "rating": 5,
+      "relative_time": "4 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Graduate Visa Processing",
+      "text": "Professionalism, Quality, Responsiveness, Value. Thank you so much Pictor Services for all your help and guidance throughout my visa process.",
+      "initials": "SG",
+      "avatar_color": "#db2777"
+    },
+    {
+      "id": "rev-18",
+      "author": "Kamana Tamang",
+      "rating": 5,
+      "relative_time": "3 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Visa Consultation",
+      "text": "Iraku dai is best!! 🥰❤️❤️ Always kind, supportive, and knowledgeable.",
+      "initials": "KT",
+      "avatar_color": "#ea580c"
+    },
+    {
+      "id": "rev-19",
+      "author": "Prithivi Bikram Shah",
+      "rating": 5,
+      "relative_time": "5 years ago",
+      "user_badge": "Verified Client",
+      "service_type": "Immigration & Visa Processing",
+      "text": "The team is thoroughly professional, transparent, and approachable. Outstanding experience with visa processing!",
+      "initials": "PS",
+      "avatar_color": "#475569"
+    },
+    {
+      "id": "rev-20",
+      "author": "Roshan Gurung",
+      "rating": 5,
+      "relative_time": "4 years ago",
+      "user_badge": "Verified Student",
+      "service_type": "Student Visa Extension",
+      "text": "Reliable and supportive team. Guided me through my student visa extension without any hassle. Highly recommended!",
+      "initials": "RG",
+      "avatar_color": "#0891b2"
+    }
+  ]
+}
