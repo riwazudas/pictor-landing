@@ -306,24 +306,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function switchServiceTab(parentWrapper, targetIndex, direction) {
+    if (!parentWrapper) return;
+    const wrapperBtns = Array.from(parentWrapper.querySelectorAll('.services-tab-btn'));
+    const wrapperCards = Array.from(parentWrapper.querySelectorAll('.service-detail-card'));
+    if (wrapperBtns.length === 0) return;
+
+    let targetIdx = targetIndex;
+    if (targetIdx < 0) targetIdx = wrapperBtns.length - 1;
+    if (targetIdx >= wrapperBtns.length) targetIdx = 0;
+
+    const currentActiveBtn = parentWrapper.querySelector('.services-tab-btn.active');
+    const currentActiveCard = parentWrapper.querySelector('.service-detail-card.active');
+    const currentIdx = currentActiveBtn ? wrapperBtns.indexOf(currentActiveBtn) : 0;
+
+    if (currentIdx === targetIdx && currentActiveCard) return;
+
+    const dir = direction || (targetIdx > currentIdx ? 'next' : 'prev');
+    const targetBtn = wrapperBtns[targetIdx];
+    const targetId = targetBtn.getAttribute('data-tab');
+    const targetCard = document.getElementById(targetId);
+
+    wrapperBtns.forEach(b => b.classList.remove('active'));
+    targetBtn.classList.add('active');
+
+    // Scroll active button into view horizontally on mobile
+    targetBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+    if (currentActiveCard && targetCard && currentActiveCard !== targetCard) {
+      const inClass = dir === 'next' ? 'slide-in-right' : 'slide-in-left';
+      const outClass = dir === 'next' ? 'slide-out-left' : 'slide-out-right';
+
+      wrapperCards.forEach(c => c.classList.remove('slide-in-right', 'slide-in-left', 'slide-out-left', 'slide-out-right'));
+      currentActiveCard.classList.add(outClass);
+      targetCard.classList.add('active', inClass);
+
+      setTimeout(() => {
+        wrapperCards.forEach(c => {
+          if (c !== targetCard) {
+            c.classList.remove('active', 'slide-out-left', 'slide-out-right');
+          } else {
+            c.classList.remove('slide-in-right', 'slide-in-left');
+          }
+        });
+      }, 380);
+    } else if (targetCard) {
+      wrapperCards.forEach(c => c.classList.remove('active'));
+      targetCard.classList.add('active');
+    }
+  }
+
   serviceTabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const parentWrapper = btn.closest('.services-tab-wrapper');
       if (!parentWrapper) return;
-
-      const wrapperBtns = parentWrapper.querySelectorAll('.services-tab-btn');
-      const wrapperCards = parentWrapper.querySelectorAll('.service-detail-card');
-
-      wrapperBtns.forEach(b => b.classList.remove('active'));
-      wrapperCards.forEach(c => c.classList.remove('active'));
-
-      btn.classList.add('active');
-
-      const targetId = btn.getAttribute('data-tab');
-      const targetCard = document.getElementById(targetId);
-      if (targetCard) {
-        targetCard.classList.add('active');
-      }
+      const wrapperBtns = Array.from(parentWrapper.querySelectorAll('.services-tab-btn'));
+      const idx = wrapperBtns.indexOf(btn);
+      switchServiceTab(parentWrapper, idx);
     });
   });
 
@@ -535,60 +574,259 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateTimelineProgress);
 
   // ==========================================================================
-  // 7b. TESTIMONIAL SLIDER ENGINE
+  // 7b. GOOGLE REVIEWS & TESTIMONIAL SLIDER ENGINE
   // ==========================================================================
-  const slides = document.querySelectorAll('.testimonial-slide');
-  const dots = document.querySelectorAll('#testimonial-dots .slider-dot');
+  const sliderTrack = document.getElementById('testimonial-slider-track');
   const prevBtn = document.getElementById('prev-testimonial-btn');
   const nextBtn = document.getElementById('next-testimonial-btn');
+  const dotsContainer = document.getElementById('testimonial-dots');
+  const counterEl = document.getElementById('testimonial-counter');
+  
+  let slides = Array.from(document.querySelectorAll('.testimonial-slide'));
+  let dots = Array.from(document.querySelectorAll('#testimonial-dots .slider-dot'));
   let currentSlide = 0;
+  let autoSlideTimer = null;
 
-  function showSlide(index) {
-    if (slides.length === 0) return;
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatQuote(text) {
+    if (!text) return '';
+    return text.split('\n\n')
+      .map(p => `<p>"${escapeHtml(p.trim().replace(/^["“]|["”]$/g, ''))}"</p>`)
+      .join('');
+  }
+
+  let isTransitioning = false;
+
+  function updateSlideUI(index, direction = 'next') {
+    if (slides.length === 0 || isTransitioning) return;
     
-    // Boundary checks
-    if (index >= slides.length) currentSlide = 0;
-    else if (index < 0) currentSlide = slides.length - 1;
-    else currentSlide = index;
+    const prevIndex = currentSlide;
+    
+    // Boundary check
+    let targetIndex = index;
+    if (targetIndex >= slides.length) targetIndex = 0;
+    else if (targetIndex < 0) targetIndex = slides.length - 1;
 
-    slides.forEach((slide, idx) => {
-      if (idx === currentSlide) {
-        slide.classList.add('active');
-      } else {
-        slide.classList.remove('active');
-      }
-    });
+    // If initial load or same index
+    if (targetIndex === prevIndex && slides[targetIndex] && slides[targetIndex].classList.contains('active')) {
+      dots.forEach((dot, idx) => dot.classList.toggle('active', idx === currentSlide));
+      if (counterEl) counterEl.textContent = `Review ${currentSlide + 1} of ${slides.length}`;
+      return;
+    }
+
+    isTransitioning = true;
+    currentSlide = targetIndex;
+
+    const currentSlideEl = slides[prevIndex];
+    const nextSlideEl = slides[targetIndex];
+
+    const outClass = direction === 'next' ? 'slide-out-left' : 'slide-out-right';
+    const inClass = direction === 'next' ? 'slide-in-right' : 'slide-in-left';
+
+    // Clear lingering animation classes
+    slides.forEach(s => s.classList.remove('slide-in-right', 'slide-out-left', 'slide-in-left', 'slide-out-right'));
+
+    if (currentSlideEl && currentSlideEl !== nextSlideEl) {
+      currentSlideEl.classList.add(outClass);
+    }
+    
+    if (nextSlideEl) {
+      nextSlideEl.classList.add('active', inClass);
+    }
 
     dots.forEach((dot, idx) => {
-      if (idx === currentSlide) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
+      dot.classList.toggle('active', idx === currentSlide);
     });
+
+    if (counterEl) {
+      counterEl.textContent = `Review ${currentSlide + 1} of ${slides.length}`;
+    }
+
+    setTimeout(() => {
+      slides.forEach((slide, idx) => {
+        if (idx !== currentSlide) {
+          slide.classList.remove('active', 'slide-out-left', 'slide-out-right');
+        } else {
+          slide.classList.remove('slide-in-right', 'slide-in-left');
+        }
+      });
+      isTransitioning = false;
+    }, 480);
   }
 
-  if (prevBtn && nextBtn) {
-    prevBtn.addEventListener('click', () => {
-      showSlide(currentSlide - 1);
-    });
+  function startAutoSlide() {
+    stopAutoSlide();
+    autoSlideTimer = setInterval(() => {
+      updateSlideUI(currentSlide + 1, 'next');
+    }, 7000);
+  }
 
-    nextBtn.addEventListener('click', () => {
-      showSlide(currentSlide + 1);
-    });
+  function stopAutoSlide() {
+    if (autoSlideTimer) {
+      clearInterval(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  function attachSliderControls() {
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        updateSlideUI(currentSlide - 1, 'prev');
+        startAutoSlide();
+      };
+    }
+
+    if (nextBtn) {
+      nextBtn.onclick = () => {
+        updateSlideUI(currentSlide + 1, 'next');
+        startAutoSlide();
+      };
+    }
 
     dots.forEach(dot => {
-      dot.addEventListener('click', () => {
+      dot.onclick = () => {
         const index = parseInt(dot.getAttribute('data-index'), 10);
-        showSlide(index);
-      });
+        const dir = index >= currentSlide ? 'next' : 'prev';
+        updateSlideUI(index, dir);
+        startAutoSlide();
+      };
     });
 
-    // Auto rotate every 8 seconds
-    setInterval(() => {
-      showSlide(currentSlide + 1);
-    }, 8000);
+    // Touch swipe support on testimonials
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    if (sliderTrack) {
+      sliderTrack.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isSwiping = true;
+        stopAutoSlide();
+      }, { passive: true });
+
+      sliderTrack.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        const diffX = touchStartX - e.touches[0].clientX;
+        const diffY = touchStartY - e.touches[0].clientY;
+        if (Math.abs(diffY) > Math.abs(diffX)) {
+          isSwiping = false;
+        }
+      }, { passive: true });
+
+      sliderTrack.addEventListener('touchend', (e) => {
+        if (!isSwiping) {
+          startAutoSlide();
+          return;
+        }
+        const diffX = touchStartX - e.changedTouches[0].clientX;
+        if (diffX > 35) {
+          // Swiped left -> Next review
+          updateSlideUI(currentSlide + 1, 'next');
+        } else if (diffX < -35) {
+          // Swiped right -> Prev review
+          updateSlideUI(currentSlide - 1, 'prev');
+        }
+        isSwiping = false;
+        startAutoSlide();
+      }, { passive: true });
+
+      sliderTrack.addEventListener('mouseenter', stopAutoSlide);
+      sliderTrack.addEventListener('mouseleave', startAutoSlide);
+    }
+
+    startAutoSlide();
   }
+
+  // Fetch Google Reviews from google-reviews.json
+  async function loadGoogleReviews() {
+    if (!sliderTrack) return;
+
+    try {
+      const response = await fetch('google-reviews.json');
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      const data = await response.json();
+
+      if (data && Array.isArray(data.reviews) && data.reviews.length > 0) {
+        // Build new slides
+        sliderTrack.innerHTML = '';
+        if (dotsContainer) dotsContainer.innerHTML = '';
+
+        data.reviews.forEach((review, idx) => {
+          const slide = document.createElement('div');
+          slide.className = `testimonial-slide ${idx === 0 ? 'active' : ''}`;
+          slide.setAttribute('data-slide-index', idx);
+
+          const initials = review.initials || (review.author ? review.author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'PS');
+          const avatarColor = review.avatar_color || '#512c82';
+          const relativeTime = review.relative_time || 'Recent';
+          const badgeText = review.service_type || 'Verified Review';
+          const userMeta = review.user_badge || 'Verified Client';
+
+          slide.innerHTML = `
+            <div class="testimonial-card-header">
+              <div class="review-source-meta">
+                <svg class="google-g-icon" viewBox="0 0 24 24" width="16" height="16">
+                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                </svg>
+                <span class="review-source-name">Google Review</span>
+                <span class="review-bullet">•</span>
+                <span class="review-relative-time">${escapeHtml(relativeTime)}</span>
+              </div>
+              <span class="review-badge-pill">${escapeHtml(badgeText)}</span>
+            </div>
+            <div class="rating-stars">${'★'.repeat(review.rating || 5)}</div>
+            <div class="testimonial-quote">
+              ${formatQuote(review.text)}
+            </div>
+            <div class="testimonial-author">
+              <div class="author-left">
+                <div class="author-avatar" style="background-color: ${escapeHtml(avatarColor)};">${escapeHtml(initials)}</div>
+                <div class="author-info">
+                  <h4 class="author-name">${escapeHtml(review.author)} <svg class="verified-check-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></h4>
+                  <span class="author-meta">${escapeHtml(userMeta)}</span>
+                </div>
+              </div>
+            </div>
+          `;
+
+          sliderTrack.appendChild(slide);
+
+          if (dotsContainer) {
+            const dot = document.createElement('span');
+            dot.className = `slider-dot ${idx === 0 ? 'active' : ''}`;
+            dot.setAttribute('data-index', idx);
+            dot.setAttribute('title', `${review.author} review`);
+            dotsContainer.appendChild(dot);
+          }
+        });
+
+        // Re-query new slides and dots
+        slides = Array.from(document.querySelectorAll('.testimonial-slide'));
+        dots = Array.from(document.querySelectorAll('#testimonial-dots .slider-dot'));
+        currentSlide = 0;
+        updateSlideUI(0);
+        attachSliderControls();
+      } else {
+        // Fallback to static slides
+        attachSliderControls();
+      }
+    } catch (err) {
+      console.warn('Could not load google-reviews.json, using fallback slides:', err);
+      attachSliderControls();
+    }
+  }
+
+  loadGoogleReviews();
 
 
   // ==========================================================================
@@ -658,5 +896,324 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+
+  // ==========================================================================
+  // 12. COMPREHENSIVE MOBILE SWIPE & CAROUSEL ENGINE
+  // ==========================================================================
+  function initMobileSwipeEngine() {
+    // 1. Generic horizontal scroll-snap track with active dots
+    function setupSnapTrack(containerSelector, cardSelector) {
+      const container = document.querySelector(containerSelector);
+      if (!container) return;
+
+      const cards = Array.from(container.querySelectorAll(cardSelector));
+      if (cards.length < 2) return;
+
+      // Avoid duplicating indicator bar
+      const existingHint = container.parentElement ? container.parentElement.querySelector(`.mobile-swipe-hint[data-for="${containerSelector.replace(/[^a-zA-Z0-9_-]/g, '')}"]`) : null;
+      if (existingHint) return;
+
+      const hintEl = document.createElement('div');
+      hintEl.className = 'mobile-swipe-hint';
+      hintEl.setAttribute('data-for', containerSelector.replace(/[^a-zA-Z0-9_-]/g, ''));
+      hintEl.innerHTML = `
+        <div class="swipe-dots-bar">
+          ${cards.map((_, i) => `<span class="swipe-dot ${i === 0 ? 'active' : ''}" data-card-idx="${i}" aria-label="Go to slide ${i + 1}"></span>`).join('')}
+        </div>
+      `;
+
+      container.insertAdjacentElement('afterend', hintEl);
+
+      const dots = Array.from(hintEl.querySelectorAll('.swipe-dot'));
+      let activeIdx = 0;
+
+      function scrollToCard(idx) {
+        if (!cards[idx]) return;
+        const card = cards[idx];
+        const targetScroll = card.offsetLeft - (container.clientWidth - card.clientWidth) / 2;
+        container.scrollTo({ left: Math.max(0, targetScroll), behavior: 'smooth' });
+        updateDots(idx);
+      }
+
+      // Dot click handler
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+          scrollToCard(idx);
+        });
+      });
+
+      function updateDots(idx) {
+        if (idx === activeIdx) return;
+        activeIdx = idx;
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+
+      // Scroll listener to update dots based on card closest to horizontal center
+      let scrollTimer;
+      container.addEventListener('scroll', () => {
+        if (scrollTimer) cancelAnimationFrame(scrollTimer);
+        scrollTimer = requestAnimationFrame(() => {
+          const containerRect = container.getBoundingClientRect();
+          const centerX = containerRect.left + containerRect.width / 2;
+          let closestIdx = 0;
+          let closestDist = Infinity;
+
+          cards.forEach((card, idx) => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const dist = Math.abs(centerX - cardCenter);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closestIdx = idx;
+            }
+          });
+
+          updateDots(closestIdx);
+        });
+      }, { passive: true });
+
+      // Touch swipe gestures on the container
+      let startX = 0;
+      let startY = 0;
+      let isSwiping = false;
+      let hasSwiped = false;
+      let swipeMoveDistance = 0;
+
+      container.addEventListener('touchstart', (e) => {
+        if (!e.touches || !e.touches[0]) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isSwiping = true;
+        hasSwiped = false;
+        swipeMoveDistance = 0;
+      }, { passive: true });
+
+      container.addEventListener('touchmove', (e) => {
+        if (!isSwiping || !e.touches || !e.touches[0]) return;
+        const diffX = startX - e.touches[0].clientX;
+        const diffY = startY - e.touches[0].clientY;
+
+        // Natural vertical scrolling should not be hijacked
+        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffX) < 10) {
+          isSwiping = false;
+          return;
+        }
+
+        swipeMoveDistance = Math.abs(diffX);
+        if (swipeMoveDistance > 8) {
+          hasSwiped = true;
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+        isSwiping = false;
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        const diffX = startX - e.changedTouches[0].clientX;
+
+        if (diffX > 30) {
+          // Swipe left -> advance to next card
+          const nextIdx = Math.min(cards.length - 1, activeIdx + 1);
+          scrollToCard(nextIdx);
+        } else if (diffX < -30) {
+          // Swipe right -> return to previous card
+          const prevIdx = Math.max(0, activeIdx - 1);
+          scrollToCard(prevIdx);
+        }
+
+        if (hasSwiped) {
+          setTimeout(() => {
+            hasSwiped = false;
+            swipeMoveDistance = 0;
+          }, 400);
+        }
+      }, { passive: true });
+
+      // Prevent link clicks if user was performing a swipe gesture
+      container.addEventListener('click', (e) => {
+        if (hasSwiped || swipeMoveDistance > 10) {
+          e.preventDefault();
+          e.stopPropagation();
+          hasSwiped = false;
+          swipeMoveDistance = 0;
+        }
+      }, true);
+
+      // Mouse/Pointer drag support for desktop emulation
+      let pointerStartX = 0;
+      let isPointerDown = false;
+      let pointerMoved = false;
+
+      container.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'touch') return;
+        pointerStartX = e.clientX;
+        isPointerDown = true;
+        pointerMoved = false;
+      });
+
+      container.addEventListener('pointermove', (e) => {
+        if (!isPointerDown) return;
+        if (Math.abs(pointerStartX - e.clientX) > 8) {
+          pointerMoved = true;
+          hasSwiped = true;
+        }
+      });
+
+      window.addEventListener('pointerup', (e) => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        const diffX = pointerStartX - e.clientX;
+        if (diffX > 35) {
+          const nextIdx = Math.min(cards.length - 1, activeIdx + 1);
+          scrollToCard(nextIdx);
+        } else if (diffX < -35) {
+          const prevIdx = Math.max(0, activeIdx - 1);
+          scrollToCard(prevIdx);
+        }
+        if (pointerMoved) {
+          setTimeout(() => {
+            hasSwiped = false;
+            pointerMoved = false;
+          }, 350);
+        }
+      });
+    }
+
+    // Initialize horizontal tracks
+    setupSnapTrack('.team-grid', '.team-card');
+    setupSnapTrack('.social-feed-grid', '.social-feed-card');
+    setupSnapTrack('.comparison-matrix-container', '.comparison-card');
+    setupSnapTrack('.tools-grid', '.tool-card');
+
+    // 2. Services Section Mobile Swipe
+    const serviceWrappers = document.querySelectorAll('.services-tab-wrapper');
+    serviceWrappers.forEach(wrapper => {
+      const content = wrapper.querySelector('.services-tab-content');
+      if (!content) return;
+
+      let startX = 0;
+      let startY = 0;
+      let isSwiping = false;
+
+      content.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isSwiping = true;
+      }, { passive: true });
+
+      content.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        const diffX = startX - e.touches[0].clientX;
+        const diffY = startY - e.touches[0].clientY;
+        if (Math.abs(diffY) > Math.abs(diffX)) {
+          isSwiping = false;
+        }
+      }, { passive: true });
+
+      content.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+        const diffX = startX - e.changedTouches[0].clientX;
+        isSwiping = false;
+
+        const btns = Array.from(wrapper.querySelectorAll('.services-tab-btn'));
+        const activeBtn = wrapper.querySelector('.services-tab-btn.active');
+        const currentIdx = activeBtn ? btns.indexOf(activeBtn) : 0;
+
+        if (diffX > 40) {
+          // Swiped left -> Next service
+          switchServiceTab(wrapper, currentIdx + 1, 'next');
+        } else if (diffX < -40) {
+          // Swiped right -> Prev service
+          switchServiceTab(wrapper, currentIdx - 1, 'prev');
+        }
+      }, { passive: true });
+    });
+
+    // 3. Visa Pathway Visualizer Mobile Swipe
+    const pathwayCard = document.getElementById('pathway-result');
+    const sitSelect = document.getElementById('situation-select');
+    if (pathwayCard && sitSelect) {
+      let startX = 0;
+      let startY = 0;
+      let isSwiping = false;
+
+      pathwayCard.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isSwiping = true;
+      }, { passive: true });
+
+      pathwayCard.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        const diffX = startX - e.touches[0].clientX;
+        const diffY = startY - e.touches[0].clientY;
+        if (Math.abs(diffY) > Math.abs(diffX)) {
+          isSwiping = false;
+        }
+      }, { passive: true });
+
+      pathwayCard.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+        const diffX = startX - e.changedTouches[0].clientX;
+        isSwiping = false;
+
+        if (diffX > 40) {
+          // Swipe left -> Next option
+          sitSelect.selectedIndex = (sitSelect.selectedIndex + 1) % sitSelect.options.length;
+          sitSelect.dispatchEvent(new Event('change'));
+        } else if (diffX < -40) {
+          // Swipe right -> Prev option
+          sitSelect.selectedIndex = (sitSelect.selectedIndex - 1 + sitSelect.options.length) % sitSelect.options.length;
+          sitSelect.dispatchEvent(new Event('change'));
+        }
+      }, { passive: true });
+    }
+
+    // 4. Strategic Pathway Timeline Mobile Swipe
+    const timelineContainer = document.querySelector('.vertical-timeline');
+    if (timelineContainer) {
+      const nodes = Array.from(timelineContainer.querySelectorAll('.v-timeline-node'));
+      let startX = 0;
+      let startY = 0;
+      let isSwiping = false;
+
+      timelineContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isSwiping = true;
+      }, { passive: true });
+
+      timelineContainer.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        const diffX = startX - e.touches[0].clientX;
+        const diffY = startY - e.touches[0].clientY;
+        if (Math.abs(diffY) > Math.abs(diffX)) {
+          isSwiping = false;
+        }
+      }, { passive: true });
+
+      timelineContainer.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+        const diffX = startX - e.changedTouches[0].clientX;
+        isSwiping = false;
+
+        const currentActiveIdx = nodes.reduce((last, node, i) => node.classList.contains('active') ? i : last, 0);
+
+        if (diffX > 40) {
+          // Swipe left -> Activate next step
+          const nextIdx = Math.min(nodes.length - 1, currentActiveIdx + 1);
+          nodes.forEach((n, i) => n.classList.toggle('active', i <= nextIdx));
+          nodes[nextIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (diffX < -40) {
+          // Swipe right -> Deactivate last step
+          const prevIdx = Math.max(0, currentActiveIdx - 1);
+          nodes.forEach((n, i) => n.classList.toggle('active', i <= prevIdx));
+          nodes[prevIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, { passive: true });
+    }
+  }
+
+  initMobileSwipeEngine();
 
 });
