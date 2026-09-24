@@ -2,7 +2,7 @@
    PICTOR SERVICES PREMIUM LANDING PAGE ENGINE (VANILLA JS)
    ========================================================================== */
 
-import { animate } from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+
 
 document.addEventListener('DOMContentLoaded', () => {
   
