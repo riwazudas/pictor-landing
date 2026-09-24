@@ -12,8 +12,11 @@
   <!-- Google Fonts: Outfit for headings & Inter for body -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Hero Image Preload for Instant First Contentful Paint -->
+  <link rel="preload" as="image" href="australia_landmarks_hero.webp" type="image/webp" fetchpriority="high">
+
   <!-- Global Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 
   <!-- Favicon / Brand Icon -->
   <link rel="icon" type="image/png" href="icon_pictor.png">
@@ -76,7 +79,7 @@
   <header class="main-header" id="header">
     <div class="container header-container">
       <a href="index.html" class="logo-container" aria-label="Pictor Services Home">
-        <img src="Logo_-_Golden-1-removebg-preview.png" alt="Pictor Services Logo" class="logo-image-file">
+        <img src="Logo_-_Golden-1-removebg-preview.webp" alt="Pictor Services Logo" class="logo-image-file" width="220" height="55" fetchpriority="high" decoding="async">
       </a>
 
             <!-- Desktop Nav Menu -->
@@ -165,11 +168,11 @@
         <!-- Real Team Trust Pill -->
         <div class="hero-team-pill">
           <div class="hero-avatar-group">
-            <img src="teampics/bruce-hatcher.jpg" alt="Mr. Bruce Hatcher" class="hero-avatar-img">
-            <img src="teampics/Shramita.jpg" alt="Mrs. Shramita Shrestha" class="hero-avatar-img">
-            <img src="teampics/Iraku.jpg" alt="Mr. Iraku Lama" class="hero-avatar-img">
-            <img src="teampics/norgen.jpeg" alt="Mr. Norgen N Moktan" class="hero-avatar-img">
-            <img src="teampics/ngoc-tran.jpg" alt="Ms. Ngoc Tran" class="hero-avatar-img">
+            <img src="teampics/bruce-hatcher.webp" alt="Mr. Bruce Hatcher" class="hero-avatar-img" width="44" height="44" decoding="async">
+            <img src="teampics/Shramita.webp" alt="Mrs. Shramita Shrestha" class="hero-avatar-img" width="44" height="44" decoding="async">
+            <img src="teampics/Iraku.webp" alt="Mr. Iraku Lama" class="hero-avatar-img" width="44" height="44" decoding="async">
+            <img src="teampics/norgen.webp" alt="Mr. Norgen N Moktan" class="hero-avatar-img" width="44" height="44" decoding="async">
+            <img src="teampics/ngoc-tran.webp" alt="Ms. Ngoc Tran" class="hero-avatar-img" width="44" height="44" decoding="async">
           </div>
           <div class="hero-team-pill-text">
             <div class="pill-rating">★★★★★ <span>4.8 Rating (20 Google Reviews)</span></div>
@@ -274,7 +277,7 @@
       <div class="about-visual reveal fade-right">
         <div class="image-stack-container">
           <div class="stack-bg-card"></div>
-          <img src="teampics/bruce-hatcher.jpg" alt="Mr. Bruce Hatcher - Principal Migration Agent & Practice Manager" class="founder-image-main">
+          <img src="teampics/bruce-hatcher.webp" alt="Mr. Bruce Hatcher - Principal Migration Agent & Practice Manager" class="founder-image-main" width="500" height="500" loading="lazy" decoding="async">
           <!-- Floating achievement badge -->
           <div class="achievement-floating-card glass-panel card-lift">
             <span class="floating-accent-text">MARN 0962330</span>
@@ -328,7 +331,7 @@
         <!-- Member 1: Mr. Bruce Hatcher -->
         <div class="team-card">
           <div class="team-photo-wrapper">
-            <img src="teampics/bruce-hatcher.jpg" alt="Mr. Bruce Hatcher" class="team-photo-img">
+            <img src="teampics/bruce-hatcher.webp" alt="Mr. Bruce Hatcher" class="team-photo-img" width="280" height="280" loading="lazy" decoding="async">
           </div>
           <h3 class="team-name">Mr. Bruce Hatcher</h3>
           <p class="team-role">Principal Migration Agent | Migration Practice Manager</p>
@@ -340,7 +343,7 @@
         <!-- Member 2: Mrs Shramita Shrestha -->
         <div class="team-card">
           <div class="team-photo-wrapper">
-            <img src="teampics/Shramita.jpg" alt="Mrs Shramita Shrestha" class="team-photo-img">
+            <img src="teampics/Shramita.webp" alt="Mrs Shramita Shrestha" class="team-photo-img" width="280" height="280" loading="lazy" decoding="async">
           </div>
           <h3 class="team-name">Mrs. Shramita Shrestha</h3>
           <p class="team-role">Senior Migration Agent</p>
@@ -352,7 +355,7 @@
         <!-- Member 3: Mr. Iraku Lama -->
         <div class="team-card">
           <div class="team-photo-wrapper">
-            <img src="teampics/Iraku.jpg" alt="Mr. Iraku Lama" class="team-photo-img">
+            <img src="teampics/Iraku.webp" alt="Mr. Iraku Lama" class="team-photo-img" width="280" height="280" loading="lazy" decoding="async">
           </div>
           <h3 class="team-name">Mr. Iraku Lama</h3>
           <p class="team-role">Director | Education Counsellor</p>
@@ -364,7 +367,7 @@
         <!-- Member 4: Ms. Ngoc Tran -->
         <div class="team-card">
           <div class="team-photo-wrapper">
-            <img src="teampics/ngoc-tran.jpg" alt="Ms. Ngoc Tran" class="team-photo-img">
+            <img src="teampics/ngoc-tran.webp" alt="Ms. Ngoc Tran" class="team-photo-img" width="280" height="280" loading="lazy" decoding="async">
           </div>
           <h3 class="team-name">Ms. Ngoc Tran</h3>
           <p class="team-role">Visa Assistant</p>
@@ -376,7 +379,7 @@
         <!-- Member 5: Mr. Norgen N Moktan -->
         <div class="team-card">
           <div class="team-photo-wrapper">
-            <img src="teampics/norgen.jpeg" alt="Mr. Norgen N Moktan" class="team-photo-img">
+            <img src="teampics/norgen.webp" alt="Mr. Norgen N Moktan" class="team-photo-img" width="280" height="280" loading="lazy" decoding="async">
           </div>
           <h3 class="team-name">Mr. Norgen N Moktan</h3>
           <p class="team-role">Business Development Director</p>
@@ -1669,7 +1672,7 @@
       <!-- Footer Brand Info -->
       <div class="footer-brand-col">
         <div class="footer-logo">
-          <img src="Logo_-_Golden-1-removebg-preview.png" alt="Pictor Services Logo" class="logo-image-file">
+          <img src="Logo_-_Golden-1-removebg-preview.webp" alt="Pictor Services Logo" class="logo-image-file" width="220" height="55" loading="lazy" decoding="async">
         </div>
         <p class="footer-desc">
           Professional and trustworthy migration and education consulting services. We facilitate global mobility with strict regulatory compliance.
